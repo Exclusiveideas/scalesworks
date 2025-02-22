@@ -7,6 +7,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from "sonner";
 import { loginUser } from "@/apiCalls/authAPI";
+import useAuthStore from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 
 const LoginForm = () => {
@@ -15,9 +17,14 @@ const LoginForm = () => {
       password: "",
     });
   
+    
+  const router = useRouter();
+
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    
+  const updateUser = useAuthStore((state) => state.updateUser);
   
     const handleChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -45,6 +52,8 @@ const LoginForm = () => {
       if (Object.keys(newErrors).length === 0) {
         setErrors({});
         const response = await loginUser(formData)
+        setLoading(false);
+
         if(response.error) {
             toast.error("Error signing in.", {
                 description: response.error  || "Ensure your email and password are correct",
@@ -61,17 +70,15 @@ const LoginForm = () => {
                     color: 'green'
                   },
               })
-
-              setTimeout(() => {
-                // route user to dashboard
-                // response.user.user
-              }, 1000);
+              // update user state and route to dashboard
+              updateUser(response.user.user);
+              router.push("/dashboard");
         }
-        setLoading(false)
       } else {
         setErrors(newErrors);
       }
     };
+    
   
     return (
         <form onSubmit={handleSubmit} className="authForm">
