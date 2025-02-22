@@ -3,6 +3,16 @@
 @tailwind utilities;
 
 :root {
+  --color-white: #ffffff;
+  --color-light-gray: #f3f4f6; /* Tailwind gray-100 */
+  --color-medium-gray: #d1d5db; /* Tailwind gray-300 */
+  --color-dark-gray: #1f2937; /* Tailwind gray-800 */
+  --color-text-dark: #111827; /* Tailwind gray-900 */
+  --color-navy-blue: #1e3a8a; /* Tailwind blue-900 */
+  --color-deep-blue: #1d4ed8; /* Tailwind blue-700 */
+  --color-deep-blue-hover: #1e40af; /* Tailwind blue-800 */
+  --color-emerald: #059669; /* Tailwind emerald-600 */
+  --color-emerald-hover: #047857; /* Tailwind emerald-700 */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -11,5 +21,21 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', 'Lato', 'Source Sans 3', Arial, Helvetica, sans-serif;
+}
+
+
+
+@layer base {
+  }
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
