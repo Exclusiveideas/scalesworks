@@ -1,0 +1,39 @@
+.sidebar {
+    color: white;
+}
+
+
+.userInfo_box {
+    padding: 1rem 0;
+    height: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: .7rem;
+    font-size: 13.5px;
+}
+
+.userLetter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 18px;
+    padding: .7rem;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.user_name {
+    color: white;
+}
+
+.user_email {
+    color: gray;
+    font-size: 12px;
+}
+
+.sidebar_menu {
+    padding: 1.5rem .5rem;
+    gap: .7rem;
+}

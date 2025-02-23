@@ -1,0 +1,50 @@
+.dashboard_wrapper {
+    width: 100vw;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-y: auto;
+    display: flex;
+}
+
+.page_content {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #2a2c41;
+    color: white;
+}
+
+.pageTop {
+    height: max-content;
+    width: 100%;
+    padding: .5rem;
+}
+
+.sideBar_trigger {
+    cursor: pointer;
+    width: fit-content;
+}
+
+.pageBody {
+    width: 100%;
+    height: 90%;
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 1rem 3rem;
+}
+
+.dashboardTitle {
+    font-size: 3.5rem;
+    font-weight: 600;
+}
+
+.modelsOverview {
+    /* border: 1px solid white; */
+    display: grid;
+    grid-template-columns: minmax(300px, 400px) minmax(300px, 400px) minmax(300px, 400px);
+    flex: 1;
+    gap: 1.5rem;
+    box-sizing: border-box;
+    padding: 1.5rem 0;
+}
