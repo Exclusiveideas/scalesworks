@@ -13,18 +13,23 @@ cloudinary.config({
 const upload = multer({ storage: multer.memoryStorage() });
 
 const handler = nc()
-  .use(upload.single("file")) // Accepts single file
+  .use(upload.fields([{ name: "file" }, { name: "userId" }])) // Accepts file + userId
   .post(async (req, res) => {
     try {
-      if (!req.file) {
-        return res.status(400).json({ error: "No file uploaded" });
+      const userId = req.body.userId; // ✅ Extract userId correctly
+
+      console.log('user: ', userId)
+
+      if (!req.files["file"] || !userId) {
+        return res.status(400).json({ error: "File and userId are required" });
       }
 
-      const fileBuffer = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+      const file = req.files["file"][0]; // Get the uploaded file
+      const fileBuffer = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
 
-      // Upload to Cloudinary
+      // Upload to Cloudinary under "uploads/{userId}/files"
       const uploadResult = await cloudinary.uploader.upload(fileBuffer, {
-        folder: "uploads", // Change folder as needed
+        folder: `uploads/${userId}/files`,
         resource_type: "auto",
       });
 
@@ -39,6 +44,6 @@ export default handler;
 
 export const config = {
   api: {
-    bodyParser: false, // Disable default body parser (Multer handles it)
+    bodyParser: false, // ✅ Required for Multer
   },
 };
