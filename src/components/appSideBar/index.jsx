@@ -1,17 +1,20 @@
 import { Captions, Handshake, Home, LogOut, ScanEye, Scroll, Telescope } from "lucide-react";
 
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarGroupLabel,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import './appSideBar.css';
+import useAuthStore from "@/store/authStore";
+import { useRouter } from "next/navigation";
+import { logOutUser } from "@/apiCalls/authAPI";
 
 // Menu items.
 const items = [
@@ -48,6 +51,15 @@ const items = [
 ]
 
 export function AppSidebar() {
+  const updateUser = useAuthStore((state) => state.updateUser);
+  const router = useRouter();
+
+  const logOut = () => {
+    updateUser(null);
+    logOutUser()
+    router.push("/auth");
+  }
+
   return (
     <Sidebar className="sidebar">
       <SidebarContent>
@@ -79,7 +91,7 @@ export function AppSidebar() {
       </SidebarContent>
         <SidebarFooter>
           <SidebarMenu>
-            <SidebarMenuItem>
+            <SidebarMenuItem onClick={logOut}>
                   <SidebarMenuButton>
                   <LogOut /> Log Out
                   </SidebarMenuButton>

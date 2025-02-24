@@ -1,9 +1,9 @@
-import Auth from "./auth/page";
+import LandingPage from "./landingPage";
 
 export default function Home() {
   return (
     <div>
-      <Auth />
+      <LandingPage />
     </div>
   );
 }

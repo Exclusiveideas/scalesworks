@@ -5,17 +5,11 @@ const useAuthStore = create()(
   persist(
     (set) => ({
       user: null,
-      logout: () =>
-        set(() => ({
-            user: null
-        })),
-      updateUser: (user) =>
-        set(() => ({
-          user: user,
-        })),
+      logout: () => set({ user: null }),
+      updateUser: (user) => set({ user }),
     }),
     {
-      name: "user-auth",
+      name: "auth-storage",
     }
   )
 );

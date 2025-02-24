@@ -72,7 +72,9 @@ const LoginForm = () => {
               })
               // update user state and route to dashboard
               updateUser(response.user.user);
-              router.push("/dashboard");
+              setTimeout(() => {
+                router.push("/dashboard");
+              }, 1500);
         }
       } else {
         setErrors(newErrors);

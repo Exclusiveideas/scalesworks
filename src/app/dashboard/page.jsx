@@ -6,6 +6,10 @@ import { PanelRightOpen } from "lucide-react";
 import { useSidebar } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import ModelOverview from "@/components/modelOverview";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import useAuthStore from "@/store/authStore";
+import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 
 const modelsOverview = [
   {
@@ -42,6 +46,18 @@ const modelsOverview = [
 
 const Dashboard = () => {
   const { toggleSidebar } = useSidebar()
+  const router = useRouter();
+    
+  const { user } = useAuthStore();
+  
+  const isHydrated = useHydrationZustand(useAuthStore);
+
+  useEffect(() => {
+    if (isHydrated && !user) {
+      router.push("/auth"); // Redirect only after hydration
+    }
+  }, [user, isHydrated]);
+  
 
   return (
     <div className="dashboard_wrapper">

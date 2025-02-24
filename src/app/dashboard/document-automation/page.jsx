@@ -4,9 +4,25 @@ import { AppSidebar } from "@/components/appSideBar";
 import './documentAutomation.css';
 import { useSidebar } from "@/components/ui/sidebar";
 import { PanelRightOpen } from "lucide-react";
+import { useRouter } from "next/navigation";
+import useAuthStore from "@/store/authStore";
+import { useEffect } from "react";
+import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 
 const DocumentAutomation = () => {
   const { toggleSidebar } = useSidebar()
+  
+  const router = useRouter();
+    
+  const { user } = useAuthStore();
+  
+  const isHydrated = useHydrationZustand(useAuthStore);
+
+  useEffect(() => {
+    if (isHydrated && !user) {
+      router.push("/auth"); // Redirect only after hydration
+    }
+  }, [user, isHydrated]);
 
   return (
     <div className="documentAutomation_wrapper">
