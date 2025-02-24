@@ -19,13 +19,28 @@
 .pageTop {
     height: max-content;
     width: 100%;
-    padding: .5rem;
+    padding: .5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .sideBar_trigger {
     cursor: pointer;
     width: fit-content;
 }
+
+
+.la_clearChatBtn {
+    font-size: 14px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.la_clearChatBtn:hover {
+    text-decoration: underline;
+}
+
 
 .pageBody {
     width: 90%;
@@ -106,6 +121,13 @@
     color: white;
     border-radius: 32px;
     width: 80%;
+}
+
+
+.la_clearChatBtn {
+    font-size: 14px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
 }
 
 .legalAsst_input {

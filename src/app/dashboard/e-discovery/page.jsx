@@ -24,6 +24,8 @@ const EDiscovery = () => {
     fileInputRef,
     handleFileChange,
     addFile,
+    messagesEndRef,
+    clearEDChats
   } = useEDiscovery();
 
   return (
@@ -34,16 +36,19 @@ const EDiscovery = () => {
           <div onClick={toggleSidebar} className="sideBar_trigger">
             <PanelRightOpen />
           </div>
+          <div onClick={clearEDChats} className="ed_clearChatBtn">
+            Clear Chat
+          </div>
         </div>
         <div className="pageBody">
           <div className="modelTitle_container_e-discovery">E-Discovery</div>
           <div className="selectedFileBox">
             <span>
               {selectedFiles.length > 0
-                ? `Selected Files: ${selectedFiles
+                ? `Selected File(s): ${selectedFiles
                     .map((file) => file.name)
                     .join(", ")}`
-                : "Add Files"}
+                : "No file selected"}
             </span>
           </div>
           <div className="interaction_area">
@@ -51,6 +56,7 @@ const EDiscovery = () => {
               edChats={edChats}
               streaming={streaming}
               streamingData={streamingData}
+              messagesEndRef={messagesEndRef}
             />
             <ChatInput
               inputValue={inputValue}

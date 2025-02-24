@@ -20,7 +20,20 @@
 .eDiscovery_pageTop {
     height: max-content;
     width: 100%;
-    padding: .5rem;
+    padding: .5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ed_clearChatBtn {
+    font-size: 14px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.ed_clearChatBtn:hover {
+    text-decoration: underline;
 }
 
 .sideBar_trigger {

@@ -15,7 +15,7 @@ export const queryLegalAssistant = async (query, onMessage, onError, onComplete,
             console.log("Auth Check Response:", errorData);
 
             if (errorData.error === "UNAUTHORIZED") {
-                return onError("Authentication failed. Please log in.");
+                return onError("Unauthorized - Authentication failed. Please log in.");
             }
             throw new Error(errorData.message || "Failed to verify authentication.");
         }

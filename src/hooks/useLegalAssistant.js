@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import useLegalAssistStore from "@/store/legalAssistantStore";
 import { queryLegalAssistant } from "@/apiCalls/legalAssist";
-import useAutoScroll from "@/hooks/useAutoScroll";
 
 export default function useLegalAssistant() {
   const [inputValue, setInputValue] = useState("");
@@ -12,8 +11,15 @@ export default function useLegalAssistant() {
   const eventSourceRef = useRef(null);
 
   const updateChats = useLegalAssistStore((state) => state.updateChats);
+  const clearChats = useLegalAssistStore((state) => state.clearChats);
   const chats = useLegalAssistStore((state) => state.chats);
-  const messagesEndRef = useAutoScroll(!!streamingData);
+  const messagesEndRef = useRef(null)
+
+  
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chats]);
+
 
   useEffect(() => {
     setSendBtnActive(inputValue && !streaming);
@@ -42,7 +48,11 @@ export default function useLegalAssistant() {
         });
       },
       (error) => {
-        updateChats({ message: `Error - ${error}`, sender: "bot", time: Date.now() });
+        updateChats({
+          message: error?.includes("Unauthorized") ? "Unauthorized - Please login" : "Server Error - Please try again.",
+          sender: "bot",
+          time: Date.now(),
+        });
         setStreaming(false);
       },
       () => {
@@ -76,6 +86,7 @@ export default function useLegalAssistant() {
     streaming,
     sendBtnActive,
     chats,
-    messagesEndRef
+    messagesEndRef,
+    clearChats
   };
 }

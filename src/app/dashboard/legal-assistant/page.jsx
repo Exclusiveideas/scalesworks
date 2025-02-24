@@ -33,7 +33,8 @@ const LegalAssistant = () => {
     streaming,
     sendBtnActive,
     chats,
-    messagesEndRef
+    messagesEndRef,
+    clearChats
   } = useLegalAssistant();
 
   return (
@@ -43,6 +44,9 @@ const LegalAssistant = () => {
         <div className="pageTop">
           <div onClick={toggleSidebar} className="sideBar_trigger">
             <PanelRightOpen />
+          </div>
+          <div onClick={clearChats} className="la_clearChatBtn">
+            Clear Chat
           </div>
         </div>
         <div className="pageBody">

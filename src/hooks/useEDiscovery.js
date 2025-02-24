@@ -29,11 +29,14 @@ const useEDiscovery = () => {
   const streamingDataRef = useRef("");
   const eventSourceRef = useRef(null);
   const updateEDChats = useEDiscoveryStore((state) => state.updateEDChats);
+  const clearEDChats = useEDiscoveryStore((state) => state.clearEDChats);
   const edChats = useEDiscoveryStore((state) => state.edChats);
 
   const router = useRouter();
   const { user } = useAuthStore();
   const isHydrated = useHydrationZustand(useAuthStore);
+
+  const messagesEndRef = useRef(null)
 
   useEffect(() => {
     if (isHydrated && !user) {
@@ -43,8 +46,12 @@ const useEDiscovery = () => {
 
   
   useEffect(() => {
-    setSendBtnActive(inputValue && !streaming);
-  }, [inputValue, streaming]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [edChats]);
+
+  useEffect(() => {
+    setSendBtnActive(inputValue && selectedFiles.length !== 0);
+  }, [inputValue, streaming, selectedFiles]);
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
@@ -93,7 +100,7 @@ const useEDiscovery = () => {
       },
       (error) => {
         updateEDChats({
-          message: error === "Unauthorized" ? "Unauthorized - Please login" : "Server Error - Please try again.",
+          message: error?.includes("Unauthorized") ? "Unauthorized - Please login" : "Server Error - Please try again.",
           sender: "bot",
           time: Date.now(),
         });
@@ -140,6 +147,8 @@ const useEDiscovery = () => {
     fileInputRef,
     handleFileChange,
     addFile,
+    messagesEndRef,
+    clearEDChats
   };
 };
 

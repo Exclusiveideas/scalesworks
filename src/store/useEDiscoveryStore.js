@@ -6,7 +6,7 @@ const useEDiscoveryStore = create(
     (set) => ({
       edChats: [],
       updateEDChats: (newChat) => set((state) => ({ edChats: [...state.edChats, newChat] })),
-      clearEDChats: () => set({ chats: [] }),
+      clearEDChats: () => set({ edChats: [] }),
     }),
     {
       name: "e-discovery-chats",
