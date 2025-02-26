@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import useLegalAssistStore from "@/store/legalAssistantStore";
-import { queryLegalAssistant } from "@/apiCalls/legalAssist";
+import useChatBotAsstStore from "@/store/useChatBotAsstStore";
+import { queryChatBotAssistant } from "@/apiCalls/queryChatBotAssistant";
 
-export default function useLegalAssistant() {
+export default function useChatBotAsst() {
   const [inputValue, setInputValue] = useState("");
   const [sendBtnActive, setSendBtnActive] = useState(false);
   const [streamingData, setStreamingData] = useState("");
@@ -10,9 +10,9 @@ export default function useLegalAssistant() {
   const streamingDataRef = useRef("");
   const eventSourceRef = useRef(null);
 
-  const updateChats = useLegalAssistStore((state) => state.updateChats);
-  const clearChats = useLegalAssistStore((state) => state.clearChats);
-  const chats = useLegalAssistStore((state) => state.chats);
+  const updateChats = useChatBotAsstStore((state) => state.updateChats);
+  const clearChats = useChatBotAsstStore((state) => state.clearChats);
+  const chats = useChatBotAsstStore((state) => state.chats);
   const messagesEndRef = useRef(null)
 
   
@@ -37,7 +37,7 @@ export default function useLegalAssistant() {
     const abortController = new AbortController();
     eventSourceRef.current = abortController;
 
-    queryLegalAssistant(
+    queryChatBotAssistant(
       inputValue,
       (streamedData) => {
         setStreamingData((prev) => {

@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import useEDiscoveryStore from "@/store/useEDiscoveryStore";
-import { queryEDiscovery } from "@/apiCalls/eDiscovery";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import "../app/dashboard/e-discovery/eDiscovery.css";
+import useContractReviewStore from "@/store/useContractReviewStore";
+import { queryContractReview } from "@/apiCalls/queryContractReview";
 
 const allowedFileTypes = [
   "application/pdf",
@@ -17,8 +17,7 @@ const allowedFileTypes = [
   "text/markdown"
 ];
 
-const useEDiscovery = () => {
-  const [inputValue, setInputValue] = useState("");
+const useContractReview = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [error, setError] = useState(null);
   const [streamingData, setStreamingData] = useState("");
@@ -28,9 +27,9 @@ const useEDiscovery = () => {
   const fileInputRef = useRef(null);
   const streamingDataRef = useRef("");
   const eventSourceRef = useRef(null);
-  const updateEDChats = useEDiscoveryStore((state) => state.updateEDChats);
-  const clearEDChats = useEDiscoveryStore((state) => state.clearEDChats);
-  const edChats = useEDiscoveryStore((state) => state.edChats);
+  const updateCRChats = useContractReviewStore((state) => state.updateCRChats);
+  const clearCRChats = useContractReviewStore((state) => state.clearCRChats);
+  const cRChats = useContractReviewStore((state) => state.cRChats);
 
   const router = useRouter();
   const { user } = useAuthStore();
@@ -47,11 +46,11 @@ const useEDiscovery = () => {
   
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [edChats]);
+  }, [cRChats]);
 
   useEffect(() => {
-    setSendBtnActive(inputValue && selectedFiles.length !== 0);
-  }, [inputValue, streaming, selectedFiles]);
+    setSendBtnActive(selectedFiles.length !== 0);
+  }, [streaming, selectedFiles]);
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
@@ -71,10 +70,9 @@ const useEDiscovery = () => {
   };
 
   const sendMessage = () => {
-    if (!inputValue || selectedFiles.length === 0 || streaming) return;
+    if (selectedFiles.length === 0 || streaming) return;
 
-    updateEDChats({
-      message: inputValue,
+    updateCRChats({
       fileNames: selectedFiles.map((file) => file.name),
       sender: "user",
       time: Date.now(),
@@ -87,8 +85,7 @@ const useEDiscovery = () => {
     const abortController = new AbortController();
     eventSourceRef.current = abortController;
 
-    queryEDiscovery(
-      inputValue,
+    queryContractReview(
       selectedFiles,
       (streamedData) => {
         setStreamingData((prev) => {
@@ -100,14 +97,14 @@ const useEDiscovery = () => {
       },
       (error) => {
         closeStreaming()
-        updateEDChats({
+        updateCRChats({
           message: error?.includes("Unauthorized") ? "Unauthorized - Please login" : "Server Error - Please try again.",
           sender: "bot",
           time: Date.now(),
         });
       },
       () => {
-        updateEDChats({ message: streamingDataRef.current, sender: "bot", time: Date.now() });
+        updateCRChats({ message: streamingDataRef.current, sender: "bot", time: Date.now() });
         setStreaming(false);
         setStreamingData("");
       },
@@ -120,7 +117,7 @@ const useEDiscovery = () => {
   const closeStreaming = () => {
     if (eventSourceRef.current instanceof AbortController) {
       eventSourceRef.current.abort();
-      updateEDChats({
+      updateCRChats({
         message: streamingDataRef.current,
         sender: "bot",
         time: Date.now(),
@@ -133,8 +130,6 @@ const useEDiscovery = () => {
   };
 
   return {
-    inputValue,
-    setInputValue,
     selectedFiles,
     sendBtnActive,
     error,
@@ -142,13 +137,13 @@ const useEDiscovery = () => {
     closeStreaming,
     streaming,
     streamingData,
-    edChats,
+    cRChats,
     fileInputRef,
     handleFileChange,
     addFile,
     messagesEndRef,
-    clearEDChats
+    clearCRChats
   };
 };
 
-export default useEDiscovery;
+export default useContractReview;

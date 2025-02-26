@@ -1,28 +1,30 @@
-"use client"
+"use client";
 
 import { AppSidebar } from "@/components/appSideBar";
-import './documentAutomation.css';
+import "./documentAutomation.css";
 import { useSidebar } from "@/components/ui/sidebar";
 import { PanelRightOpen } from "lucide-react";
-import { useRouter } from "next/navigation";
-import useAuthStore from "@/store/authStore";
-import { useEffect } from "react";
-import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
+import useDocumentAutomation from "@/hooks/useDocumentAutomation";
+import ChatMessagesWindow from "@/components/documentAutomation/chatMessagesWindow";
+import ChatInput from "@/components/documentAutomation/chatInput";
 
 const DocumentAutomation = () => {
-  const { toggleSidebar } = useSidebar()
-  
-  const router = useRouter();
-    
-  const { user } = useAuthStore();
-  
-  const isHydrated = useHydrationZustand(useAuthStore);
+  const { toggleSidebar } = useSidebar();
 
-  useEffect(() => {
-    if (isHydrated && !user) {
-      router.push("/auth"); // Redirect only after hydration
-    }
-  }, [user, isHydrated]);
+  const {
+    selectedFile,
+    sendBtnActive,
+    error,
+    sendMessage,
+    streaming,
+    closeStreaming,
+    dAChats,
+    fileInputRef,
+    handleFileChange,
+    addFile,
+    messagesEndRef,
+    clearDAChats,
+  } = useDocumentAutomation();
 
   return (
     <div className="documentAutomation_wrapper">
@@ -32,10 +34,42 @@ const DocumentAutomation = () => {
           <div onClick={toggleSidebar} className="sideBar_trigger">
             <PanelRightOpen />
           </div>
+          <div onClick={clearDAChats} className="ed_clearChatBtn">
+            Clear Chat
+          </div>
+        </div>
+        <div className="pageBody">
+          <div className="modelTitle_container_e-discovery">
+            Document Automation
+          </div>
+          <div className="selectedFileBox">
+            <span>
+              {selectedFile
+                ? `Selected File: ${selectedFile?.name}`
+                : "No file selected"}
+            </span>
+          </div>
+          <div className="interaction_area">
+            <ChatMessagesWindow
+              dAChats={dAChats}
+              streaming={streaming}
+              messagesEndRef={messagesEndRef}
+            />
+            <ChatInput
+              fileInputRef={fileInputRef}
+              handleFileChange={handleFileChange}
+              addFile={addFile}
+              sendMessage={sendMessage}
+              closeStreaming={closeStreaming}
+              streaming={streaming}
+              sendBtnActive={sendBtnActive}
+              error={error}
+            />
+          </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DocumentAutomation
+export default DocumentAutomation;

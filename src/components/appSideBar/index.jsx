@@ -55,9 +55,9 @@ export function AppSidebar() {
   const router = useRouter();
 
   const logOut = () => {
-    // updateUser(null);
+    updateUser(null);
     logOutUser()
-    // router.push("/auth");
+    router.push("/auth");
   }
 
   return (

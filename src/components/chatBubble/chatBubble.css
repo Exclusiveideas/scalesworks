@@ -1,0 +1,52 @@
+
+.chatBubble_component {
+    position: fixed;
+    right: 4rem;
+    bottom: 4rem;
+    border: 1px solid white;
+    width: max-content;
+    height: max-content;
+}
+
+.chatBubble_wrapper {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: var(--color-dark-gray);
+    position: fixed;
+    right: 4rem;
+    bottom: 4rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    padding: 1rem;
+    box-sizing: border-box;
+    transition:all 0.3s ease-in;
+
+   
+    -webkit-box-shadow: 3px -7px 34px -13px rgba(255, 255, 255, 0.59);
+    -moz-box-shadow: 3px -7px 34px -13px rgba(255, 255, 255, 0.59);
+    box-shadow: 3px -7px 34px -13px rgba(255, 255, 255, 0.59);
+    cursor: pointer;
+
+}
+
+.chatBubble_wrapper:hover {
+    transform: scale(1.1);
+}
+
+.popOverContent {
+    position: absolute ;
+    right: 3rem; 
+    bottom: -1rem;
+    background: white;
+    height: 70vh;
+    width: 400px;
+    border-radius: 10px;
+    border: none;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0;
+}

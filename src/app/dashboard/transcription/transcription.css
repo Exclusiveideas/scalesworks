@@ -8,15 +8,22 @@
 
 .page_content {
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
     background-color: #2a2c41;
     color: white;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    padding-bottom: 1.5rem;
 }
 
 .pageTop {
     height: max-content;
     width: 100%;
-    padding: .5rem;
+    padding: .5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .sideBar_trigger {
@@ -24,12 +31,90 @@
     width: fit-content;
 }
 
+
 .pageBody {
-    width: 100%;
-    height: 90%;
-    /* border: 1px solid black; */
+    width: 90%;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    padding: 1rem 3rem;
+    padding: 0;
+    align-self: center;
+    gap: 1rem;
+}
+
+
+
+
+
+/* Chat Input */
+
+.transcript_inputbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-text-dark);
+    padding: .7rem 1.5rem;
+    color: white;
+    border-radius: 32px;
+    width: max-content;
+    gap: 1rem;
+}
+
+
+.legalAsst_input {
+    outline: none;
+    border: none;
+}
+
+.transcript_addFileBtn {
+    padding: .6rem;
+    background-color: #fff;
+    color: black;
+    border-radius: 50%;
+    font-size: 8px;
+    cursor: pointer;
+}
+
+.addFileBtn.inActive {
+    background-color: #d3d3d386;
+    transition: all 0.3s ease-in;
+}
+
+.transcript_sendBtn {
+    padding: .6rem;
+    background-color: #d3d3d386;
+    color: black;
+    border-radius: 50%;
+    font-size: 8px;
+    cursor: pointer;
+}
+
+.transcript_sendBtn.active {
+    background-color: #fff;
+    transition: all 0.3s ease-in;
+}
+
+.transcript_sendBtn.active:hover {
+    transform: scale(1.08);
+}
+
+.transcript_stopBtn {
+    padding: .4rem;
+    background-color: #d3d3d386;
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+}
+
+.transcript_stopBtn:hover {
+    transform: scale(1.08);
+}
+
+
+
+.transcript_error_message {
+    font-size: 13px;
 }

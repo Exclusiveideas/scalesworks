@@ -61,6 +61,7 @@ export const queryLegalAssistant = async (query, onMessage, onError, onComplete,
                     if (parsedData.type === "ERROR") {
                         return onError(parsedData.message);
                     }
+
         
                     if (parsedData.type === "SUCCESS") {
                         onMessage(parsedData.message); // 🔹 Append only new message

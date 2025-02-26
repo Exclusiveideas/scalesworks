@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import useAuthStore from "@/store/authStore";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
+import ChatBubble from "@/components/chatBubble";
 
 const modelsOverview = [
   {
@@ -78,6 +79,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <ChatBubble />
     </div>
   );
 };

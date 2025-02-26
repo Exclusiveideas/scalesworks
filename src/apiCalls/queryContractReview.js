@@ -1,18 +1,17 @@
-export const queryEDiscovery = async (query, files, onMessage, onError, onComplete, abortController) => {
+export const queryContractReview = async (files, onMessage, onError, onComplete, abortController) => {
     try {
-        if (!query || typeof query !== "string") {
-            return onError("Invalid query. Please provide a valid text query.");
-        }
         if (!files || !Array.isArray(files) || files.length === 0) {
             return onError("Please provide at least one file for eDiscovery.");
         }
 
-        // 🔹 Upload Files + Query in ONE Request
+        // 🔹 Upload Files in ONE Request
         const formData = new FormData();
-        formData.append("query", query);
         files.forEach((file) => formData.append("files", file)); // Append multiple files
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/ediscovery`, {
+        console.log('files: ', files)
+        throw new Error(`${response.statusText}`);
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/contract-review`, {
             method: "POST",  // Change to POST since we're sending files
             credentials: "include",
             body: formData,

@@ -1,36 +1,29 @@
 import { useState, useEffect, useRef } from "react";
-import useEDiscoveryStore from "@/store/useEDiscoveryStore";
-import { queryEDiscovery } from "@/apiCalls/eDiscovery";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import "../app/dashboard/e-discovery/eDiscovery.css";
+import useTranscriptionStore from "@/store/useTranscriptStore";
+import { queryTranscription } from "@/apiCalls/transcription";
 
-const allowedFileTypes = [
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "text/plain",
-  "application/vnd.ms-excel",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  "text/csv",
-  "text/markdown"
-];
+const allowedAudioTypes = [
+    "audio/mpeg", // MP3
+    "audio/wav"   // WAV
+  ];
 
-const useEDiscovery = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [selectedFiles, setSelectedFiles] = useState([]);
+const useTranscription = () => {
+  const [selectedAudio, setSelectedAudio] = useState(null);
   const [error, setError] = useState(null);
   const [streamingData, setStreamingData] = useState("");
   const [streaming, setStreaming] = useState(false);
   const [sendBtnActive, setSendBtnActive] = useState(false);
 
-  const fileInputRef = useRef(null);
+  const audioInputRef = useRef(null);
   const streamingDataRef = useRef("");
   const eventSourceRef = useRef(null);
-  const updateEDChats = useEDiscoveryStore((state) => state.updateEDChats);
-  const clearEDChats = useEDiscoveryStore((state) => state.clearEDChats);
-  const edChats = useEDiscoveryStore((state) => state.edChats);
+  const updateTChats = useTranscriptionStore((state) => state.updateTChats);
+  const clearTChats = useTranscriptionStore((state) => state.clearTChats);
+  const tChats = useTranscriptionStore((state) => state.tChats);
 
   const router = useRouter();
   const { user } = useAuthStore();
@@ -47,35 +40,33 @@ const useEDiscovery = () => {
   
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [edChats]);
+  }, [tChats]);
 
   useEffect(() => {
-    setSendBtnActive(inputValue && selectedFiles.length !== 0);
-  }, [inputValue, streaming, selectedFiles]);
+    setSendBtnActive(selectedAudio);
+  }, [selectedAudio]);
 
   const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
-    const validFiles = files.filter((file) => allowedFileTypes.includes(file.type));
-
-    if (validFiles.length) {
-      setSelectedFiles(validFiles);
+    const file = event.target.files[0];
+  
+    if (file && allowedAudioTypes.includes(file.type)) {
+      setSelectedAudio(file); // Store only one file
       setError(null);
     } else {
-      setSelectedFiles([]);
-      setError("Invalid file type(s). Please select valid documents.");
+      setSelectedAudio(null);
+      setError("Invalid file type. Please select a valid audio file (MP3 or WAV).");
     }
   };
 
   const addFile = () => {
-    fileInputRef.current.click();
+    audioInputRef.current.click();
   };
 
   const sendMessage = () => {
-    if (!inputValue || selectedFiles.length === 0 || streaming) return;
+    if (!selectedAudio || streaming) return;
 
-    updateEDChats({
-      message: inputValue,
-      fileNames: selectedFiles.map((file) => file.name),
+    updateTChats({
+      audioName: selectedAudio.name,
       sender: "user",
       time: Date.now(),
     });
@@ -87,9 +78,8 @@ const useEDiscovery = () => {
     const abortController = new AbortController();
     eventSourceRef.current = abortController;
 
-    queryEDiscovery(
-      inputValue,
-      selectedFiles,
+    queryTranscription(
+      selectedAudio,
       (streamedData) => {
         setStreamingData((prev) => {
           if (prev.endsWith(streamedData)) return prev;
@@ -100,27 +90,25 @@ const useEDiscovery = () => {
       },
       (error) => {
         closeStreaming()
-        updateEDChats({
+        updateTChats({
           message: error?.includes("Unauthorized") ? "Unauthorized - Please login" : "Server Error - Please try again.",
           sender: "bot",
           time: Date.now(),
         });
       },
       () => {
-        updateEDChats({ message: streamingDataRef.current, sender: "bot", time: Date.now() });
+        updateTChats({ message: streamingDataRef.current, sender: "bot", time: Date.now() });
         setStreaming(false);
         setStreamingData("");
       },
       abortController
     );
-
-    setInputValue("");
   };
 
   const closeStreaming = () => {
     if (eventSourceRef.current instanceof AbortController) {
       eventSourceRef.current.abort();
-      updateEDChats({
+      updateTChats({
         message: streamingDataRef.current,
         sender: "bot",
         time: Date.now(),
@@ -133,22 +121,20 @@ const useEDiscovery = () => {
   };
 
   return {
-    inputValue,
-    setInputValue,
-    selectedFiles,
+    selectedAudio,
     sendBtnActive,
     error,
     sendMessage,
     closeStreaming,
     streaming,
     streamingData,
-    edChats,
-    fileInputRef,
+    tChats,
+    audioInputRef,
     handleFileChange,
     addFile,
     messagesEndRef,
-    clearEDChats
+    clearTChats
   };
 };
 
-export default useEDiscovery;
+export default useTranscription;
