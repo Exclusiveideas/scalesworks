@@ -8,9 +8,6 @@ export const queryContractReview = async (files, onMessage, onError, onComplete,
         const formData = new FormData();
         files.forEach((file) => formData.append("files", file)); // Append multiple files
 
-        console.log('files: ', files)
-        throw new Error(`${response.statusText}`);
-
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/contract-review`, {
             method: "POST",  // Change to POST since we're sending files
             credentials: "include",
@@ -18,7 +15,6 @@ export const queryContractReview = async (files, onMessage, onError, onComplete,
             headers: { "Accept": "text/event-stream" }, // Expecting SSE
             signal: abortController.signal, // Enables fetch cancellation
         });
-
         
         if (!response.ok) {
             throw new Error(`${response.statusText}`);
@@ -70,7 +66,7 @@ export const queryContractReview = async (files, onMessage, onError, onComplete,
             console.log("Fetch aborted.");
             return;
         }
-        console.error("Query eDiscovery Error:", error);
+        console.error("Query Contract review Error:", error);
         onError(error.message || "Failed to fetch response.");
     }
 };

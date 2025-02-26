@@ -5,10 +5,21 @@ const DAChatMessage = ({ chat }) => {
     <div className={`chatMessage ${chat?.sender == "user" && "user"}`}>
       {chat?.sender == "user" ? (
         <>
-         <p>Form name: {chat?.fileName}</p>
+          <p>Form name: {chat?.fileName}</p>
         </>
       ) : (
-        <p>{chat?.message}</p>
+        <>
+          {chat?.status == "success" ? (
+            <p>
+              Generated Excel Sheet:{" "}
+              <a href={chat?.message} target="_blank" rel="noopener noreferrer">
+                <span className="downloadText">download_sheet</span>
+              </a>
+            </p>
+          ) : (
+            <p>{chat?.message}</p>
+          )}
+        </>
       )}
     </div>
   );

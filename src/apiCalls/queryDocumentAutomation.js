@@ -5,7 +5,7 @@ const API = axios.create({
   withCredentials: true, // 🔥 Ensures cookies are sent & received
 });
 
-export const queryDocumentAutomation = async (file) => {
+export const queryDocumentAutomation = async (file, cancelToken) => {
   if (!file) {
     return {
       status: "failed",
@@ -13,21 +13,19 @@ export const queryDocumentAutomation = async (file) => {
     };
   }
 
-  return {
-    status: "failed",
-    errorMessage: "Error - Please upload your pdf form.",
-  };
   try {
-    // 🔹 Upload Files in ONE Request
     const formData = new FormData();
-    formData.append("file", file); // Append the file
+    formData.append("file", file);
 
-    const response = await API.post(`/document-automation`, formData);
+    const response = await API.post(`/document-automation`, formData, {
+      cancelToken, // Pass the cancel token
+    });
 
-    console.log('respose api: ', response)
-
-    return { status: 'success', excelURL: response.data };
+    return { status: "success", excelURL: response.data.excelURL };
   } catch (err) {
+    if (axios.isCancel(err)) {
+      return { status: "failed", errorMessage: "Upload cancelled." };
+    }
     return {
       status: "failed",
       errorMessage:

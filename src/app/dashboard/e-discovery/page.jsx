@@ -7,6 +7,7 @@ import ChatMessagesWindow from "@/components/eDiscovery/chatMessagesWindow";
 import useEDiscovery from "@/hooks/useEDiscovery";
 import ChatInput from "@/components/eDiscovery/chatInput";
 import { PanelRightOpen } from "lucide-react";
+import ChatBubble from "@/components/chatBubble";
 
 const EDiscovery = () => {
   const { toggleSidebar } = useSidebar();
@@ -74,6 +75,7 @@ const EDiscovery = () => {
           </div>
         </div>
       </div>
+      <ChatBubble />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import Markdown from "react-markdown";
 import "./chatMessage.css";
 
 const TChatMessage = ({ chat }) => {
@@ -8,7 +9,7 @@ const TChatMessage = ({ chat }) => {
          <p>Audio: {chat?.audioName}</p>
         </>
       ) : (
-        <p>{chat?.message}</p>
+        <Markdown>{chat?.message}</Markdown>
       )}
     </div>
   );

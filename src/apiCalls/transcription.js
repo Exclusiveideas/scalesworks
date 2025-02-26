@@ -34,6 +34,7 @@ export const queryTranscription = async (
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let buffer = "";
+    let firstMessage = true; // Track if it's the first message
 
     while (true) {
       const { done, value } = await reader.read();
@@ -51,28 +52,20 @@ export const queryTranscription = async (
         if (!dataMatch) continue;
 
         try {
-          const rawData = dataMatch[1]; // Remove unwanted spaces
+          const parsedData = JSON.parse(dataMatch[1]); // Parse only the 'data' part
 
-          // Check if it's valid JSON
-          if (rawData.startsWith("{") && rawData.endsWith("}")) {
-            const parsedData = JSON.parse(rawData);
+          if (parsedData.type === "ERROR") {
+            return onError(parsedData.message);
+          }
 
-            if (parsedData.type === "ERROR") {
-              return onError(parsedData.message);
-            }
+          if (parsedData.type === "SUCCESS") {
+            onMessage(parsedData.message); // 🔹 Append only new message
+          }
 
-            if (parsedData.type === "SUCCESS") {
-              onMessage(parsedData.message + " "); // Append space to separate words
-            }
-
-            if (parsedData.type === "END") {
-              reader.cancel(); // Close the reader properly
-              if (onComplete) onComplete();
-              return; // Exit function
-            }
-          } else {
-            onMessage(rawData + " "); // Append space to separate words
-            console.log('rawData: ', rawData)
+          if (parsedData.type === "END") {
+            reader.cancel(); // Close the reader properly
+            if (onComplete) onComplete();
+            return; // Exit function
           }
         } catch (err) {
           console.error("Error parsing server response:", err);

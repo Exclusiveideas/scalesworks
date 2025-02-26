@@ -7,6 +7,7 @@ import { PanelRightOpen } from "lucide-react";
 import useDocumentAutomation from "@/hooks/useDocumentAutomation";
 import ChatMessagesWindow from "@/components/documentAutomation/chatMessagesWindow";
 import ChatInput from "@/components/documentAutomation/chatInput";
+import ChatBubble from "@/components/chatBubble";
 
 const DocumentAutomation = () => {
   const { toggleSidebar } = useSidebar();
@@ -68,6 +69,7 @@ const DocumentAutomation = () => {
           </div>
         </div>
       </div>
+      <ChatBubble />
     </div>
   );
 };

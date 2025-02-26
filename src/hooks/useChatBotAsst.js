@@ -48,6 +48,7 @@ export default function useChatBotAsst() {
         });
       },
       (error) => {
+        console.log('err: ',  error)
         closeStreaming()
         updateChats({
           message: error?.includes("Unauthorized") ? "Unauthorized - Please login" : "Server Error - Please try again.",

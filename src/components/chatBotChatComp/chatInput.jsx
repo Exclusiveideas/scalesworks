@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Send } from "lucide-react";
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 
-const ChatInput = ({ inputValue, setInputValue, sendMessage, closeStreaming, streamingData, sendBtnActive }) => {
+const ChatInput = ({ inputValue, setInputValue, sendMessage, closeStreaming, streaming, sendBtnActive }) => {
   return (
     <div className='chatInput_wrapper'>
     <Input
@@ -15,13 +15,13 @@ const ChatInput = ({ inputValue, setInputValue, sendMessage, closeStreaming, str
       onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendMessage())}
       className="chatbot_input"
     />
-    {!streamingData ? (
+    {!streaming ? (
       <div onClick={sendMessage} className={`sendBtn ${sendBtnActive && "active"}`}>
         <Send />
       </div>
     ) : (
       <div onClick={closeStreaming} className="stopBtn">
-        <StopCircleOutlinedIcon sx={{ fontSize: 30 }} />
+        <StopCircleOutlinedIcon sx={{ fontSize: 20 }} />
       </div>
     )}
     </div>

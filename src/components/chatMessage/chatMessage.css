@@ -48,3 +48,10 @@
       50%      {transform:scale(var(--_s,1)) translate(-25%) rotate(1turn)}
       75%,100% {transform:scale(var(--_s,1)) translate(0)    rotate(1turn)}
   }
+
+
+
+  .downloadText {
+    color: rgb(103, 141, 255);
+    text-decoration: underline;
+  }

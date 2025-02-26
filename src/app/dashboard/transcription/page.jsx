@@ -7,6 +7,7 @@ import { PanelRightOpen } from "lucide-react";
 import useTranscription from "@/hooks/useTranscription";
 import ChatMessagesWindow from "@/components/transcription/chatMessagesWindow";
 import ChatInput from "@/components/transcription/chatInput";
+import ChatBubble from "@/components/chatBubble";
 
 const Transcription = () => {
   const { toggleSidebar } = useSidebar();
@@ -69,6 +70,7 @@ const Transcription = () => {
           </div>
         </div>
       </div>
+      <ChatBubble />
     </div>
   );
 };

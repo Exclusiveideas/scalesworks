@@ -3,23 +3,7 @@ export const queryChatBotAssistant = async (query, onMessage, onError, onComplet
         if (!query || typeof query !== "string") {
             return onError("Invalid query. Please provide a valid text query.");
         }
-
-        const authCheck = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/chatbot`, {
-            method: "GET",
-            credentials: "include",
-            headers: { "Accept": "application/json" }
-        });
-
-        if (!authCheck.ok) {
-            const errorData = await authCheck.json();
-            console.log("Auth Check Response:", errorData);
-
-            if (errorData.error === "UNAUTHORIZED") {
-                return onError("Unauthorized - Authentication failed. Please log in.");
-            }
-            throw new Error(errorData.message || "Failed to verify authentication.");
-        }
-
+        
         // 🔹 Open SSE Connection with AbortController
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_SERVER_URI}/legal-research?query=${encodeURIComponent(query)}`,

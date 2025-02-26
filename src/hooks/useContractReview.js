@@ -111,7 +111,6 @@ const useContractReview = () => {
       abortController
     );
 
-    setInputValue("");
   };
 
   const closeStreaming = () => {

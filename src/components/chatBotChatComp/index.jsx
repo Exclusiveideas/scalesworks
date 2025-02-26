@@ -33,7 +33,7 @@ const ChatBotChatComp = () => {
                 <ChatWindow chats={chats} streamingData={streamingData} streaming={streaming} messagesEndRef={messagesEndRef} />
             </div>
             <div className="chatInput">
-                <ChatInput inputValue={inputValue} setInputValue={setInputValue} sendMessage={sendMessage} closeStreaming={closeStreaming} streamingData={streamingData} sendBtnActive={sendBtnActive} />
+                <ChatInput inputValue={inputValue} setInputValue={setInputValue} sendMessage={sendMessage} closeStreaming={closeStreaming} streaming={streaming} sendBtnActive={sendBtnActive} />
             </div>
         </div>
     </div>

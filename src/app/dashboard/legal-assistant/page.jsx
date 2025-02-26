@@ -11,6 +11,7 @@ import useLegalAssistant from "@/hooks/useLegalAssistant";
 import ChatInput from "@/components/chatInputBox";
 import ChatWindow from "@/components/chatWindow";
 import { useEffect } from "react";
+import ChatBubble from "@/components/chatBubble";
 
 const LegalAssistant = () => {
   const { toggleSidebar } = useSidebar();
@@ -57,6 +58,7 @@ const LegalAssistant = () => {
           </div>
         </div>
       </div>
+      <ChatBubble />
     </div>
   );
 };

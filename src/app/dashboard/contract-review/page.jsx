@@ -7,6 +7,7 @@ import { PanelRightOpen } from "lucide-react";
 import useContractReview from "@/hooks/useContractReview";
 import ChatMessagesWindow from "@/components/contractReview/chatMessagesWindow";
 import ChatInput from "@/components/contractReview/chatInput";
+import ChatBubble from "@/components/chatBubble";
 
 const ContractReview = () => {
   const { toggleSidebar } = useSidebar()
@@ -71,6 +72,7 @@ const ContractReview = () => {
           </div>
         </div>
       </div>
+      <ChatBubble />
     </div>
   );
 }
