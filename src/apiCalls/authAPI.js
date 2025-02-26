@@ -39,11 +39,28 @@ export const loginUser = async (formData) => {
   }
 };
 
+
 export const logOutUser = async () => {
   try {
     await API.post(`/user/logout`);
     return { status: 200, message: "Logged out successfully" };
   } catch (err) {
     return { status: err?.response?.status || 500, error: "Problem logging out" };
+  }
+};
+
+
+export const sendResetMail = async (email) => {
+  try {
+    const response = await API.post(`/user/reset-password-request`, {
+      email
+    });
+
+    return { status: response.status, user: response.data };
+  } catch (err) {
+    return {
+      status: err?.response?.status || 500,
+      error: err?.response?.data?.error || err?.message || "Problem signing in - Try again.",
+    };
   }
 };
