@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import "./authForms.css";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,6 @@ const UpdatePasswordForm = ({ handlePasswordUpdate }) => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -48,9 +47,7 @@ const UpdatePasswordForm = ({ handlePasswordUpdate }) => {
       setErrors(null);
       setLoading(true);
 
-      const response = await handlePasswordUpdate(
-        formData?.password
-      );
+      const response = await handlePasswordUpdate(formData?.password);
 
       setLoading(false);
 
@@ -82,7 +79,6 @@ const UpdatePasswordForm = ({ handlePasswordUpdate }) => {
 
   return (
     <form onSubmit={handleSubmit} className="authForm">
-
       {/* Password */}
       <div className="authForm_field">
         <input
@@ -126,9 +122,7 @@ const UpdatePasswordForm = ({ handlePasswordUpdate }) => {
           <CircularProgress color="white" size="17px" />
         )}
       </button>
-      {errors?.password && (
-        <p className="textError">{errors?.password}</p>
-      )}
+      {errors?.password && <p className="textError">{errors?.password}</p>}
     </form>
   );
 };
