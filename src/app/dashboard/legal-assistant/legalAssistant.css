@@ -166,3 +166,12 @@
 .stopBtn:hover {
     transform: scale(1.08);
 }
+
+
+@media (max-width: 575px) {
+
+    .chats_area {
+        padding: 0;
+    }
+
+}

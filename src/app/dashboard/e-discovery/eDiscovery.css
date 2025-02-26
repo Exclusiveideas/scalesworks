@@ -84,7 +84,7 @@
     overflow-y: auto;
     flex-wrap: wrap;
 
-    
+
     /* From https://css.glass */
     background: rgba(255, 255, 255, 0.21);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -123,23 +123,26 @@
 }
 
 .chats_area::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
-  }
- 
-  .chats_area::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Track color */
-    border-radius: 2px;
-  }
+    width: 12px;
+    /* Width of the scrollbar */
+}
 
-  .chats_area::-webkit-scrollbar-thumb {
-    background: #888; /* Scroll thumb color */
+.chats_area::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Track color */
     border-radius: 2px;
-  }
+}
 
-  .messagesEnd {
+.chats_area::-webkit-scrollbar-thumb {
+    background: #888;
+    /* Scroll thumb color */
+    border-radius: 2px;
+}
+
+.messagesEnd {
     height: 1px;
     width: 1px;
-  }
+}
 
 .eDiscovery_inputbox {
     display: flex;
@@ -208,10 +211,15 @@
 
 
 @media (max-width: 575px) {
-    
-.selectedFileBox {
-    padding: .5rem .5rem;
-    font-size: 12px;
+
+    .selectedFileBox {
+        padding: .5rem .5rem;
+        font-size: 12px;
+    }
+
+
+    .eDiscovery_chats_area {
+        padding: 0;
+    }
+
 }
-  
-  }

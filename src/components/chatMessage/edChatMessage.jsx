@@ -6,8 +6,8 @@ const EDChatMessage = ({ chat }) => {
     <div className={`chatMessage ${chat?.sender == "user" && "user"}`}>
       {chat?.sender == "user" ? (
         <>
-         <p>{chat?.message}</p>
-         <p>File(s) used: {chat?.fileNames?.join(',')}</p>
+         {chat?.message && <p>{chat?.message}</p>}
+         <p>File(s) used: {chat?.fileNames?.join(', ')}</p>
         </>
       ) : (
         <Markdown>{chat?.message}</Markdown>

@@ -67,7 +67,7 @@
 
     .chatBubble_component {
         right: 1rem;
-        bottom: 1rem;
+        bottom: 6.5rem;
     }
 
 
@@ -75,4 +75,13 @@
         bottom: 6.5rem;
     }
 
+    
+.popOverContent {
+    right: -2rem;
+    bottom: 4rem;
+    height: 70vh;
+    width: 80vw;
 }
+
+
+} 
