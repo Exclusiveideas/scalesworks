@@ -33,7 +33,7 @@ const useTranscription = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      router.push("/auth");
+      // router.push("/auth");
     }
   }, [user, isHydrated]);
 

@@ -66,11 +66,11 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="h-max">
             <div className="userInfo_box">
-                <div className="userLetter">M</div>
-                <div className="userInfo_subContainer">
-                    <p className="user_name">Muftau</p>
-                    <p className="user_email">muftau201@gmail.com</p>
-                </div>
+              <div className="userLetter">M</div>
+              <div className="userInfo_subContainer">
+                <p className="user_name">Muftau</p>
+                <p className="user_email">muftau201@gmail.com</p>
+              </div>
             </div>
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -78,7 +78,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <a href={item.url} className="sideBarItem">
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
@@ -89,15 +89,15 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem onClick={logOut}>
-                  <SidebarMenuButton>
-                  <LogOut /> Log Out
-                  </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem onClick={logOut}>
+            <SidebarMenuButton>
+                <LogOut style={{ color: 'white'}} /> <span style={{ color: 'white'}} >Log Out</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

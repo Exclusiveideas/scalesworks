@@ -26,9 +26,9 @@
     transition:all 0.3s ease-in;
 
    
-    -webkit-box-shadow: 3px -7px 34px -13px rgba(255, 255, 255, 0.59);
-    -moz-box-shadow: 3px -7px 34px -13px rgba(255, 255, 255, 0.59);
-    box-shadow: 3px -7px 34px -13px rgba(255, 255, 255, 0.59);
+    -webkit-box-shadow: 3px -7px 34px 0px rgba(255, 255, 255, 0.59);
+    -moz-box-shadow: 3px -7px 34px 0px rgba(255, 255, 255, 0.59);
+    box-shadow: 3px -7px 34px 0px rgba(255, 255, 255, 0.59);
     cursor: pointer;
 
 }

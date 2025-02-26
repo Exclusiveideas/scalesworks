@@ -55,7 +55,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      router.push("/auth"); // Redirect only after hydration
+      // router.push("/auth"); // Redirect only after hydration
     }
   }, [user, isHydrated]);
   
@@ -66,7 +66,7 @@ const Dashboard = () => {
       <div className="page_content">
         <div className="pageTop">
           <div onClick={toggleSidebar} className="sideBar_trigger">
-            <PanelRightOpen />
+            <PanelRightOpen className="panelBtn" />
           </div>
         </div>
         <div className="pageBody">
