@@ -10,12 +10,11 @@
 
     /* background: #605A70; */
     background: var(--color-dark-gray);
-    padding: 2rem 3rem;
 }
 
 .form_component {
     width: 80%;
-    height: 90%;
+    height: 80%;
     border-radius: 12px;
     background: var(--color-text-dark);
     display: flex;
@@ -67,4 +66,41 @@
     font-size: 14px;
     cursor: pointer;
     text-decoration: underline;
+}
+
+
+
+@media (max-width: 1026px) {
+
+}
+
+
+
+@media (max-width: 769px) {
+    
+.form_component {
+    width: 90%;
+    height: max-content;
+    padding-bottom: 3rem;
+}
+
+    .form_carousel_container {
+        display: none;
+    }
+    
+.authForm_wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+    padding-top: 1.5rem;
+    gap: .6rem;
+    align-items: center;
+}
+
+
+.formTitle {
+    font-size: 7vw;
+}
+
+
 }

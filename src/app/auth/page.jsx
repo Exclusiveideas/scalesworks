@@ -6,7 +6,7 @@ import AuthFormCarousel from "@/components/authFormCarousel";
 import LoginForm from "@/components/authForms/login";
 import SignupForm from "@/components/authForms/signupForm";
 import RecoverPassword from "@/components/authForms/recoverPass";
-
+ 
 const Auth = () => {
   const [activeForm, setActiveForm] = useState('login') // login, signup, recover
   return (
