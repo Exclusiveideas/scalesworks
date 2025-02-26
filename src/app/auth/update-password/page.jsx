@@ -12,7 +12,6 @@ const supabase = createClient(
 );
 
 const UpdatePassword = () => {
-  
   const [accessToken, setAccessToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
   const [loading, setLoading] = useState(true);
@@ -45,11 +44,11 @@ const UpdatePassword = () => {
               color: "red",
             },
           });
-        } else{
-          setError(null)
+        } else {
+          setError(null);
         }
       }
-      
+
       setLoading(false);
     };
 
@@ -57,31 +56,30 @@ const UpdatePassword = () => {
     if (accessToken && refreshToken) {
       getSessionWithTokens();
     } else {
-      setError("Access and Refresh Tokens Needed.");
-      setLoading(false);
+      setTimeout(() => {
+        setError("Access and Refresh Tokens Needed.");
+        setLoading(false);
+      }, 2500);
     }
   }, [accessToken, refreshToken]);
 
-  
+  const handlePasswordUpdate = async (newPassword) => {
+    try {
+      const { data, error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
 
-const handlePasswordUpdate = async (newPassword) => {
-  try {
-    const { data, error } = await supabase.auth.updateUser({
-      password: newPassword,
-    });
+      if (error) {
+        return { error: "Something went wrong." };
+      }
 
-    if (error) {
+      if (data) {
+        return { message: "Password has been updated successfully!" };
+      }
+    } catch (error) {
       return { error: "Something went wrong." };
     }
-
-    if (data) {
-    return { message: "Password has been updated successfully!" };
-    }
-    
-  } catch (error) {
-    return { error: "Something went wrong." };
-  }
-};
+  };
 
   return (
     <div className="authPage">
