@@ -1,0 +1,244 @@
+.footer-wrapper {
+    width: 100%;
+    box-sizing: border-box;
+    height: 40vh;
+    position: relative;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.upper_footer {
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+    position: relative;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.leftFooter {
+    padding-left: 3rem;
+    width: 45%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: .8rem;
+}
+
+.logo_div_footer {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    gap: 1.5rem;
+}
+
+.logoImgFooter {
+    width: 90px;
+    height: max-content;
+}
+
+.logo_div_footer p {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.leftFooter .tagline {
+    font-size: 16px;
+
+}
+
+.socials_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.5rem;
+}
+
+.socialIcon {
+    transition: all 0.2s ease-in;
+    cursor: pointer;
+    color: var(--btn-color);
+}
+
+.socialIcon:hover {
+    color: white;
+}
+
+.rightFooter {
+    width: 65%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    gap: 3rem;
+}
+
+.contactRow {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    box-sizing: border-box;
+    height: max-content;
+}
+
+.cRow {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 13px;
+    color: var(--btn-color);
+}
+
+.cRow p {
+    color: white;
+}
+
+
+.companySections {
+    display: flex;
+    flex: 1;
+    gap: 1.5rem;
+    height: max-content;
+    flex-direction: column;
+}
+
+.companySection {
+    display: flex;
+    width: max-content;
+}
+
+.lower_footer {
+    height: max-content;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+@media (max-width: 1026px) {
+    .footer-wrapper {
+        flex-direction: column;
+        min-height: 30vh;
+        gap: 1rem;
+        height: max-content;
+    }
+
+    .upper_footer {
+        flex-direction: column;
+        min-height: 30vh;
+        gap: 3.5rem;
+        height: max-content;
+    }
+
+    .leftFooter {
+        padding-left: 0;
+        width: 95%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: .8rem;
+    }
+
+    .rightFooter {
+        width: 90%;
+        gap: 2rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+
+    .contactRow {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .companySections {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        height: max-content;
+        padding: 1rem;
+    }
+
+}
+
+
+
+@media (max-width: 550px) {
+    .footer-wrapper {
+        flex-direction: column;
+        min-height: 30vh;
+        gap: 1rem;
+        height: max-content;
+    }
+
+    .upper_footer {
+        flex-direction: column;
+        min-height: 30vh;
+        gap: 3.5rem;
+        height: max-content;
+    }
+
+    .leftFooter {
+        padding-left: 0;
+        width: 95%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: .8rem;
+    }
+
+
+    .logo_div_footer {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+
+    .logoImgFooter {
+        width: 35%;
+        height: max-content;
+    }
+
+    .logo_div_footer p {
+        font-size: 11.5vw;
+        max-width: 100%;
+    }
+
+    .leftFooter .tagline {
+        font-size: 14px;
+        max-width: 90%;
+        text-align: center;
+    }
+
+
+
+    .rightFooter {
+        width: 90%;
+        gap: 2rem;
+        flex-direction: column;
+    }
+
+    .contactRow {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .companySections {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        height: max-content;
+        padding: 1rem;
+    }
+
+
+    .lower_footer {
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,141 @@
+.howItWork_wrapper {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60vh;
+    color: white;
+}
+
+.howItWork_wrapper.alternate {
+    flex-direction: row-reverse;
+}
+
+.left_wrapper {
+    width: 50%;
+    height: 100%;
+    /* border: 1px solid white; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.subLeft_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    width: max-content;
+    max-width: 85%;
+    /* border: 1px solid white; */
+}
+
+.howTitle {
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.howDesc {
+    font-size: 15px;
+    color: rgb(188, 188, 188);
+}
+
+.right_wrapper {
+    width: 50%;
+    height: 100%;
+    /* border: 1px solid white; */
+    box-sizing: border-box;
+}
+
+.right_imageWrapper {
+    /* border: 1px solid white; */
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.worksImg {
+    width: 400px;
+    height: max-content;
+}
+
+
+@media (max-width: 1026px) {
+    .howItWork_wrapper {
+        flex-direction: column-reverse;
+        height: max-content;
+        gap: 2rem;
+        padding: 2rem 0;
+    }
+
+    .howItWork_wrapper.alternate {
+        flex-direction: column-reverse;
+        height: max-content;
+    }
+    
+
+    .left_wrapper {
+        width: 90%;
+    }
+
+
+    .subLeft_wrapper {
+        gap: 1rem;
+        max-width: 93%;
+    }
+    
+    .right_wrapper {
+        width: 90%;
+    }
+
+    .worksImg {
+        width: 60%;
+    }
+}
+
+
+@media (max-width: 550px) {
+    .howItWork_wrapper {
+        flex-direction: column-reverse;
+        height: max-content;
+        gap: 2rem;
+        padding: 2rem 0;
+    }
+
+    .howItWork_wrapper.alternate {
+        flex-direction: column-reverse;
+        height: max-content;
+    }
+
+
+    .left_wrapper {
+        width: 90%;
+    }
+
+
+    .subLeft_wrapper {
+        gap: 1rem;
+        max-width: 93%;
+    }
+
+    .howTitle {
+        font-size: 7vw;
+    }
+
+    .howDesc {
+        font-size: 13px;
+        color: rgb(188, 188, 188);
+    }
+
+    .right_wrapper {
+        width: 90%;
+    }
+
+    .worksImg {
+        width: 80%;
+    }
+}
