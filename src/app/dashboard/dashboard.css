@@ -10,7 +10,7 @@
 .page_content {
     width: 100%;
     min-height: 100vh;
-    background-color: var(--dashboard-bg);
+    background-color: var(--page-bg);
     color: white;
 }
 

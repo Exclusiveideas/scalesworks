@@ -55,7 +55,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      router.push("/auth"); // Redirect only after hydration
+      // router.push("/auth"); // Redirect only after hydration
     }
   }, [user, isHydrated]);
   

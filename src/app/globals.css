@@ -9,10 +9,9 @@
   --color-text-dark: #111827; /* Tailwind gray-900 */
   
   --page-bg: #1A1A1A;
+  --page-bg-darker: #111111;
   --btn-color: #78B29C;
   --btn-color-red: #EC5E95;
-  --page-bg-darker: #111111;
-
 }
 
 
@@ -28,7 +27,7 @@ body {
 
 @layer base {
   :root {
-    --sidebar-background: #111827;
+    --sidebar-background: #111111;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;

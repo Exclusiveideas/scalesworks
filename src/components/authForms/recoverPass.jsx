@@ -41,7 +41,7 @@ const RecoverPassword = () => {
 
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
-    setLoading(true);
+      setLoading(true);
 
       const response = await sendResetMail(formData?.email);
 

@@ -3,7 +3,7 @@ import "./chatMessage.css";
 
 const EDChatMessage = ({ chat }) => {
   return (
-    <div className={`chatMessage ${chat?.sender == "user" && "user"}`}>
+    <div className={`chatMessage_message ${chat?.sender == "user" && "user"}`}>
       {chat?.sender == "user" ? (
         <>
          {chat?.message && <p>{chat?.message}</p>}
