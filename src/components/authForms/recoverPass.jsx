@@ -38,10 +38,10 @@ const RecoverPassword = () => {
     e.preventDefault();
 
     const newErrors = validateForm();
-    setLoading(true);
 
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
+    setLoading(true);
 
       const response = await sendResetMail(formData?.email);
 

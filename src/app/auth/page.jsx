@@ -9,8 +9,9 @@ import RecoverPassword from "@/components/authForms/recoverPass";
  
 const Auth = () => {
   const [activeForm, setActiveForm] = useState('login') // login, signup, recover
-  return (
+  return ( 
     <div className="authPage">
+        <div className="auth_left_blob"></div>
       <div className="form_component">
         <div className="form_carousel_container">
           <AuthFormCarousel />

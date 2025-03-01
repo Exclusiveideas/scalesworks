@@ -7,16 +7,28 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+    position: relative;
+    background: var(--page-bg);
+}
 
-    /* background: #605A70; */
-    background: var(--color-dark-gray);
+.auth_left_blob {
+    width: 45vw;
+    aspect-ratio: 1;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: -90%;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: blur(220px);
+    z-index: 2;
 }
 
 .form_component {
     width: 80%;
     height: 80%;
     border-radius: 12px;
-    background: var(--color-text-dark);
+    background: var(--page-bg-darker);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -68,11 +80,6 @@
     text-decoration: underline;
 }
 
-
-
-@media (max-width: 1026px) {
-
-}
 
 
 

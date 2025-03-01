@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import "./authFormCarousel.css";
 import Image from "next/image";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import Link from "next/link";
 
 const AuthFormCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -53,10 +54,10 @@ const AuthFormCarousel = () => {
                     <div className="card_overlay">
                       <div className="overlay-top">
                         <div className="logo">LOGO</div>
-                        <div className="backToSiteBtn">
+                        <Link href='/' className="backToSiteBtn">
                           <p>Back to website</p>
                           <KeyboardArrowRightIcon className="rightIcon" />
-                        </div>
+                        </Link>
                       </div>
                       <div className="overlay-bottom">
                         <p>{slide?.tagline}</p>
