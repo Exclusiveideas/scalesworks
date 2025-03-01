@@ -11,6 +11,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import "primereact/resources/themes/lara-light-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import Head from "next/head";
 // import "primeflex/primeflex.css";
 
 const inter = Inter({
@@ -48,6 +49,24 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+    <Head>
+      {/* Standard Favicon */}
+      <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+      {/* PNG Favicons */}
+      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+
+
+      {/* Apple Touch Icon */}
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+      {/* Android Chrome Icon */}
+      <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+
+      {/* Manifest (Optional for PWA) */}
+      <link rel="manifest" href="/site.webmanifest" />
+    </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${lato} ${sourceSans3} antialiased`}
       >
