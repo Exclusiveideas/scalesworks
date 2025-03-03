@@ -12,7 +12,6 @@ import "primereact/resources/themes/lara-light-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import Head from "next/head";
-// import "primeflex/primeflex.css";
 
 const inter = Inter({
   subsets: ["latin"],

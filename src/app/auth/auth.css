@@ -32,6 +32,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    max-width: 1500px;
+    max-height: 900px;
 }
 
 .form_carousel_container {
