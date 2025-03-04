@@ -92,8 +92,8 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem onClick={logOut}>
-            <SidebarMenuButton>
-                <LogOut style={{ color: 'white'}} /> <span style={{ color: 'white'}} >Log Out</span>
+            <SidebarMenuButton className='logOutBar'>
+                <LogOut style={{ color: 'white'}} /> <span className="logOutTxt" >Log Out</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

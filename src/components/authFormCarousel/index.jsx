@@ -15,7 +15,7 @@ const AuthFormCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const slides = [
     {
-      img: "auth_one.jpg",
+      img: "auth_one.png",
       tagline: `Research Instantly.\nWrite Powerfully.`,
     },
     {
