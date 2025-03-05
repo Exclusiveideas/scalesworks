@@ -41,10 +41,10 @@
     gap: .7rem;
 }
 
-.logOutTxt {
+.logOutBar {
     color: white;
 }
 
-.logOutBar:hover .logOutTxt{
+.logOutBar:hover {
     color: black;
 }
