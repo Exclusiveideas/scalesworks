@@ -34,7 +34,7 @@ const modelsOverview = [
   {
     title: 'Contract Review',
     description: 'Eliminate mistakes and flag risks in contracts.',
-    image: 'contract_review.jpg',
+    image: 'contract_review.webp',
     link: 'contract-review'
   },
   {
