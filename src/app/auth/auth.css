@@ -8,38 +8,28 @@
     justify-content: center;
     height: 100vh;
     position: relative;
-    background: var(--page-bg);
-}
-
-.auth_left_blob {
-    width: 45vw;
-    aspect-ratio: 1;
     background-color: #fff;
-    border-radius: 50%;
-    position: absolute;
-    top: -90%;
-    left: 50%;
-    transform: translateX(-50%);
-    filter: blur(220px);
-    z-index: 2;
 }
 
 .form_component {
     width: 80%;
     height: 80%;
     border-radius: 12px;
-    background: var(--page-bg-darker);
+    background: var(--color-text-dark);
     display: flex;
     align-items: center;
     justify-content: space-between;
     max-width: 1500px;
     max-height: 900px;
+
+    -webkit-box-shadow: 2px 1px 31px 8px rgba(0,0,0,0.45);
+-moz-box-shadow: 2px 1px 31px 8px rgba(0,0,0,0.45);
+box-shadow: 2px 1px 31px 8px rgba(0,0,0,0.45);
 }
 
 .form_carousel_container {
     width: 50%;
     height: 100%;
-    /* border: 1px solid white; */
     display: flex;
     position: relative;
 }

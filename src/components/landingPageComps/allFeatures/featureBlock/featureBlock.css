@@ -7,7 +7,7 @@
     flex-direction: column;
     gap: 1rem;
     transform: scale(1);
-    transition: all 0.3s ease-in;
+    transition: all 0.2s ease-in;
     width: 100%;
     min-height: 250px;
 

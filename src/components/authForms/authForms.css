@@ -19,7 +19,7 @@
     padding: .7rem;
     width: 85%;
     border-radius: 8px;
-    background-color: #1f2b459f;
+    background-color: #2e477c9f;
     color: white;
     font-size: 14px;
     outline: none;
@@ -32,13 +32,14 @@
 }
 
 .formBtn {
-    padding: .7rem;
+    padding: .8rem .7rem;
     width: 85%;
     border-radius: 10px;
     color: black;
     font-size: 14px;
     outline: none;
-    background-color: var(--btn-color);
+    /* background-color: var(--color-text-dark); */
+    background-color: #fff;
 }
 
 .textError {
