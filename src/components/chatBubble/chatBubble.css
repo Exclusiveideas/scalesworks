@@ -5,13 +5,14 @@
     border: 1px solid white;
     width: max-content;
     height: max-content;
+    
 }
 
 .chatBubble_wrapper {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background-color: var(--color-dark-gray);
+    background-color: var(--color-text-dark);
     position: fixed;
     right: 4rem;
     bottom: 4rem;
@@ -25,9 +26,9 @@
     transition: all 0.3s ease-in;
 
 
-    -webkit-box-shadow: 3px -7px 34px 0px rgba(255, 255, 255, 0.59);
-    -moz-box-shadow: 3px -7px 34px 0px rgba(255, 255, 255, 0.59);
-    box-shadow: 3px -7px 34px 0px rgba(255, 255, 255, 0.59);
+    -webkit-box-shadow: 3px -7px 34px 10px rgba(255, 255, 255, 0.59);
+    -moz-box-shadow: 3px -7px 34px 10px rgba(255, 255, 255, 0.59);
+    box-shadow: 3px -7px 34px 10px rgba(255, 255, 255, 0.59);
     cursor: pointer;
 
 }
@@ -48,6 +49,11 @@
     box-sizing: border-box;
     overflow: hidden;
     padding: 0;
+
+    
+    -webkit-box-shadow: 3px -7px 30px 10px rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 3px -7px 30px 10px rgba(0, 0, 0, 0.19);
+    box-shadow: 3px -7px 30px 10px rgba(0, 0, 0, 0.19);
 }
 
 

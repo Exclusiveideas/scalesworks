@@ -3,7 +3,7 @@ import "./modelOverview.css";
 
 const ModelOverview = ({ model }) => {
   return (
-    <a href={`/dashboard/${model?.link}`} className="modelOverview">
+    <a href={`/platform/${model?.link}`} className="modelOverview">
       <div className="image_container">
         <Image
           src={`/images/${model?.image}`}

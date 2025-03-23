@@ -10,7 +10,7 @@
     width: 100%;
     height: 100vh;
     background-color: var(--page-bg);
-    color: white;
+    color: rgb(0, 0, 0);
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
@@ -30,6 +30,7 @@
     font-size: 14px;
     padding: 0.5rem 1rem;
     cursor: pointer;
+    color: black;
 }
 
 .ed_clearChatBtn:hover {
@@ -59,13 +60,13 @@
     padding: .7rem 3rem;
     border-radius: 20px;
     align-self: center;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     font-weight: 600;
     font-size: 18px;
 
     /* From https://css.glass */
     background: rgba(255, 255, 255, 0.21);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, .3);
@@ -73,7 +74,7 @@
 
 .selectedFileBox {
     padding: .5rem 1.2rem;
-    color: white;
+    color: rgb(0, 0, 0);
     font-size: 14px;
     display: flex;
     align-items: center;
@@ -87,7 +88,7 @@
 
     /* From https://css.glass */
     background: rgba(255, 255, 255, 0.21);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, .3);
@@ -147,7 +148,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #000;
+    background: var(--color-text-dark);
     padding: .7rem 1.5rem;
     color: white;
     border-radius: 32px;

@@ -5,7 +5,6 @@ import ChatWindow from './chatWindow';
 
 
 const ChatBotChatComp = () => {
-
     
       const {
         inputValue,
@@ -19,8 +18,6 @@ const ChatBotChatComp = () => {
         messagesEndRef,
         clearChats
       } = useChatBotAsst();
-
-      
 
   return (
     <div className='chatBotChatComp_wrapper'>

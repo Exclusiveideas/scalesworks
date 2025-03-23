@@ -3,12 +3,13 @@
     max-width: 65%;
     height: max-content;
     padding: .6rem 1rem;
-    background-color: var(--page-bg-darker);
+    background-color: var(--color-text-dark);
     border-radius: 14px;
     align-self: flex-start;
     display: flex;
     flex-direction: column;
     gap: .5rem;
+    color: white;
 }
 
 .chatMessage_message.loading {

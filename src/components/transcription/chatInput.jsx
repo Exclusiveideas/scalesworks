@@ -1,8 +1,8 @@
 import { Send } from "lucide-react";
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import { Plus } from "lucide-react";
-import "../../app/dashboard/transcription/transcription.css";
-import "../../app/dashboard/e-discovery/eDiscovery.css";
+import "../../app/platform/transcription/transcription.css";
+import "../../app/platform/e-discovery/eDiscovery.css";
 
 const ChatInput = ({
   audioInputRef,

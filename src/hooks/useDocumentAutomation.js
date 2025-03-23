@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
-import "../app/dashboard/e-discovery/eDiscovery.css";
+import "../app/platform/e-discovery/eDiscovery.css";
 import useDocumentAutomationStore from "@/store/useDocumentAutomationStore";
 import { queryDocumentAutomation } from "@/apiCalls/queryDocumentAutomation";
 import axios from "axios";
@@ -33,7 +33,7 @@ const useDocumentAutomation = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      router.push("/auth");
+      // router.push("/auth");
     }
   }, [user, isHydrated]);
 

@@ -1,5 +1,5 @@
 import { ChatLoader } from "@/components/chatMessage";
-import "../../app/dashboard/e-discovery/eDiscovery.css";
+import "../../app/platform/e-discovery/eDiscovery.css";
 import DAChatMessage from "../chatMessage/daChatMessage";
 
 const ChatMessagesWindow = ({ dAChats, streaming, messagesEndRef }) => {

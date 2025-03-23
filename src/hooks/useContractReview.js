@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
-import "../app/dashboard/e-discovery/eDiscovery.css";
+import "../app/platform/e-discovery/eDiscovery.css";
 import useContractReviewStore from "@/store/useContractReviewStore";
 import { queryContractReview } from "@/apiCalls/queryContractReview";
 
@@ -39,7 +39,7 @@ const useContractReview = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      router.push("/auth");
+      // router.push("/auth");
     }
   }, [user, isHydrated]);
 

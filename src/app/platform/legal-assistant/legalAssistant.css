@@ -35,6 +35,7 @@
     font-size: 14px;
     padding: 0.5rem 1rem;
     cursor: pointer;
+    color: black;
 }
 
 .la_clearChatBtn:hover {
@@ -59,13 +60,13 @@
     padding: .7rem 3rem;
     border-radius: 20px;
     align-self: center;
-    color: rgb(255, 255, 255);
+    color: black;
     font-weight: 600;
     font-size: 18px;
 
     /* From https://css.glass */
     background: rgba(255, 255, 255, 0.21);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, .3);
@@ -116,8 +117,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* background-color: var(--page-bg-darker); */
-    background: #000;
+    background-color: var(--color-text-dark);
     padding: .7rem 1.5rem;
     color: white;
     border-radius: 32px;

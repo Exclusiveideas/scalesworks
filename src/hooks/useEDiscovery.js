@@ -4,7 +4,7 @@ import { queryEDiscovery } from "@/apiCalls/eDiscovery";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
-import "../app/dashboard/e-discovery/eDiscovery.css";
+import "../app/platform/e-discovery/eDiscovery.css";
 
 const allowedFileTypes = [
   "application/pdf",
@@ -40,7 +40,7 @@ const useEDiscovery = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      router.push("/auth");
+      // router.push("/auth");
     }
   }, [user, isHydrated]);
 

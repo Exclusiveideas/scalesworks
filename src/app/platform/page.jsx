@@ -54,9 +54,9 @@ const Dashboard = () => {
   const isHydrated = useHydrationZustand(useAuthStore);
 
   useEffect(() => {
-    if (isHydrated && !user) {
-      router.push("/auth"); // Redirect only after hydration
-    }
+    // if (isHydrated && !user) {
+    //   router.push("/auth"); // Redirect only after hydration
+    // }
   }, [user, isHydrated]);
   
 

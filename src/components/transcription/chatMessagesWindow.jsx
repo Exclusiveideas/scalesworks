@@ -1,6 +1,6 @@
 import EDChatMessage from "@/components/chatMessage/edChatMessage";
 import { ChatLoader } from "@/components/chatMessage";
-import "../../app/dashboard/e-discovery/eDiscovery.css";
+import "../../app/platform/e-discovery/eDiscovery.css";
 import TChatMessage from "../chatMessage/tChat";
 
 const ChatMessagesWindow = ({ tChats, streaming, streamingData, messagesEndRef }) => {

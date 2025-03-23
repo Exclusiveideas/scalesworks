@@ -20,32 +20,32 @@ import { logOutUser } from "@/apiCalls/authAPI";
 const items = [
   {
     title: "Dashboard",
-    url: "/dashboard",
+    url: "/platform",
     icon: Home,
   },
   {
     title: "Legal Assistant",
-    url: "/dashboard/legal-assistant",
+    url: "/platform/legal-assistant",
     icon: Handshake,
   },
   {
     title: "E-Discovery",
-    url: "/dashboard/e-discovery",
+    url: "/platform/e-discovery",
     icon: Telescope,
   },
   {
     title: "Transcription",
-    url: "/dashboard/transcription",
+    url: "/platform/transcription",
     icon: Captions,
   },
   {
     title: "Document Automation",
-    url: "/dashboard/document-automation",
+    url: "/platform/document-automation",
     icon: Scroll,
   },
   {
     title: "Contract Review",
-    url: "/dashboard/contract-review",
+    url: "/platform/contract-review",
     icon: ScanEye,
   },
 ]

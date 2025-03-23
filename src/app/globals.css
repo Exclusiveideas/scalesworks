@@ -5,14 +5,13 @@
 :root {
   --dashboard-bg: #2a2c41;
   
-  --color-dark-gray: #1f2937; /* Tailwind gray-800 */
-  --color-text-dark: #111827; /* Tailwind gray-900 */
-  
+  --color-dark-gray: #1f2937; 
+  --color-text-dark: #111827; 
+
+
   --page-bg: #ffffff;
   --page-bg-darker: #d1d1d1;
 
-  /* --page-bg: #1A1A1A;
-  --page-bg-darker: #111111; */
   --btn-color: #78B29C;
   --btn-color-red: #EC5E95;
 }
@@ -30,7 +29,7 @@ body {
 
 @layer base {
   :root {
-    --sidebar-background: #111111;
+    --sidebar-background: #111827;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
