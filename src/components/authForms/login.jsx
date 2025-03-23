@@ -3,10 +3,10 @@ import { useState } from "react";
 import "./authForms.css";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "sonner";
-import { loginUser } from "@/apiCalls/authAPI";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { Eye, EyeClosed } from "lucide-react";
+import { generateSignString } from "@/lib/utils";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -48,6 +48,13 @@ const LoginForm = () => {
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
       const response = await loginUser(formData);
+      // const response = {
+      //   user: {
+      //     user: {
+      //       organization_name: "Open AI"
+      //     }
+      //   }
+      // };
       setLoading(false);
 
       if (response.error) {
@@ -67,10 +74,13 @@ const LoginForm = () => {
             color: "green",
           },
         });
+
         // update user state and route to dashboard
         updateUser(response.user.user);
+        const signString = generateSignString(response.user.user?.organization_name)
+
         setTimeout(() => {
-          router.push("/dashboard");
+          router.push(`/platform/${signString}/`);
         }, 1500);
       }
     } else {
