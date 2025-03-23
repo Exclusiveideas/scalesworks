@@ -7,7 +7,7 @@ import AllFeatures from "@/components/landingPageComps/allFeatures";
 
 const LandingPage = () => {
   return (
-    <div className="landingPage">
+    <div>
       <Hero />
       <AllFeatures />
       <Footer />
