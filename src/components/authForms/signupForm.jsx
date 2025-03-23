@@ -12,6 +12,7 @@ const SignupForm = () => {
     username: "",
     email: "",
     password: "",
+    organization_name: ""
   });
 
   const [errors, setErrors] = useState({});
@@ -25,6 +26,7 @@ const SignupForm = () => {
   const validateForm = () => {
     let newErrors = {};
     if (!formData.username) newErrors.username = "Username is required";
+    if (!formData.organization_name) newErrors.organization_name = "The name of your organization is required";
     if (!formData.email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -82,6 +84,18 @@ const SignupForm = () => {
         />
       </div>
 
+      {/* Organization Name */}
+      <div className="authForm_field">
+        <input
+          type="text"
+          name="organization_name"
+          value={formData.organization_name}
+          onChange={handleChange}
+          className="formInput"
+          placeholder="Name of your organization"
+        />
+      </div>
+
       {/* Email */}
       <div className="authForm_field">
         <input
@@ -125,9 +139,9 @@ const SignupForm = () => {
           <CircularProgress color="white" size="17px" />
         )}
       </button>
-      {(errors.username || errors?.email || errors?.password) && (
+      {(errors.username || errors.organization_name || errors?.email || errors?.password) && (
         <p className="textError">
-          {errors?.username || errors?.email || errors?.password}
+          {errors?.username || errors?.organization_name || errors?.email || errors?.password}
         </p>
       )}
     </form>
