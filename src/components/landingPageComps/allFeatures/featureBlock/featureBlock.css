@@ -1,0 +1,48 @@
+.featureBlock_wrapper {
+    background-color: #fff;
+    border-radius: 12px;
+    box-sizing: border-box;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transform: scale(1);
+    transition: all 0.3s ease-in;
+    width: 100%;
+    min-height: 250px;
+
+
+    -webkit-box-shadow: 1px -1px 29px 0px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 1px -1px 29px 0px rgba(0, 0, 0, 0.05);
+    box-shadow: 1px -1px 29px 0px rgba(0, 0, 0, 0.05);
+}
+
+.featureBlock_wrapper:hover {
+    transform: scale(1.03);
+}
+
+.featureBlock_wrapper > svg {
+    width: 35px;
+    height: 35px;
+    transform: scale(1);
+    transition: all 0.2s ease-in;
+}
+
+
+.featureBlock_wrapper > svg:hover {
+    transform: scale(1.15);
+}
+
+.featureBlock_name {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: left;
+}
+
+
+.featureBlock_desc {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgb(136, 136, 136);
+    text-align: left;
+}
