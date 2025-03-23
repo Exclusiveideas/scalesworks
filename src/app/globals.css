@@ -8,8 +8,11 @@
   --color-dark-gray: #1f2937; /* Tailwind gray-800 */
   --color-text-dark: #111827; /* Tailwind gray-900 */
   
-  --page-bg: #1A1A1A;
-  --page-bg-darker: #111111;
+  --page-bg: #ffffff;
+  --page-bg-darker: #d1d1d1;
+
+  /* --page-bg: #1A1A1A;
+  --page-bg-darker: #111111; */
   --btn-color: #78B29C;
   --btn-color-red: #EC5E95;
 }
