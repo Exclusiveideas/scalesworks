@@ -1,7 +1,7 @@
 "use client";
 
 import { AppSidebar } from "@/components/appSideBar";
-import "./documentAutomation.css";
+import "@/styles/documentAutomation.css";
 import { useSidebar } from "@/components/ui/sidebar";
 import { PanelRightOpen } from "lucide-react";
 import useDocumentAutomation from "@/hooks/useDocumentAutomation";
@@ -32,7 +32,7 @@ const DocumentAutomation = () => {
       <AppSidebar />
       <div className="page_content">
         <div className="pageTop">
-          <div onClick={toggleSidebar} className="sideBar_trigger">
+          <div onClick={toggleSidebar} className="da_sideBar_trigger">
             <PanelRightOpen />
           </div>
           <div onClick={clearDAChats} className="ed_clearChatBtn">

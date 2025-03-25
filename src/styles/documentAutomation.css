@@ -1,4 +1,4 @@
-.contractReview_wrapper {
+.documentAutomation_wrapper {
     width: 100vw;
     min-height: 100vh;
     box-sizing: border-box;
@@ -9,7 +9,7 @@
 .page_content {
     width: 100%;
     min-height: 100vh;
-    background-color: #2a2c41;
+    background-color: var(--page-bg);
     color: white;
 }
 
@@ -19,9 +19,10 @@
     padding: .5rem;
 }
 
-.sideBar_trigger {
+.da_sideBar_trigger {
     cursor: pointer;
     width: fit-content;
+    color: black;
 }
 
 .pageBody {

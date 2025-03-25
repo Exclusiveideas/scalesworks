@@ -1,4 +1,4 @@
-import { Captions, Handshake, Home, LogOut, ScanEye, Scroll, Telescope } from "lucide-react";
+import { Captions, Handshake, Home, LibraryBig, LogOut, ScanEye, Scroll, Telescope } from "lucide-react";
 
 import {
   Sidebar,
@@ -15,44 +15,60 @@ import './appSideBar.css';
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { logOutUser } from "@/apiCalls/authAPI";
+import { useEffect, useState } from "react";
 
 // Menu items.
 const items = [
   {
     title: "Dashboard",
-    url: "/platform",
+    url: "/",
     icon: Home,
   },
   {
     title: "Legal Assistant",
-    url: "/platform/legal-assistant",
+    url: "/legal-assistant",
     icon: Handshake,
   },
   {
     title: "E-Discovery",
-    url: "/platform/e-discovery",
+    url: "/e-discovery",
     icon: Telescope,
   },
   {
     title: "Transcription",
-    url: "/platform/transcription",
+    url: "/transcription",
     icon: Captions,
   },
   {
     title: "Document Automation",
-    url: "/platform/document-automation",
+    url: "/document-automation",
     icon: Scroll,
   },
   {
     title: "Contract Review",
-    url: "/platform/contract-review",
+    url: "/contract-review",
     icon: ScanEye,
+  },
+  {
+    title: "Company Knowledge Base",
+    url: "/knowledge-base",
+    icon: LibraryBig,
   },
 ]
 
 export function AppSidebar() {
   const updateUser = useAuthStore((state) => state.updateUser);
+  const [organization, setOrganization] = useState('');
   const router = useRouter();
+  const { user } = useAuthStore();
+
+  useEffect(() => {
+    if(!user) return;
+    // const signString = generateSignString(user?.organization_name)
+    const signString = '@OpenAI'
+    setOrganization(signString)
+  }, [user])
+  
 
   const logOut = () => {
     updateUser(null);
@@ -66,10 +82,10 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="h-max">
             <div className="userInfo_box">
-              <div className="userLetter">M</div>
+              <div className="userLetter">{user?.user_name?.[0] || ''}</div>
               <div className="userInfo_subContainer">
-                <p className="user_name">Muftau</p>
-                <p className="user_email">muftau201@gmail.com</p>
+                <p className="user_name">{user?.user_name || ''}</p>
+                <p className="user_email">{user?.email || ''}</p>
               </div>
             </div>
           </SidebarGroupLabel>
@@ -78,7 +94,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="sideBarItem">
+                    <a href={`/platform/${organization}/${item.url}/`} className="sideBarItem">
                       <item.icon />
                       <span>{item.title}</span>
                     </a>

@@ -25,6 +25,7 @@
     padding: .7rem;
     border-radius: 50%;
     background-color: #fff;
+    text-transform: uppercase;
 }
 
 .user_name {

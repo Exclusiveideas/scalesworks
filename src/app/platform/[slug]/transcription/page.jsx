@@ -1,7 +1,7 @@
 "use client";
 
 import { AppSidebar } from "@/components/appSideBar";
-import "./transcription.css";
+import "@/styles/transcription.css";
 import { useSidebar } from "@/components/ui/sidebar";
 import { PanelRightOpen } from "lucide-react";
 import useTranscription from "@/hooks/useTranscription";
@@ -34,7 +34,7 @@ const Transcription = () => {
       <AppSidebar />
       <div className="page_content">
         <div className="pageTop">
-          <div onClick={toggleSidebar} className="sideBar_trigger">
+          <div onClick={toggleSidebar} className="tr_sideBar_trigger">
             <PanelRightOpen />
           </div>
           <div onClick={clearTChats} className="ed_clearChatBtn">

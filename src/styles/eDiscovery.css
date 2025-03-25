@@ -37,9 +37,10 @@
     text-decoration: underline;
 }
 
-.sideBar_trigger {
+.ed_sideBar_trigger {
     cursor: pointer;
     width: fit-content;
+    color: black;
 }
 
 .pageBody {

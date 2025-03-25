@@ -1,5 +1,5 @@
 import ChatMessage, { ChatLoader } from "@/components/chatMessage";
-import "../../app/platform/legal-assistant/legalAssistant.css";
+import "@/styles/legalAssistant.css";
 
 const ChatWindow = ({ chats, streamingData, streaming, messagesEndRef }) => {
   return (

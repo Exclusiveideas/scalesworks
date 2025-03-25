@@ -1,7 +1,7 @@
 "use client";
 
 import { AppSidebar } from "@/components/appSideBar";
-import "./legalAssistant.css";
+import "@/styles/legalAssistant.css";
 import { useSidebar } from "@/components/ui/sidebar";
 import { PanelRightOpen } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -43,7 +43,7 @@ const LegalAssistant = () => {
       <AppSidebar />
       <div className="page_content">
         <div className="pageTop">
-          <div onClick={toggleSidebar} className="sideBar_trigger">
+          <div onClick={toggleSidebar} className="la_sideBar_trigger">
             <PanelRightOpen />
           </div>
           <div onClick={clearChats} className="la_clearChatBtn">

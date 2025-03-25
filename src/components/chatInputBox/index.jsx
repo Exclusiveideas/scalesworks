@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Send } from "lucide-react";
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
-import "../../app/platform/legal-assistant/legalAssistant.css";
+import "@/styles/legalAssistant.css";
 
 const ChatInput = ({ inputValue, setInputValue, sendMessage, closeStreaming, streamingData, sendBtnActive }) => {
   return (

@@ -1,4 +1,4 @@
-.documentAutomation_wrapper {
+.contractReview_wrapper {
     width: 100vw;
     min-height: 100vh;
     box-sizing: border-box;
@@ -6,25 +6,32 @@
     display: flex;
 }
 
-.page_content {
+.cr_page_content {
     width: 100%;
     min-height: 100vh;
     background-color: var(--page-bg);
     color: white;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 
-.pageTop {
+.cr_pageTop {
     height: max-content;
     width: 100%;
-    padding: .5rem;
+    padding: .5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.sideBar_trigger {
+.cr_sideBar_trigger {
     cursor: pointer;
     width: fit-content;
+    color: black;
 }
 
-.pageBody {
+.cr_pageBody {
     width: 100%;
     height: 90%;
     /* border: 1px solid black; */

@@ -42,7 +42,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "ScaleWorks - Legal Tech Solution",
+  title: "ScaleWorks - The First AI Legal Assistant",
 };
 
 export default function RootLayout({ children }) {

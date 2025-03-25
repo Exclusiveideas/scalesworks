@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
-import "../app/platform/e-discovery/eDiscovery.css";
+import "@/styles/eDiscovery.css";
 import useTranscriptionStore from "@/store/useTranscriptStore";
 import { queryTranscription } from "@/apiCalls/transcription";
 

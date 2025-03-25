@@ -1,7 +1,7 @@
 "use client";
 
 import { AppSidebar } from "@/components/appSideBar";
-import "./eDiscovery.css";
+import "@/styles/eDiscovery.css";
 import { useSidebar } from "@/components/ui/sidebar";
 import ChatMessagesWindow from "@/components/eDiscovery/chatMessagesWindow";
 import useEDiscovery from "@/hooks/useEDiscovery";
@@ -34,7 +34,7 @@ const EDiscovery = () => {
       <AppSidebar />
       <div className="eDiscovery_page_content">
         <div className="eDiscovery_pageTop">
-          <div onClick={toggleSidebar} className="sideBar_trigger">
+          <div onClick={toggleSidebar} className="ed_sideBar_trigger">
             <PanelRightOpen />
           </div>
           <div onClick={clearEDChats} className="ed_clearChatBtn">
