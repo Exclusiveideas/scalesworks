@@ -1,0 +1,14 @@
+.dialogBody {
+    background-color: #fff;
+    border-radius: 12px;
+}
+
+
+.hidden-input {
+    display: none;
+}
+
+.kb_errorTxt {
+    font-size: 12px;
+    color: red;
+}

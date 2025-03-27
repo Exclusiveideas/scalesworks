@@ -26,16 +26,6 @@
     justify-content: space-between;
 }
 
-.kb_clearChatBtn {
-    font-size: 14px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    color: black;
-}
-
-.kb_clearChatBtn:hover {
-    text-decoration: underline;
-}
 
 .kb_sideBar_trigger {
     cursor: pointer;
@@ -71,4 +61,29 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, .3);
+}
+
+
+.tableHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: .5rem;
+}
+
+.tableHeader > h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+
+.addNewKnowledge {
+    padding: .6rem .9rem;
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+    font-size: 13px;
+    outline: none;
+    background-color: var(--color-dark-gray);
+    cursor: pointer;
 }

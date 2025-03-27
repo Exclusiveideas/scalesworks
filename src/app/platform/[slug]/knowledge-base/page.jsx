@@ -1,29 +1,21 @@
-"use client"
+"use client";
 
 import { AppSidebar } from "@/components/appSideBar";
+import { columns } from "@/components/knowledgeBaseTableComp/columns";
+import { KnowledgeBaseTable } from "@/components/knowledgeBaseTableComp/knowledgeBaseTable";
+import UploadKnowledgeDialog from "@/components/knowledgeBaseTableComp/UploadKnowledgeDialog";
 import { useSidebar } from "@/components/ui/sidebar";
-import useContractReview from "@/hooks/useContractReview";
+import useKnowledgeBase from "@/hooks/useKnowledgeBase";
+import useDialogStore from "@/store/useDialogStore";
 import "@/styles/knowledge-base.css";
 import { PanelRightOpen } from "lucide-react";
 
 const KnowledgeBase = () => {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar } = useSidebar();
 
-  const {
-    selectedFiles,
-    sendBtnActive,
-    error,
-    sendMessage,
-    closeStreaming,
-    streaming,
-    streamingData,
-    cRChats,
-    fileInputRef,
-    handleFileChange,
-    addFile,
-    messagesEndRef,
-    clearCRChats
-  } = useContractReview();
+  const { tableData } = useKnowledgeBase();
+
+  const { openDialog } = useDialogStore();
 
   return (
     <div className="knowledgeBase_wrapper">
@@ -33,16 +25,20 @@ const KnowledgeBase = () => {
           <div onClick={toggleSidebar} className="kb_sideBar_trigger">
             <PanelRightOpen />
           </div>
-          <div onClick={clearCRChats} className="kb_clearChatBtn">
-            Clear Chat
-          </div>
         </div>
         <div className="kb_pageBody">
           <div className="modelTitle_container_knowledgeBase">
             Knowledge Base
           </div>
+
+          <div className="tableHeader">
+            <h3>Your Uploaded Files</h3>
+            <div onClick={openDialog} className="addNewKnowledge">Add Knowledge</div>
+          </div>
+          <KnowledgeBaseTable columns={columns} data={tableData} />
         </div>
       </div>
+      <UploadKnowledgeDialog />
     </div>
   );
 };

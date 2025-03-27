@@ -7,6 +7,7 @@ import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { Eye, EyeClosed } from "lucide-react";
 import { generateSignString } from "@/lib/utils";
+import { loginUser } from "@/apiCalls/authAPI";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -57,6 +58,8 @@ const LoginForm = () => {
       // };
       setLoading(false);
 
+      console.log('response: ', response)
+
       if (response.error) {
         toast.error("Error signing in.", {
           description:
@@ -66,6 +69,7 @@ const LoginForm = () => {
             color: "red",
           },
         });
+        return; // Stops execution if login fails
       } else {
         toast.success("Login Successful", {
           description: "Taking you to dashboard",
