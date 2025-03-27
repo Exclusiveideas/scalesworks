@@ -6,19 +6,25 @@ const API = axios.create({
 });
 
 export const createUser = async (formData) => {
-  const { username: user_name, email, password } = formData;
+  const { username: user_name, email, password, organization_name } = formData;
   try {
     const response = await API.post(`/user/signup`, {
       user_name,
       email,
       password,
+      organization_name
     });
+
 
     return { status: response.status, user: response.data };
   } catch (err) {
     return {
-      error: err?.response?.data?.error || err?.message || "Problem creating account - Try again.",
-    };
+      error: typeof err?.response?.data?.error === "string"
+        ? err.response.data.error
+        : typeof err?.message === "string"
+        ? err.message
+        : "Problem creating account - Try again."
+    }
   }
 };
 

@@ -6,6 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { createUser } from "@/apiCalls/authAPI";
 import { toast } from "sonner";
 import { Eye, EyeClosed } from "lucide-react";
+import { validateForm } from "@/lib/utils";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -23,26 +24,10 @@ const SignupForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const validateForm = () => {
-    let newErrors = {};
-    if (!formData.username) newErrors.username = "Username is required";
-    if (!formData.organization_name) newErrors.organization_name = "The name of your organization is required";
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Invalid email format";
-    }
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-    return newErrors;
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newErrors = validateForm();
+    const newErrors = validateForm(formData);
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
       setLoading(true);
