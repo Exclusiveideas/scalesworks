@@ -8,6 +8,8 @@ import useContractReview from "@/hooks/useContractReview";
 import ChatMessagesWindow from "@/components/contractReview/chatMessagesWindow";
 import ChatInput from "@/components/contractReview/chatInput";
 import ChatBubble from "@/components/chatBubble";
+import { fetchUser } from "@/lib/utils";
+import { useEffect } from "react";
 
 const ContractReview = () => {
   const { toggleSidebar } = useSidebar()
@@ -27,6 +29,11 @@ const ContractReview = () => {
     messagesEndRef,
     clearCRChats
   } = useContractReview();
+
+  
+    useEffect(() => {
+      fetchUser()
+    }, []); // Runs only on mount (hard reload)
   
 
   return (

@@ -8,6 +8,8 @@ import useEDiscovery from "@/hooks/useEDiscovery";
 import ChatInput from "@/components/eDiscovery/chatInput";
 import { PanelRightOpen } from "lucide-react";
 import ChatBubble from "@/components/chatBubble";
+import { fetchUser } from "@/lib/utils";
+import { useEffect } from "react";
 
 const EDiscovery = () => {
   const { toggleSidebar } = useSidebar();
@@ -28,6 +30,11 @@ const EDiscovery = () => {
     messagesEndRef,
     clearEDChats
   } = useEDiscovery();
+
+  
+    useEffect(() => {
+      fetchUser()
+    }, []); // Runs only on mount (hard reload)
 
   return (
     <div className="eDiscovery_wrapper">

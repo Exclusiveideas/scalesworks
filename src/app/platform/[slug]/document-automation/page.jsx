@@ -8,6 +8,8 @@ import useDocumentAutomation from "@/hooks/useDocumentAutomation";
 import ChatMessagesWindow from "@/components/documentAutomation/chatMessagesWindow";
 import ChatInput from "@/components/documentAutomation/chatInput";
 import ChatBubble from "@/components/chatBubble";
+import { fetchUser } from "@/lib/utils";
+import { useEffect } from "react";
 
 const DocumentAutomation = () => {
   const { toggleSidebar } = useSidebar();
@@ -26,6 +28,11 @@ const DocumentAutomation = () => {
     messagesEndRef,
     clearDAChats,
   } = useDocumentAutomation();
+
+  
+    useEffect(() => {
+      fetchUser()
+    }, []); // Runs only on mount (hard reload)
 
   return (
     <div className="documentAutomation_wrapper">

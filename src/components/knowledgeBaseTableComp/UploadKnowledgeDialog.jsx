@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import "./kb.css";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -33,7 +33,7 @@ export default function UploadKnowledgeDialog() {
 
   return (
     <Dialog open={isOpen}>
-      <DialogContent className="[&>button]:hidden flex flex-col sm:max-w-[500px] dialogBody">
+      <DialogContent aria-describedby="dialog-description" className="[&>button]:hidden flex flex-col sm:max-w-[500px] dialogBody">
         <DialogHeader>
           <DialogTitle>
             Upload files to your organization's knowledge base
@@ -59,7 +59,7 @@ export default function UploadKnowledgeDialog() {
         />
 
         {error && <p className="kb_errorTxt">{error}</p>}
-        <DialogFooter>
+        <DialogFooter className="dialogFooter">
           <Button
             variant="outline"
             onClick={() => fileInputRef.current.click()}

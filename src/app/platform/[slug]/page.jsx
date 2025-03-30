@@ -11,8 +11,7 @@ import { useEffect, useState } from "react";
 import useAuthStore from "@/store/authStore";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import ChatBubble from "@/components/chatBubble";
-import { generateSignString } from "@/lib/utils";
-import { supabase } from "@/lib/supabaseClient";
+import { fetchUser, generateSignString } from "@/lib/utils";
 
 const modelsOverview = [
   {
@@ -68,27 +67,8 @@ const Dashboard = () => {
     setOrganization(signString);
   }, [user]);
 
-  // Fetch user from the server when the app loads
   useEffect(() => {
-    const fetchUser = async () => {
-      const { data: session } = await supabase.auth.getSession();
-      // console.log("Current Session:", session);
-
-      if (!session || !session.user) {
-        // console.log("No user session found.");
-        return;
-      }
-
-      const { data: user, error } = await supabase.auth.getUser();
-      if (error) {
-        // console.error("Error fetching user:", error);
-      } else {
-        // console.log("Fetched User:", user);
-        updateUser(user);
-      }
-    };
-
-    fetchUser();
+    fetchUser()
   }, []); // Runs only on mount (hard reload)
 
   return (

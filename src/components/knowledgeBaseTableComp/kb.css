@@ -12,3 +12,21 @@
     font-size: 12px;
     color: red;
 }
+
+
+.dialogFooter {
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 575px) {
+    .dialogBody {
+        max-width: 90vw;
+    }
+
+    .dialogFooter {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+}

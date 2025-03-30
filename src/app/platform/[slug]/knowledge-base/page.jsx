@@ -1,14 +1,17 @@
 "use client";
 
 import { AppSidebar } from "@/components/appSideBar";
+import ChatBubble from "@/components/chatBubble";
 import { columns } from "@/components/knowledgeBaseTableComp/columns";
 import { KnowledgeBaseTable } from "@/components/knowledgeBaseTableComp/knowledgeBaseTable";
 import UploadKnowledgeDialog from "@/components/knowledgeBaseTableComp/UploadKnowledgeDialog";
 import { useSidebar } from "@/components/ui/sidebar";
 import useKnowledgeBase from "@/hooks/useKnowledgeBase";
+import { fetchUser } from "@/lib/utils";
 import useDialogStore from "@/store/useDialogStore";
 import "@/styles/knowledge-base.css";
 import { PanelRightOpen } from "lucide-react";
+import { useEffect } from "react";
 
 const KnowledgeBase = () => {
   const { toggleSidebar } = useSidebar();
@@ -16,6 +19,10 @@ const KnowledgeBase = () => {
   const { tableData } = useKnowledgeBase();
 
   const { openDialog } = useDialogStore();
+
+  useEffect(() => {
+    fetchUser()
+  }, []); // Runs only on mount (hard reload)
 
   return (
     <div className="knowledgeBase_wrapper">
@@ -39,6 +46,7 @@ const KnowledgeBase = () => {
         </div>
       </div>
       <UploadKnowledgeDialog />
+      <ChatBubble />
     </div>
   );
 };

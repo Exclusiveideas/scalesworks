@@ -12,6 +12,7 @@ import ChatInput from "@/components/chatInputBox";
 import ChatWindow from "@/components/chatWindow";
 import { useEffect } from "react";
 import ChatBubble from "@/components/chatBubble";
+import { fetchUser } from "@/lib/utils";
 
 const LegalAssistant = () => {
   const { toggleSidebar } = useSidebar();
@@ -37,6 +38,11 @@ const LegalAssistant = () => {
     messagesEndRef,
     clearChats
   } = useLegalAssistant();
+
+  
+    useEffect(() => {
+      fetchUser()
+    }, []); // Runs only on mount (hard reload)
 
   return (
     <div className="legalAssistant_wrapper">

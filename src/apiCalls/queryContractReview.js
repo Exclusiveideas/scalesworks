@@ -50,10 +50,7 @@ export const queryContractReview = async (files, onMessage, onError, onComplete,
 
                     if (parsedData.type === "SUCCESS") {
                       let txtMessage = parsedData.message;
-                      if (!txtMessage.trim()) {
-                        txtMessage = "<br />";
-                      }
-                      onMessage(txtMessage + "<br/>"); // Append a line break to each message
+                      onMessage(txtMessage); // Append a line break to each message
                     }
 
                     if (parsedData.type === "END") {

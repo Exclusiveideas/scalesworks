@@ -31,7 +31,7 @@ export const queryLegalAssistant = async (query, onMessage, onError, onComplete,
             buffer += decoder.decode(value, { stream: true });
         
             let lines = buffer.split("\n\n"); // Split by SSE event boundary
-            buffer = lines.pop(); // Keep last partial chunk for next iteration
+            buffer = lines.pop(); // Keep last partial chunk for next iteration 
         
             for (let event of lines) {
                 if (!event.trim()) continue;

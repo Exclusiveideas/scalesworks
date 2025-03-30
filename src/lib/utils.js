@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { supabase } from "./supabaseClient";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -24,4 +25,23 @@ export const validateForm = (formData) => {
     newErrors.password = "Password must be at least 6 characters";
   }
   return newErrors;
+};
+
+
+export const fetchUser = async () => {
+  const { data: session } = await supabase.auth.getSession();
+  // console.log("Current Session:", session);
+
+  if (!session || !session.user) {
+    // console.log("No user session found.");
+    return;
+  }
+
+  const { data: user, error } = await supabase.auth.getUser();
+  if (error) {
+    console.error("Error fetching user:", error);
+  } else {
+    console.log("Fetched User:", user);
+    updateUser(user);
+  }
 };

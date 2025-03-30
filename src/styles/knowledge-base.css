@@ -4,6 +4,7 @@
     box-sizing: border-box;
     overflow-y: auto;
     display: flex;
+    position: relative;
 }
 
 .kb_page_content {
@@ -86,4 +87,16 @@
     outline: none;
     background-color: var(--color-dark-gray);
     cursor: pointer;
+}
+
+
+
+
+@media (max-width: 575px) {
+
+    .tableHeader {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
 }
