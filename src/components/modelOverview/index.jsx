@@ -1,9 +1,9 @@
 import Image from "next/image";
 import "./modelOverview.css";
 
-const ModelOverview = ({ model }) => {
+const ModelOverview = ({ model, organizationName }) => {
   return (
-    <a href={`/platform/${model?.link}`} className="modelOverview">
+    <a href={`/platform/${organizationName}/${model?.link}`} className="modelOverview">
       <div className="image_container">
         <Image
           src={`/images/${model?.image}`}

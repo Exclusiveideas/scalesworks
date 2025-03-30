@@ -21,9 +21,7 @@ export const uploadToKnowledgeBaseAPI = async (files, cancelToken) => {
         },
       });
   
-      console.log("response: ", response);
-    //   return { status: response.status, user: response.data };
-      return { error: 'response.status', };
+      return { status: response.status, user: response.data.updatedUser };
     } catch (err) {
       if (axios.isCancel(err)) {
         console.warn("Upload cancelled by user");

@@ -1,19 +1,19 @@
 .contractReview_wrapper {
     width: 100vw;
-    min-height: 100vh;
+    height: 100vh;
     box-sizing: border-box;
-    overflow-y: auto;
     display: flex;
 }
 
 .cr_page_content {
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
     background-color: var(--page-bg);
     color: white;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    border: 1px solid red;
 }
 
 .cr_pageTop {
@@ -39,4 +39,5 @@
     flex-direction: column;
     box-sizing: border-box;
     padding: 1rem 3rem;
+    padding-bottom: 0;
 }

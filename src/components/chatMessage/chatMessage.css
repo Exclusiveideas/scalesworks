@@ -10,6 +10,7 @@
     flex-direction: column;
     gap: .5rem;
     color: white;
+    /* overflow-x: auto; */
 }
 
 .chatMessage_message.loading {
@@ -24,6 +25,11 @@
     align-self: flex-end;
 }
 
+
+.aitextMessageBlock{
+  overflow-x: auto;
+  padding-bottom: .3rem;
+}
 
 
 /* HTML: <div class="loader"></div> */

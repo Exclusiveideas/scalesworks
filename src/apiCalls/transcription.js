@@ -59,7 +59,7 @@ export const queryTranscription = async (
           }
 
           if (parsedData.type === "SUCCESS") {
-            onMessage(parsedData.message); // 🔹 Append only new message
+            onMessage(parsedData.message + ' '); // 🔹 Append only new message
           }
 
           if (parsedData.type === "END") {

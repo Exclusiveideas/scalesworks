@@ -36,74 +36,75 @@ export default function useKnowledgeBase() {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      router.push("/auth");
+      router.push("/");
     }
 
     getData();
   }, [user, isHydrated]);
 
   async function getData() {
-    // Fetch data from your API here.
+    if(!user?.knowledgeBase) return
 
-    // setTableData([...user?.knowledgeBase])
-    setTableData([
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-      {
-        id: "728ed52f",
-        file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-      },
-    ]);
+    setTableData(user?.knowledgeBase?.map(file => ({ file_name: file })));
+
+    // setTableData([
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    //   {
+    //     id: "728ed52f",
+    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
+    //   },
+    // ]);
   }
 
   const uploadKnowledge = async () => {
@@ -137,13 +138,14 @@ export default function useKnowledgeBase() {
           style: { border: "none", color: "green" },
         });
 
-        closeProjectDialog();
+        closeKBDialog();
         updateUser(newKnowledge?.user);
       }
     } catch (error) {
       if (axios.isCancel(error)) {
         console.log("File(s) upload request canceled.");
       } else {
+        console.log('err: ', error)
         toast.error("Failed to upload File(s) project.");
       }
     }

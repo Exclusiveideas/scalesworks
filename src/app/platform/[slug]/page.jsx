@@ -7,10 +7,12 @@ import { useSidebar } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import ModelOverview from "@/components/modelOverview";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useAuthStore from "@/store/authStore";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import ChatBubble from "@/components/chatBubble";
+import { generateSignString } from "@/lib/utils";
+import { supabase } from "@/lib/supabaseClient";
 
 const modelsOverview = [
   {
@@ -46,19 +48,48 @@ const modelsOverview = [
 ]
 
 const Dashboard = () => {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar } = useSidebar();
   const router = useRouter();
-    
-  const { user } = useAuthStore();
-  
+  const [organization, setOrganization] = useState("");
+
+  const { user, updateUser } = useAuthStore();
+
   const isHydrated = useHydrationZustand(useAuthStore);
 
   useEffect(() => {
     if (isHydrated && !user) {
-      router.push("/auth"); // Redirect only after hydration
+      router.push("/");
     }
   }, [user, isHydrated]);
-  
+
+  useEffect(() => {
+    if (!user) return;
+    const signString = generateSignString(user?.organization_name);
+    setOrganization(signString);
+  }, [user]);
+
+  // Fetch user from the server when the app loads
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: session } = await supabase.auth.getSession();
+      // console.log("Current Session:", session);
+
+      if (!session || !session.user) {
+        // console.log("No user session found.");
+        return;
+      }
+
+      const { data: user, error } = await supabase.auth.getUser();
+      if (error) {
+        // console.error("Error fetching user:", error);
+      } else {
+        // console.log("Fetched User:", user);
+        updateUser(user);
+      }
+    };
+
+    fetchUser();
+  }, []); // Runs only on mount (hard reload)
 
   return (
     <div className="dashboard_wrapper">
@@ -71,10 +102,14 @@ const Dashboard = () => {
         </div>
         <div className="pageBody">
           <h2 className="dashboardTitle">Your Dashboard</h2>
-          <Separator className="my-4 bg-white"/>
+          <Separator className="my-4 bg-white" />
           <div className="modelsOverview">
             {modelsOverview?.map((model, i) => (
-              <ModelOverview model={model} key={i} />
+              <ModelOverview
+                model={model}
+                key={i}
+                organizationName={organization}
+              />
             ))}
           </div>
         </div>

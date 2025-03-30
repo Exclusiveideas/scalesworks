@@ -34,20 +34,26 @@ export const queryContractReview = async (files, onMessage, onError, onComplete,
             buffer = lines.pop(); // Keep last partial chunk for next iteration
 
             for (let event of lines) {
-                if (!event.trim()) continue;
+                // if (!event.trim()) continue;
 
                 const dataMatch = event.match(/data:\s*(.*)/);
                 if (!dataMatch) continue;
 
+
                 try {
                     const parsedData = JSON.parse(dataMatch[1]); // Parse only the 'data' part
+
 
                     if (parsedData.type === "ERROR") {
                         return onError(parsedData.message);
                     }
 
                     if (parsedData.type === "SUCCESS") {
-                        onMessage(parsedData.message); // 🔹 Append only new message
+                      let txtMessage = parsedData.message;
+                      if (!txtMessage.trim()) {
+                        txtMessage = "<br />";
+                      }
+                      onMessage(txtMessage + "<br/>"); // Append a line break to each message
                     }
 
                     if (parsedData.type === "END") {

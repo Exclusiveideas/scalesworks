@@ -3,13 +3,19 @@ import "./chatMessage.css";
 
 const TChatMessage = ({ chat }) => {
   return (
-    <div className={`chatMessage_message ${chat?.sender == "user" && "user"}`}>
+    <div
+      className={`chatMessage_message ${
+        chat?.sender == "user" ? "user" : "markdown"
+      }`}
+    >
       {chat?.sender == "user" ? (
         <>
-         <p>Audio: {chat?.audioName}</p>
+          <p>Audio: {chat?.audioName}</p>
         </>
       ) : (
-        <Markdown>{chat?.message}</Markdown>
+        <div className="aitextMessageBlock">
+          <Markdown>{chat?.message}</Markdown>
+        </div>
       )}
     </div>
   );

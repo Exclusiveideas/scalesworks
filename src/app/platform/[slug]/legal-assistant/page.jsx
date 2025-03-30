@@ -21,7 +21,7 @@ const LegalAssistant = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      // router.push("/auth");
+      router.push("/");
     }
   }, [user, isHydrated]);
 

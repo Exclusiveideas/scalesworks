@@ -49,16 +49,7 @@ const LoginForm = () => {
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
       const response = await loginUser(formData);
-      // const response = {
-      //   user: {
-      //     user: {
-      //       organization_name: "Open AI"
-      //     }
-      //   }
-      // };
       setLoading(false);
-
-      console.log('response: ', response)
 
       if (response.error) {
         toast.error("Error signing in.", {
@@ -81,7 +72,19 @@ const LoginForm = () => {
 
         // update user state and route to dashboard
         updateUser(response.user.user);
-        const signString = generateSignString(response.user.user?.organization_name)
+        const signString = generateSignString(
+          response.user.user?.organization_name
+        );
+
+        if (!signString) {
+          toast.error("Error navigating you to dashboard.", {
+            description: "your organization name is not available",
+            style: {
+              border: "none",
+              color: "red",
+            },
+          });
+        }
 
         setTimeout(() => {
           router.push(`/platform/${signString}/`);
@@ -118,13 +121,13 @@ const LoginForm = () => {
         />
         {showPassword ? (
           <EyeClosed
-          onClick={() => setShowPassword(!showPassword)}
-          className="passwordIcon" />
-
+            onClick={() => setShowPassword(!showPassword)}
+            className="passwordIcon"
+          />
         ) : (
-          <Eye 
-          onClick={() => setShowPassword(!showPassword)}
-          className="passwordIcon"
+          <Eye
+            onClick={() => setShowPassword(!showPassword)}
+            className="passwordIcon"
           />
         )}
       </div>

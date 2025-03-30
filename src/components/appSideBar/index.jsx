@@ -16,6 +16,7 @@ import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { logOutUser } from "@/apiCalls/authAPI";
 import { useEffect, useState } from "react";
+import { generateSignString } from "@/lib/utils";
 
 // Menu items.
 const items = [
@@ -64,8 +65,7 @@ export function AppSidebar() {
 
   useEffect(() => {
     if(!user) return;
-    // const signString = generateSignString(user?.organization_name)
-    const signString = '@OpenAI'
+    const signString = generateSignString(user?.organization_name)
     setOrganization(signString)
   }, [user])
   
@@ -73,7 +73,7 @@ export function AppSidebar() {
   const logOut = () => {
     updateUser(null);
     logOutUser()
-    router.push("/auth");
+    router.push("/");
   }
 
   return (
