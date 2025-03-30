@@ -1,7 +1,7 @@
 "use client";
 
 import UpdatePasswordForm from "@/components/authForms/updatePasswordForm";
-import "../auth.css";
+import "../auth/auth.css";
 import AuthFormCarousel from "@/components/authFormCarousel";
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
