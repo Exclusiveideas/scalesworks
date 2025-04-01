@@ -1,3 +1,5 @@
+import { addAuthHeader } from "@/lib/utils";
+
 export const queryTranscription = async (
   selectedAudio,
   onMessage,
@@ -14,6 +16,9 @@ export const queryTranscription = async (
     const formData = new FormData();
     formData.append("audio", selectedAudio); // Append the file with key "audio"
 
+    // 🔹 Get auth headers
+    const authHeader = addAuthHeader();
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URI}/transcription`,
       {
@@ -21,7 +26,8 @@ export const queryTranscription = async (
         credentials: "include",
         body: formData,
         headers: {
-          Accept: "text/event-stream", // Expect SSE
+            "Accept": "text/event-stream", // Expecting SSE
+            ...authHeader,  // 🔥 Spread token header dynamically
         },
         signal: abortController.signal, // Enables fetch cancellation
       }

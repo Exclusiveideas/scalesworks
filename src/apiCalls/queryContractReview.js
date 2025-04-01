@@ -1,3 +1,5 @@
+import { addAuthHeader } from "@/lib/utils";
+
 export const queryContractReview = async (files, onMessage, onError, onComplete, abortController) => {
     try {
         if (!files || !Array.isArray(files) || files.length === 0) {
@@ -7,12 +9,18 @@ export const queryContractReview = async (files, onMessage, onError, onComplete,
         // 🔹 Upload Files in ONE Request
         const formData = new FormData();
         files.forEach((file) => formData.append("files", file)); // Append multiple files
+        
+        // 🔹 Get auth headers
+        const authHeader = addAuthHeader();
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/contract-review`, {
             method: "POST",  // Change to POST since we're sending files
             credentials: "include",
             body: formData,
-            headers: { "Accept": "text/event-stream" }, // Expecting SSE
+            headers: {
+                "Accept": "text/event-stream", // Expecting SSE
+                ...authHeader,  // 🔥 Spread token header dynamically
+            },
             signal: abortController.signal, // Enables fetch cancellation
         });
         

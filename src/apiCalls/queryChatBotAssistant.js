@@ -1,16 +1,24 @@
+import { addAuthHeader } from "@/lib/utils";
+
 export const queryChatBotAssistant = async (query, onMessage, onError, onComplete, abortController) => {
     try {
         if (!query || typeof query !== "string") {
             return onError("Invalid query. Please provide a valid text query.");
         }
         
+        // 🔹 Get auth headers
+        const authHeader = addAuthHeader();
+
         // 🔹 Open SSE Connection with AbortController
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_SERVER_URI}/legal-research?query=${encodeURIComponent(query)}`,
             {
                 method: "GET",
                 credentials: "include",
-                headers: { "Accept": "text/event-stream" },
+                headers: {
+                    "Accept": "text/event-stream", // Expecting SSE
+                    ...authHeader,  // 🔥 Spread token header dynamically
+                },
                 signal: abortController.signal // 🔹 Allow fetch cancellation
             }
         );

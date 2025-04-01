@@ -45,3 +45,9 @@ export const fetchUser = async () => {
     updateUser(user);
   }
 };
+
+
+export const addAuthHeader = () => {
+  const token = localStorage.getItem("access_token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};

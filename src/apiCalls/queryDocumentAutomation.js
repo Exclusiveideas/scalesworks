@@ -5,6 +5,19 @@ const API = axios.create({
   withCredentials: true, // 🔥 Ensures cookies are sent & received
 });
 
+
+// interceptor to attach token
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+
 export const queryDocumentAutomation = async (file, cancelToken) => {
   if (!file) {
     return {

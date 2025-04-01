@@ -71,9 +71,9 @@ const LoginForm = () => {
         });
 
         // update user state and route to dashboard
-        updateUser(response.user.user);
+        updateUser(response.user);
         const signString = generateSignString(
-          response.user.user?.organization_name
+          response.user?.organization_name
         );
 
         if (!signString) {

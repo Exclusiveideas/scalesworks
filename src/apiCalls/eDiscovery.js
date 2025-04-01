@@ -1,3 +1,5 @@
+import { addAuthHeader } from "@/lib/utils";
+
 export const queryEDiscovery = async (query, files, onMessage, onError, onComplete, abortController) => {
     try {
         if (!query || typeof query !== "string") {
@@ -11,12 +13,18 @@ export const queryEDiscovery = async (query, files, onMessage, onError, onComple
         const formData = new FormData();
         formData.append("query", query);
         files.forEach((file) => formData.append("files", file)); // Append multiple files
+        
+        // 🔹 Get auth headers
+        const authHeader = addAuthHeader();
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/ediscovery`, {
             method: "POST",  // Change to POST since we're sending files
             credentials: "include",
             body: formData,
-            headers: { "Accept": "text/event-stream" }, // Expecting SSE
+            headers: {
+                "Accept": "text/event-stream", // Expecting SSE
+                ...authHeader,  // 🔥 Spread token header dynamically
+            },
             signal: abortController.signal, // Enables fetch cancellation
         });
 
