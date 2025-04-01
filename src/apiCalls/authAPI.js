@@ -50,7 +50,7 @@ export const loginUser = async (formData) => {
 
 
 
-export const logoutUser = async () => {
+export const logOutUser = async () => {
   try {
     // Get token from localStorage
     const token = localStorage.getItem("access_token");
