@@ -8,11 +8,17 @@ import useContractReview from "@/hooks/useContractReview";
 import ChatMessagesWindow from "@/components/contractReview/chatMessagesWindow";
 import ChatInput from "@/components/contractReview/chatInput";
 import ChatBubble from "@/components/chatBubble";
-import { fetchUser } from "@/lib/utils";
+import useAuthStore from "@/store/authStore";
 import { useEffect } from "react";
+import { fetchUser } from "@/apiCalls/authAPI";
 
 const ContractReview = () => {
   const { toggleSidebar } = useSidebar()
+  const { updateUser } = useAuthStore();
+
+  useEffect(() => {
+    fetchUser(updateUser)
+  }, []); // Runs only on mount (hard reload)
 
   const {
     selectedFiles,
@@ -31,11 +37,6 @@ const ContractReview = () => {
   } = useContractReview();
 
   
-    useEffect(() => {
-      fetchUser()
-    }, []); // Runs only on mount (hard reload)
-  
-
   return (
     <div className="contractReview_wrapper">
       <AppSidebar />

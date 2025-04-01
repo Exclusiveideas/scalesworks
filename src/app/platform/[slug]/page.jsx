@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
 import useAuthStore from "@/store/authStore";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import ChatBubble from "@/components/chatBubble";
-import { fetchUser, generateSignString } from "@/lib/utils";
+import { generateSignString } from "@/lib/utils";
+import { fetchUser } from "@/apiCalls/authAPI";
 
 const modelsOverview = [
   {
@@ -68,7 +69,7 @@ const Dashboard = () => {
   }, [user]);
 
   useEffect(() => {
-    fetchUser()
+    fetchUser(updateUser)
   }, []); // Runs only on mount (hard reload)
 
   return (

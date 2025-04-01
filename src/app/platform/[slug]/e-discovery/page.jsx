@@ -8,11 +8,18 @@ import useEDiscovery from "@/hooks/useEDiscovery";
 import ChatInput from "@/components/eDiscovery/chatInput";
 import { PanelRightOpen } from "lucide-react";
 import ChatBubble from "@/components/chatBubble";
-import { fetchUser } from "@/lib/utils";
+import useAuthStore from "@/store/authStore";
+import { fetchUser } from "@/apiCalls/authAPI";
 import { useEffect } from "react";
 
 const EDiscovery = () => {
   const { toggleSidebar } = useSidebar();
+  const { updateUser } = useAuthStore();
+
+  useEffect(() => {
+    fetchUser(updateUser)
+  }, []); // Runs only on mount (hard reload)
+  
   const {
     inputValue,
     setInputValue,
@@ -32,9 +39,6 @@ const EDiscovery = () => {
   } = useEDiscovery();
 
   
-    useEffect(() => {
-      fetchUser()
-    }, []); // Runs only on mount (hard reload)
 
   return (
     <div className="eDiscovery_wrapper">

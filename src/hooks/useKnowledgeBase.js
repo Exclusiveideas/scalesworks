@@ -27,7 +27,7 @@ export default function useKnowledgeBase() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [error, setError] = useState(null);
 
-  const { isOpen, closeDialog, isLoading, updateIsLoading } = useDialogStore();
+  const { closeDialog, isLoading, updateIsLoading } = useDialogStore();
   const updateUser = useAuthStore((state) => state.updateUser);
   const fileInputRef = useRef(null); // Ref for hidden input
 
@@ -139,7 +139,7 @@ export default function useKnowledgeBase() {
         });
 
         closeKBDialog();
-        updateUser(newKnowledge?.user);
+        updateUser(newKnowledge?.user[0]);
       }
     } catch (error) {
       if (axios.isCancel(error)) {

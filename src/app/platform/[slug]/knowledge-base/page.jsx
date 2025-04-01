@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchUser } from "@/apiCalls/authAPI";
 import { AppSidebar } from "@/components/appSideBar";
 import ChatBubble from "@/components/chatBubble";
 import { columns } from "@/components/knowledgeBaseTableComp/columns";
@@ -7,7 +8,7 @@ import { KnowledgeBaseTable } from "@/components/knowledgeBaseTableComp/knowledg
 import UploadKnowledgeDialog from "@/components/knowledgeBaseTableComp/UploadKnowledgeDialog";
 import { useSidebar } from "@/components/ui/sidebar";
 import useKnowledgeBase from "@/hooks/useKnowledgeBase";
-import { fetchUser } from "@/lib/utils";
+import useAuthStore from "@/store/authStore";
 import useDialogStore from "@/store/useDialogStore";
 import "@/styles/knowledge-base.css";
 import { PanelRightOpen } from "lucide-react";
@@ -19,9 +20,10 @@ const KnowledgeBase = () => {
   const { tableData } = useKnowledgeBase();
 
   const { openDialog } = useDialogStore();
+  const { updateUser } = useAuthStore();
 
   useEffect(() => {
-    fetchUser()
+    fetchUser(updateUser)
   }, []); // Runs only on mount (hard reload)
 
   return (

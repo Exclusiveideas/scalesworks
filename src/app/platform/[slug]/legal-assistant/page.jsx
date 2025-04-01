@@ -12,13 +12,17 @@ import ChatInput from "@/components/chatInputBox";
 import ChatWindow from "@/components/chatWindow";
 import { useEffect } from "react";
 import ChatBubble from "@/components/chatBubble";
-import { fetchUser } from "@/lib/utils";
+import { fetchUser } from "@/apiCalls/authAPI";
 
 const LegalAssistant = () => {
   const { toggleSidebar } = useSidebar();
   const router = useRouter();
-  const { user } = useAuthStore();
+  const { user, updateUser } = useAuthStore();
   const isHydrated = useHydrationZustand(useAuthStore);
+
+  useEffect(() => {
+    fetchUser(updateUser)
+  }, []); // Runs only on mount (hard reload)
 
   useEffect(() => {
     if (isHydrated && !user) {
@@ -40,9 +44,6 @@ const LegalAssistant = () => {
   } = useLegalAssistant();
 
   
-    useEffect(() => {
-      fetchUser()
-    }, []); // Runs only on mount (hard reload)
 
   return (
     <div className="legalAssistant_wrapper">

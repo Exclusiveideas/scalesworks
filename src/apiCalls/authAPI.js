@@ -1,4 +1,6 @@
+import { addAuthHeader } from "@/lib/utils";
 import axios from "axios";
+import { toast } from "sonner";
 
 const API = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URI,
@@ -48,8 +50,6 @@ export const loginUser = async (formData) => {
   }
 };
 
-
-
 export const logOutUser = async () => {
   try {
     // Get token from localStorage
@@ -78,8 +78,6 @@ export const logOutUser = async () => {
   return { status: 200, message: "Logged out locally." };
 };
 
-
-
 export const sendResetMail = async (email) => {
   try {
     const response = await API.post(`/user/reset-password-request`, {
@@ -95,5 +93,36 @@ export const sendResetMail = async (email) => {
         err?.message ||
         "Problem signing in - Try again.",
     };
+  }
+};
+
+export const fetchUser = async (updateUser) => {
+  try {
+    // Retrieve the access token from localStorage
+    const accessToken = localStorage.getItem("access_token");
+
+    if (!accessToken) {
+      console.log("No access token found.");
+      return;
+    }
+
+    
+    // 🔹 Get auth headers
+    const authHeader = addAuthHeader();
+
+    // Send the access token to your backend to fetch the user
+    const response = await API.get("/user/getUser", {
+      headers: {
+        "Content-Type": "application/json",
+          ...authHeader,  // 🔥 Spread token header dynamically
+      },
+    });
+
+      updateUser(response?.data.user);
+  } catch (error) {
+    toast.error("Error fetching user", {
+      description: 'Error - fetching user',
+      style: { border: "none", color: "red" },
+    });
   }
 };

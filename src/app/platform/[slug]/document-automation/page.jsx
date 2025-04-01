@@ -8,11 +8,17 @@ import useDocumentAutomation from "@/hooks/useDocumentAutomation";
 import ChatMessagesWindow from "@/components/documentAutomation/chatMessagesWindow";
 import ChatInput from "@/components/documentAutomation/chatInput";
 import ChatBubble from "@/components/chatBubble";
-import { fetchUser } from "@/lib/utils";
+import useAuthStore from "@/store/authStore";
+import { fetchUser } from "@/apiCalls/authAPI";
 import { useEffect } from "react";
 
 const DocumentAutomation = () => {
   const { toggleSidebar } = useSidebar();
+  const { updateUser } = useAuthStore();
+
+  useEffect(() => {
+    fetchUser(updateUser)
+  }, []); // Runs only on mount (hard reload)
 
   const {
     selectedFile,
@@ -29,10 +35,6 @@ const DocumentAutomation = () => {
     clearDAChats,
   } = useDocumentAutomation();
 
-  
-    useEffect(() => {
-      fetchUser()
-    }, []); // Runs only on mount (hard reload)
 
   return (
     <div className="documentAutomation_wrapper">

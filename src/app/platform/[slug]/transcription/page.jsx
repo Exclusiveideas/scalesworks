@@ -8,10 +8,19 @@ import useTranscription from "@/hooks/useTranscription";
 import ChatMessagesWindow from "@/components/transcription/chatMessagesWindow";
 import ChatInput from "@/components/transcription/chatInput";
 import ChatBubble from "@/components/chatBubble";
+import { fetchUser } from "@/apiCalls/authAPI";
+import { useEffect } from "react";
+import useAuthStore from "@/store/authStore";
 
 const Transcription = () => {
   const { toggleSidebar } = useSidebar();
     
+  const { updateUser } = useAuthStore();
+
+  useEffect(() => {
+    fetchUser(updateUser)
+  }, []); // Runs only on mount (hard reload)
+
   const {
     selectedAudio,
     sendBtnActive,
