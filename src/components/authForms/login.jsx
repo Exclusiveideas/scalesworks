@@ -72,9 +72,7 @@ const LoginForm = () => {
 
         // update user state and route to dashboard
         updateUser(response.user);
-        const signString = generateSignString(
-          response.user?.organization_name
-        );
+        const signString = generateSignString(response.user?.organization_name);
 
         if (!signString) {
           toast.error("Error navigating you to dashboard.", {
@@ -86,9 +84,15 @@ const LoginForm = () => {
           });
         }
 
-        setTimeout(() => {
-          router.push(`/platform/${signString}/`);
-        }, 1500);
+        if (response?.user.user_name === "admin") {
+          setTimeout(() => {
+            router.push(`/platform/${signString}/admin`);
+          }, 1500);
+        } else {
+          setTimeout(() => {
+            router.push(`/platform/${signString}/`);
+          }, 1500);
+        }
       }
     } else {
       setErrors(newErrors);

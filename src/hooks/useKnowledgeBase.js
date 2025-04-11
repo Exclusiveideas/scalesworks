@@ -36,7 +36,7 @@ export default function useKnowledgeBase() {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      router.push("/");
+      // router.push("/");
     }
 
     getData();

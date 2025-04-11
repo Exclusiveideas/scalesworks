@@ -1,24 +1,66 @@
 import Image from "next/image";
 import "./modelOverview.css";
+import { motion } from "framer-motion";
+import useAdminDashboardStore from "@/store/adminDashboardStore";
 
 const ModelOverview = ({ model, organizationName }) => {
   return (
-    <a href={`/platform/${organizationName}/${model?.link}`} className="modelOverview">
-      <div className="image_container">
-        <Image
-          src={`/images/${model?.image}`}
-          width={700}
-          height={700}
-          alt="Picture of AI model"
-          className="modelImage"
-        />
-      </div>
-      <div className="info_container">
+    <a
+      href={`/platform/${organizationName}/${model?.link}`}
+      className="modelOverview"
+    >
+      <motion.div
+        whileHover={{
+          scale: 1.2,
+          rotate: 5,
+          transition: { duration: 0.3, type: "spring", stiffness: 300 },
+        }}
+        className="icon_container"
+      >
+        <model.Icon className="modelIcon" size={46} />
+      </motion.div>
+      <div className={`info_container ${model?.title == "soon" && "noBorder"}`}>
         <p className="model_title">{model?.title}</p>
         <p className="model_description">{model?.description}</p>
+        <div
+          className={`comingSoonBanner ${model?.title == "soon" && "display"}`}
+        >
+          <Image
+            src={"/images/coming_soon.jpg"}
+            width={700}
+            height={400}
+            alt="logo"
+            className="comingSoonBadge"
+          />
+        </div>
       </div>
     </a>
   );
 };
 
 export default ModelOverview;
+
+export const AdminAction = ({ action }) => {
+  const { openEmailListDialog } = useAdminDashboardStore();
+
+  return (
+    <div onClick={openEmailListDialog} className="modelOverview action">
+      <motion.div
+        whileHover={{
+          scale: 1.2,
+          rotate: 5,
+          transition: { duration: 0.3, type: "spring", stiffness: 300 },
+        }}
+        className="icon_container"
+      >
+        <action.Icon className="modelIcon" size={46} />
+      </motion.div>
+      <div
+        className={`info_container ${action?.title == "soon" && "noBorder"}`}
+      >
+        <p className="model_title">{action?.title}</p>
+        <p className="model_description">{action?.description}</p>
+      </div>
+    </div>
+  );
+};

@@ -31,3 +31,41 @@ export const addAuthHeader = () => {
   const token = localStorage.getItem("access_token");
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
+
+
+export function generateEmailList(num) {
+  const emailList = [];
+  
+  for (let i = 1; i <= num; i++) {
+    emailList.push({
+      id: crypto.randomUUID(), // Generates a unique ID
+      email: `muftau${200 + i}@gmail.com`, // Generate a unique email address
+    });
+  }
+
+  return emailList;
+}
+
+
+export function validateEmails(inputString) {
+  const emails = inputString.split(",").map(email => email.trim());
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const invalidEmails = emails.filter(email => !emailRegex.test(email));
+
+  const allValid = invalidEmails.length === 0;
+
+  if (allValid) {
+    return {
+      allValid: true,
+      emails
+    };
+  } else {
+    return {
+      allValid: false,
+      invalidEmails
+    };
+  }
+}
+

@@ -20,11 +20,11 @@ const AuthFormCarousel = () => {
     },
     {
       img: "auth_two.jpg",
-      tagline: "Your AI Writing Assistant\nFast. Insightful. Structured.",
+      tagline: "Your complete AI Legal Assistant.",
     },
     {
       img: "auth_three.jpg",
-      tagline: "From Facts to Story in Seconds.",
+      tagline: "Find the facts that matter in seconds.",
     },
   ];
   

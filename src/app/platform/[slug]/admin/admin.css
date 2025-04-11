@@ -1,4 +1,4 @@
-.dashboard_wrapper {
+.admin-dashboard {
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
@@ -6,6 +6,7 @@
     display: flex;
     position: relative;
 }
+
 
 .page_content {
     width: 100%;

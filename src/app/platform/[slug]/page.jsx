@@ -13,36 +13,56 @@ import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import ChatBubble from "@/components/chatBubble";
 import { generateSignString } from "@/lib/utils";
 import { fetchUser } from "@/apiCalls/authAPI";
+import Image from "next/image";
+import { Search, BookOpen, FileText, FileCode, Mic, Anchor, ArrowUpNarrowWide, ShieldCheck } from "lucide-react";
 
 const modelsOverview = [
   {
     title: 'Legal Assistant',
     description: 'Find relevant case laws in minutes instead of hours.',
-    image: 'legal_assistant.jpg',
+    Icon: Search,
     link: 'legal-assistant'
   },
   {
     title: 'E-Discovery',
     description: 'AI assistant that helps you go through files in seconds.',
-    image: 'e-discovery.jpg',
+    Icon: BookOpen,
     link: 'e-discovery'
   },
   {
     title: 'Document Automation',
     description: 'Automated document generation based on McGrath Kane templates.',
-    image: 'document_automation.png',
+    Icon: FileText,
     link: 'document-automation'
   },
   {
     title: 'Contract Review',
     description: 'Eliminate mistakes and flag risks in contracts.',
-    image: 'contract_review.webp',
+    Icon: FileCode,
     link: 'contract-review'
   },
   {
     title: 'Transcription',
     description: 'AI-powered transcription and deposition summary.',
-    image: 'transcription.jpg',
+    Icon: Mic,
+    link: 'transcription'
+  },
+  {
+    title: 'soon',
+    description: 'AI-powered transcription and deposition summary.',
+    Icon: Anchor,
+    link: 'transcription'
+  },
+  {
+    title: 'soon',
+    description: 'AI-powered transcription and deposition summary.',
+    Icon: ArrowUpNarrowWide,
+    link: 'transcription'
+  },
+  {
+    title: 'soon',
+    description: 'AI-powered transcription and deposition summary.',
+    Icon: ShieldCheck,
     link: 'transcription'
   },
 ]
@@ -58,7 +78,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      router.push("/");
+      // router.push("/");
     }
   }, [user, isHydrated]);
 
@@ -82,8 +102,17 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="pageBody">
-          <h2 className="dashboardTitle">Your Dashboard</h2>
-          <Separator className="my-4 bg-white" />
+          <div className="aboveTheFold">
+            <h2 className="dashboardTitle">Welcome, {user?.user_name}</h2>
+              <Image
+                src={"/images/user_logo.png"}
+                width={700}
+                height={400}
+                alt="logo"
+                className="userLogo"
+              />
+          </div>
+          <Separator className="seperatorCss" />
           <div className="modelsOverview">
             {modelsOverview?.map((model, i) => (
               <ModelOverview

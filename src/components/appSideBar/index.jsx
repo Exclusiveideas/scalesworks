@@ -18,44 +18,8 @@ import { logOutUser } from "@/apiCalls/authAPI";
 import { useEffect, useState } from "react";
 import { generateSignString } from "@/lib/utils";
 
-// Menu items.
-const items = [
-  {
-    title: "Dashboard",
-    url: "/",
-    icon: Home,
-  },
-  {
-    title: "Legal Assistant",
-    url: "/legal-assistant",
-    icon: Handshake,
-  },
-  {
-    title: "E-Discovery",
-    url: "/e-discovery",
-    icon: Telescope,
-  },
-  {
-    title: "Transcription",
-    url: "/transcription",
-    icon: Captions,
-  },
-  {
-    title: "Document Automation",
-    url: "/document-automation",
-    icon: Scroll,
-  },
-  {
-    title: "Contract Review",
-    url: "/contract-review",
-    icon: ScanEye,
-  },
-  {
-    title: "Company Knowledge Base",
-    url: "/knowledge-base",
-    icon: LibraryBig,
-  },
-]
+
+
 
 export function AppSidebar() {
   const updateUser = useAuthStore((state) => state.updateUser);
@@ -76,6 +40,45 @@ export function AppSidebar() {
     router.push("/");
   }
 
+  // Menu items.
+const items = [
+  {
+    title: "Dashboard",
+    url: user?.user_name == 'admin' ? 'admin' : '/',
+    icon: () => <Home className="home-icon" />,
+  },
+  {
+    title: "Legal Assistant",
+    url: "legal-assistant",
+    icon: () => <Handshake className="shake-icon" />,
+  },
+  {
+    title: "E-Discovery",
+    url: "e-discovery",
+    icon: () => <Telescope className="telescope-icon" />,
+  },
+  {
+    title: "Transcription",
+    url: "transcription",
+    icon: () => <Captions className="caption-icon" />,
+  },
+  {
+    title: "Document Automation",
+    url: "document-automation",
+    icon: () => <Scroll className="scroll-icon" />,
+  },
+  {
+    title: "Contract Review",
+    url: "contract-review",
+    icon: () => <ScanEye className="scan-icon" />,
+  },
+  {
+    title: "Company Knowledge Base",
+    url: "knowledge-base",
+    icon: () => <LibraryBig className="book-icon" />,
+  },
+];
+
   return (
     <Sidebar className="sidebar">
       <SidebarContent>
@@ -92,7 +95,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu className="sidebar_menu">
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.title} className="sidebarMenuItem">
                   <SidebarMenuButton asChild>
                     <a href={`/platform/${organization}/${item.url}/`} className="sideBarItem">
                       <item.icon />

@@ -21,14 +21,14 @@ const Auth = () => {
           {activeForm == 'recover' && (<h3 className="formTitle">Reset your password</h3>)}
           {/*  */}
           {activeForm == 'signup' && (<p className="subTxt">Already have an account?<span onClick={() => setActiveForm('login')}> log in</span></p>)}
-          {activeForm == 'login' && (<p className="subTxt">Don't have an account?<span onClick={() => setActiveForm('signup')}> sign up</span></p>)}
+          {activeForm == 'login' && (<p className="subTxt">Don't have an account?<span onClick={() => setActiveForm('signup')}> Sign up</span></p>)}
           {activeForm == 'recover' && (<p className="subTxt">Go back to <span onClick={() => setActiveForm('login')}>login</span></p>)}
           {/*  */}
           {activeForm == 'login' && (<LoginForm />)}
           {activeForm == 'signup' && (<SignupForm />)}
           {activeForm == 'recover' && (<RecoverPassword />)}
           {/*  */}
-          {activeForm == 'login' && (<p className="subTxt">Forgot your password? <span onClick={() => setActiveForm('recover')}>recover it</span></p>)}
+          {activeForm == 'login' && (<p onClick={() => setActiveForm('recover')} className="subTxt pass">Forgot your password?</p>)}
         </div>
       </div>
     </div>
