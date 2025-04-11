@@ -15,13 +15,9 @@ import { EmailListTable } from "./emailListTable";
 const EmailListDialog = () => {
   const { isEmailListOpen } = useAdminDashboardStore();
 
-  const { isLoading, closeELDialog, error, emailListData } =
+  const { closeELDialog, emailListData } =
     useEmailListDialog();
 
-//   useEffect(() => {
-//     setDummyState(prev => !prev)
-//     console.log('emailListData: ', emailListData)
-//   }, [emailListData]);
 
   return (
     <Dialog onOpenChange={closeELDialog} open={isEmailListOpen}>
@@ -39,19 +35,6 @@ const EmailListDialog = () => {
           </div>
         </DialogHeader>
 
-        {error && <p className="kb_errorTxt">{error}</p>}
-        {/* <DialogFooter className="dialogFooter">
-          <Button variant="outline" onClick={closeELDialog}>
-            Cancel
-          </Button>
-          <Button onClick={() => {}} disabled={isLoading}>
-            {isLoading ? (
-              <CircularProgress color="black" size="17px" />
-            ) : (
-              "Upload"
-            )}
-          </Button>
-        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   );

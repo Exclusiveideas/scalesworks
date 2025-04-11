@@ -58,30 +58,34 @@
     max-height: 40vh;
 }
 
-
-.hidden-input {
-    display: none;
+.centerTxt {
+    margin-left: 1rem;
 }
 
-.kb_errorTxt {
-    font-size: 12px;
-    color: red;
+.statusTxt {
+    padding: .5rem 1rem;
+    border-radius: 8px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+}
+
+.statusTxt.whitelisted {
+    background: rgba(4, 217, 4, 0.296);
+}
+
+.statusTxt.blacklisted {
+    background: rgba(217, 4, 4, 0.296);
 }
 
 
-.dialogFooter {
-    margin-top: 1.5rem;
-}
 
 @media (max-width: 575px) {
     .dialogBody {
         max-width: 90vw;
     }
 
-    .dialogFooter {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
     
 }

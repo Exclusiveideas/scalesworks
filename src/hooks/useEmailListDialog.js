@@ -7,9 +7,7 @@ import { addToEmailList, getEmailLists } from "@/apiCalls/adminDashboardAPI";
 import { v4 as uuidv4 } from "uuid"; // to create unique ids
 
 export default function useEmailListDialog() {
-  const [error, setError] = useState(null);
-  const [whitelistedList, setWhitelistedList] = useState([]);
-  const [blacklistedList, setBlacklistedList] = useState([]);
+  const [emailListData, setEmailListData] = useState([]);
   const [emailInput, setEmailInput] = useState("");
 
   const { isEmailListOpen, closeEmailListDialog, isLoading, updateIsLoading } =
@@ -34,8 +32,7 @@ export default function useEmailListDialog() {
         return;
       }
 
-      handleAddEmail(apiResponse?.whitelisted, setWhitelistedList); // update whitelisted email list
-      handleAddEmail(apiResponse?.blacklisted, setBlacklistedList); // update blacklisted email list
+      handleAddEmail(apiResponse?.whitelisted, apiResponse?.blacklisted); // update whitelisted email list
     } catch (error) {
       console.log("err: ", error);
       toast.error("Failed to fetch email list.");
@@ -104,43 +101,44 @@ export default function useEmailListDialog() {
     }
 
     updateIsLoading(false);
-    setError(null);
     closeEmailListDialog();
   };
 
   // Handle adding new emails to the list and ensuring no duplicates
-  const handleAddEmail = (emails, setFunction) => {
-    const emailsArray = Array.isArray(emails) ? emails : Array.from(emails);
-
-    // Create a Set for uniqueness and ensure no duplicate emails
-    const emailSet = new Set(emailsArray.map((email) => email.trim()));
-
-    setFunction(prevList => {
-      // Convert current list to a Set for uniqueness check
-      const existingEmailsSet = new Set(prevList.map(item => item.email));
-
-      // Combine new emails with current list, avoiding duplicates
-      const updatedList = [
-        ...prevList,
-        ...Array.from(emailSet).filter(email => !existingEmailsSet.has(email)).map(email => ({
-          id: uuidv4(),
-          email
-        }))
-      ];
-
-      // Return the updated state with a new reference
-      return [...updatedList];
-    });
+  const handleAddEmail = (whitelistedEmails, blacklistedEmails) => {
+    // Ensure whitelisted and blacklisted emails are arrays and unique
+    const whitelistedEmailsArray = Array.isArray(whitelistedEmails) ? whitelistedEmails : Array.from(whitelistedEmails);
+    const blacklistedEmailsArray = Array.isArray(blacklistedEmails) ? blacklistedEmails : Array.from(blacklistedEmails);
+  
+    // Create Sets for uniqueness
+    const whitelistedSet = new Set(whitelistedEmailsArray.map((email) => email.trim()));
+    const blacklistedSet = new Set(blacklistedEmailsArray.map((email) => email.trim()));
+  
+    // Directly replace the current list with the new emails, setting them with their status
+    const updatedList = [
+      ...Array.from(whitelistedSet).map(email => ({
+        id: uuidv4(),
+        email,
+        status: "whitelisted"
+      })),
+      ...Array.from(blacklistedSet).map(email => ({
+        id: uuidv4(),
+        email,
+        status: "blacklisted"
+      }))
+    ];
+  
+    // Replace the state with the updated list
+    setEmailListData(updatedList);
   };
+  
 
   
 
   return {
     isLoading,
     closeELDialog,
-    error,
-    emailListData: whitelistedList,
-    blacklistedList,
+    emailListData,
     uploadNewEmails,
     emailInput,
     setEmailInput
