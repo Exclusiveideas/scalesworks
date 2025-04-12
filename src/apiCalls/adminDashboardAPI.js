@@ -19,7 +19,7 @@ API.interceptors.request.use(
   }
 );
 
-export const addToEmailList = async (emails, cancelToken) => {
+export const callWhitelistEmails = async (emails, cancelToken) => {
   try {
     const response = await API.post(
       `/admin/whitelist-email`,
@@ -50,6 +50,39 @@ export const addToEmailList = async (emails, cancelToken) => {
     };
   }
 };
+
+
+export const callBlacklistEmails = async (emails, cancelToken) => {
+  try {
+    const response = await API.post(
+      `/admin/blacklist-email`,
+      {
+        emails,
+      },
+      {
+        cancelToken: cancelToken?.token, // Pass cancel token
+      }
+    );
+
+    const { message } = response.data;
+
+    return { message };
+  } catch (err) {
+    if (axios.isCancel(err)) {
+      console.warn("Blacklist cancelled by user");
+      return { error: "Operation cancelled" };
+    }
+
+    return {
+      error:
+        typeof err?.response?.data?.error === "string"
+          ? err.response.data.error
+          : typeof err?.message === "string"
+          ? err.message
+          : "Problem blacklisting emails - Try again.",
+    };
+  }
+}
 
 export const getEmailLists = async () => {
   try {

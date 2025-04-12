@@ -9,7 +9,6 @@ import {
 import "./el.css";
 import useEmailListDialog from "@/hooks/useEmailListDialog";
 import useAdminDashboardStore from "@/store/adminDashboardStore";
-import { columns } from "./columns";
 import { EmailListTable } from "./emailListTable";
 
 const EmailListDialog = () => {
@@ -31,7 +30,7 @@ const EmailListDialog = () => {
             <p className="subHeading">
               These email have been granted access to ScaleWorks
             </p>
-            <EmailListTable columns={columns} data={emailListData} />
+            <EmailListTable data={emailListData} />
           </div>
         </DialogHeader>
 

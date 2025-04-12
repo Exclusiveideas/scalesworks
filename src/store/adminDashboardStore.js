@@ -2,8 +2,10 @@ import { create } from "zustand";
 
 const useAdminDashboardStore = create((set) => ({
   isEmailListOpen: false,
-  isLoading: false,
-  updateIsLoading: (loading) => set({ isLoading: loading }),
+  wlIsLoading: false,
+  blIsLoading: false,
+  updateWLIsLoading: (loading) => set({ wlIsLoading: loading }),
+  updateBLIsLoading: (loading) => set({ blIsLoading: loading }),
   openEmailListDialog: () => set({ isEmailListOpen: true }),
   closeEmailListDialog: () => set({ isEmailListOpen: false }),
 }));

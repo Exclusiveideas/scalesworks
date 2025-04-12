@@ -28,19 +28,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: .8rem;
 }
 
 .tableInput {
     flex: 1;
     border-radius: 6px;
     padding: .8rem;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .addEmailBtn {
-    padding: .8rem 2rem;
-    font-size: 12px;
+    padding: .8rem 1.5rem;
+    font-size: 10px;
     border-radius: 6px;
     background-color: var(--color-text-dark);
     color: white;
@@ -58,9 +58,6 @@
     max-height: 40vh;
 }
 
-.centerTxt {
-    margin-left: 1rem;
-}
 
 .statusTxt {
     padding: .5rem 1rem;

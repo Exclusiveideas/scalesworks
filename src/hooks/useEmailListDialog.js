@@ -3,21 +3,21 @@ import useAdminDashboardStore from "@/store/adminDashboardStore";
 import { validateEmails } from "@/lib/utils";
 import { toast } from "sonner";
 import axios from "axios";
-import { addToEmailList, getEmailLists } from "@/apiCalls/adminDashboardAPI";
+import { callBlacklistEmails, callWhitelistEmails, getEmailLists } from "@/apiCalls/adminDashboardAPI";
 import { v4 as uuidv4 } from "uuid"; // to create unique ids
 
 export default function useEmailListDialog() {
   const [emailListData, setEmailListData] = useState([]);
   const [emailInput, setEmailInput] = useState("");
 
-  const { isEmailListOpen, closeEmailListDialog, isLoading, updateIsLoading } =
+  const { isEmailListOpen, closeEmailListDialog, blIsLoading, wlIsLoading, updateWLIsLoading, updateBLIsLoading } =
     useAdminDashboardStore();
 
   const cancelTokenRef = useRef(null); // Store Axios cancel token
 
   useEffect(() => {
     getData();
-  }, [isEmailListOpen]);
+  }, [isEmailListOpen])
 
   // Fetch email lists data from the API
   async function getData() {
@@ -39,8 +39,8 @@ export default function useEmailListDialog() {
     }
   }
 
-  // Upload new emails to the list
-  const uploadNewEmails = async (emails) => {
+  // whitelist new emails
+  const whiteListNewEmails = async (emails) => {
     if (!emails) return;
 
     const response = validateEmails(emails);
@@ -53,27 +53,27 @@ export default function useEmailListDialog() {
       return;
     }
 
-    updateIsLoading(true);
+    updateWLIsLoading(true);
 
     // Create an Axios cancel token
     cancelTokenRef.current = axios.CancelToken.source();
 
     try {
-      const apiResponse = await addToEmailList(
+      const apiResponse = await callWhitelistEmails(
         response?.emails,
         cancelTokenRef.current
       );
 
-      updateIsLoading(false);
+      updateWLIsLoading(false);
 
       if (apiResponse?.error) {
-        toast.error("Error updating email list.", {
+        toast.error("Error whitelisting email(s).", {
           description: apiResponse?.error,
           style: { border: "none", color: "red" },
         });
         return;
       } else {
-        toast.success("Successfully updated email list", {
+        toast.success("Successfully whitelisted email(s).", {
           description: apiResponse?.message,
           style: { border: "none", color: "green" },
         });
@@ -82,16 +82,71 @@ export default function useEmailListDialog() {
         closeELDialog()
       }
 
-      updateIsLoading(false);
+      updateWLIsLoading(false);
     } catch (error) {
       if (axios.isCancel(error)) {
-        console.log("Error updating email list.");
+        console.log("Operation cancelled");
       } else {
         console.log("err: ", error);
-        toast.error("Error updating email list.");
+        toast.error("Error whitelisting email(s).");
       }
     }
   };
+
+  
+  const blacklistNewEmails = async (emails) => {
+    if (!emails) return;
+
+    const response = validateEmails(emails);
+
+    if (!response?.allValid) {
+      toast.error("Invalid email(s)", {
+        description: response?.invalidEmails?.join(", "),
+        style: { border: "none", color: "red" },
+      });
+      return;
+    }
+
+    updateBLIsLoading(true);
+    
+    // Create an Axios cancel token
+    cancelTokenRef.current = axios.CancelToken.source();
+
+
+    try {
+      const apiResponse = await callBlacklistEmails(
+        response?.emails,
+        cancelTokenRef.current
+      );
+
+      updateBLIsLoading(false);
+
+      if (apiResponse?.error) {
+        toast.error("Error blacklisting email(s).", {
+          description: apiResponse?.error,
+          style: { border: "none", color: "red" },
+        });
+        return;
+      } else {
+        toast.success("Successfully blacklisted email(s).", {
+          description: apiResponse?.message,
+          style: { border: "none", color: "green" },
+        });
+
+        setEmailInput(""); // clear input box
+        closeELDialog()
+      }
+
+      updateBLIsLoading(false);
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("Operation cancelled");
+      } else {
+        console.log("err: ", error);
+        toast.error("Error blacklisting email(s).");
+      }
+    }
+  }
 
   // Close email list dialog
   const closeELDialog = () => {
@@ -100,7 +155,8 @@ export default function useEmailListDialog() {
       cancelTokenRef.current.cancel("File(s) upload request canceled.");
     }
 
-    updateIsLoading(false);
+    updateWLIsLoading(false);
+    updateBLIsLoading(false);
     closeEmailListDialog();
   };
 
@@ -136,10 +192,12 @@ export default function useEmailListDialog() {
   
 
   return {
-    isLoading,
+    wlIsLoading,
+    blIsLoading,
     closeELDialog,
     emailListData,
-    uploadNewEmails,
+    whiteListNewEmails,
+    blacklistNewEmails,
     emailInput,
     setEmailInput
   };
