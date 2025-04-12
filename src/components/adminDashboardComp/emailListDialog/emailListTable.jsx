@@ -91,7 +91,7 @@ export function EmailListTable({ data }) {
     },
   });
 
-  const { isLoading, whiteListNewEmails, blacklistNewEmails, emailInput, setEmailInput } =
+  const { wlIsLoading, blIsLoading, whiteListNewEmails, blacklistNewEmails, emailInput, setEmailInput } =
     useEmailListDialog();
 
   return (
@@ -109,7 +109,7 @@ export function EmailListTable({ data }) {
           variant="outline"
           onClick={() => whiteListNewEmails(emailInput)}
         >
-          {isLoading ? (
+          {wlIsLoading ? (
             <CircularProgress color="black" size="17px" />
           ) : (
             "Whitelist"
@@ -120,7 +120,7 @@ export function EmailListTable({ data }) {
           variant="outline"
           onClick={() => blacklistNewEmails(emailInput)}
         >
-          {isLoading ? (
+          {blIsLoading ? (
             <CircularProgress color="black" size="17px" />
           ) : (
             "Blacklist"
