@@ -1,4 +1,14 @@
-import { Captions, Handshake, Home, LibraryBig, LogOut, ScanEye, Scroll, Telescope } from "lucide-react";
+import {
+  Captions,
+  Handshake,
+  Home,
+  LibraryBig,
+  LogOut,
+  ScanEye,
+  Scroll,
+  SlidersHorizontal,
+  Telescope,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -11,40 +21,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import './appSideBar.css';
+import "./appSideBar.css";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { logOutUser } from "@/apiCalls/authAPI";
 import { useEffect, useState } from "react";
 import { generateSignString } from "@/lib/utils";
 
-
-
-
-export function AppSidebar() {
-  const updateUser = useAuthStore((state) => state.updateUser);
-  const [organization, setOrganization] = useState('');
-  const router = useRouter();
-  const { user } = useAuthStore();
-
-  useEffect(() => {
-    if(!user) return;
-    const signString = generateSignString(user?.organization_name)
-    setOrganization(signString)
-  }, [user])
-  
-
-  const logOut = () => {
-    updateUser(null);
-    logOutUser()
-    router.push("/");
-  }
-
-  // Menu items.
+// Menu items.
 const items = [
   {
     title: "Dashboard",
-    url: user?.user_name == 'admin' ? 'admin' : '/',
+    url: "",
     icon: () => <Home className="home-icon" />,
   },
   {
@@ -79,25 +67,59 @@ const items = [
   },
 ];
 
+export function AppSidebar() {
+  const updateUser = useAuthStore((state) => state.updateUser);
+  const [organization, setOrganization] = useState("");
+  const router = useRouter();
+  const { user } = useAuthStore();
+
+  useEffect(() => {
+    if (!user) return;
+    const signString = generateSignString(user?.organization_name);
+    setOrganization(signString);
+  }, [user]);
+
+  const logOut = () => {
+    updateUser(null);
+    logOutUser();
+    router.push("/");
+  };
+
   return (
     <Sidebar className="sidebar">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="h-max">
             <div className="userInfo_box">
-              <div className="userLetter">{user?.user_name?.[0] || ''}</div>
+              <div className="userLetter">{user?.user_name?.[0] || ""}</div>
               <div className="userInfo_subContainer">
-                <p className="user_name">{user?.user_name || ''}</p>
-                <p className="user_email">{user?.email || ''}</p>
+                <p className="user_name">{user?.user_name || ""}</p>
+                <p className="user_email">{user?.email || ""}</p>
               </div>
             </div>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="sidebar_menu">
+              {user?.user_name == "admin" && (
+                <SidebarMenuItem key={"admin"} className="sidebarMenuItem">
+                  <SidebarMenuButton asChild>
+                    <a
+                      href={`/platform/${organization}/admin/`}
+                      className="sideBarItem"
+                    >
+                      <SlidersHorizontal />
+                      <span>Admin</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
               {items.map((item) => (
                 <SidebarMenuItem key={item.title} className="sidebarMenuItem">
                   <SidebarMenuButton asChild>
-                    <a href={`/platform/${organization}/${item.url}/`} className="sideBarItem">
+                    <a
+                      href={`/platform/${organization}/${item.url}/`}
+                      className="sideBarItem"
+                    >
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
@@ -111,8 +133,8 @@ const items = [
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem onClick={logOut}>
-            <SidebarMenuButton className='logOutBar'>
-                <LogOut /> <span className="logOutTxt" >Log Out</span>
+            <SidebarMenuButton className="logOutBar">
+              <LogOut /> <span className="logOutTxt">Log Out</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
