@@ -104,13 +104,15 @@ const Dashboard = () => {
         <div className="pageBody">
           <div className="aboveTheFold">
             <h2 className="dashboardTitle">Welcome, {user?.user_name}</h2>
-              <Image
-                src={"/images/user_logo.png"}
+              {user?.logo_url && (
+                <Image
+                src={user?.logo_url}
                 width={700}
                 height={400}
                 alt="logo"
                 className="userLogo"
               />
+            )}
           </div>
           <Separator className="seperatorCss" />
           <div className="modelsOverview">

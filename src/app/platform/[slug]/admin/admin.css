@@ -69,10 +69,11 @@
     gap: 2rem;
     box-sizing: border-box;
     padding: 1.5rem 0;
+    max-height: max-content;
 }
 
 
- 
+
 
 @media (max-width: 1026px) {
 
@@ -103,15 +104,15 @@
         transform: scale(1.14);
     }
 
-    
-.aboveTheFold {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column-reverse;
-    gap: 1.5rem;
 
-}
+    .aboveTheFold {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column-reverse;
+        gap: 1.5rem;
+
+    }
 
 
     .dashboardTitle {

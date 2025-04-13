@@ -77,6 +77,36 @@
     background: rgba(217, 4, 4, 0.296);
 }
 
+.logoUpload_row {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.dialogBtn {
+    font-size: 12px;
+    width: max-content;
+}
+
+
+.logoURL_txt {
+    width: 100%;
+    max-width: 200px;
+    overflow-wrap: anywhere;
+    padding: .5rem;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logoURL_txt > p:hover {
+    color: rgb(62, 140, 230);
+    text-decoration: underline;
+    cursor: pointer;
+}
 
 
 @media (max-width: 575px) {

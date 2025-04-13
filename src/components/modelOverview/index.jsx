@@ -1,7 +1,6 @@
 import Image from "next/image";
 import "./modelOverview.css";
 import { motion } from "framer-motion";
-import useAdminDashboardStore from "@/store/adminDashboardStore";
 
 const ModelOverview = ({ model, organizationName }) => {
   return (
@@ -41,10 +40,9 @@ const ModelOverview = ({ model, organizationName }) => {
 export default ModelOverview;
 
 export const AdminAction = ({ action }) => {
-  const { openEmailListDialog } = useAdminDashboardStore();
 
   return (
-    <div onClick={openEmailListDialog} className="modelOverview action">
+    <div onClick={action?.function} className="modelOverview action">
       <motion.div
         whileHover={{
           scale: 1.2,

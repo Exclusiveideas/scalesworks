@@ -102,3 +102,59 @@ export const getEmailLists = async () => {
     };
   }
 };
+
+
+export const getUsersList = async () => {
+  try {
+    const { data } = await API.get(`/admin/fetch-all-users`);
+
+    console.log('data: ', data)
+
+    return { usersList: data };
+  } catch (err) {
+    return {
+      error:
+        typeof err?.response?.data?.error === "string"
+          ? err.response.data.error
+          : typeof err?.message === "string"
+          ? err.message
+          : "Problem fetching users list - Try again.",
+    };
+  }
+};
+
+
+export async function uploadCompanyLogos(selectedFiles, controller) {
+  const formData = new FormData();
+
+  for (const [companyID, file] of Object.entries(selectedFiles)) {
+    formData.append(companyID, file);
+  }
+
+  try {
+    const res = await API.post('/admin/update-users-logo', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      signal: controller.signal
+    });
+
+    console.log('Upload response:', res.data);
+
+    return { message: res.data.message}
+  } catch (err) {
+    if (axios.isCancel(err)) {
+      console.warn("Blacklist cancelled by user");
+      return { error: "Operation cancelled" };
+    }
+
+    return {
+      error:
+        typeof err?.response?.data?.error === "string"
+          ? err.response.data.error
+          : typeof err?.message === "string"
+          ? err.message
+          : "Problem blacklisting emails - Try again.",
+    };
+  }
+}

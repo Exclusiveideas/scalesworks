@@ -2,23 +2,23 @@
 
 import * as React from "react";
 import {
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getSortedRowModel,
-    useReactTable,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import "./el.css";
 import useEmailListDialog from "@/hooks/useEmailListDialog";
@@ -96,7 +96,6 @@ export function EmailListTable({ data }) {
 
   return (
     <div className="emailListTable">
-      {/* Filter input */}
       <div className="addEmailWrapper">
         <Input
           value={emailInput}
@@ -128,6 +127,7 @@ export function EmailListTable({ data }) {
         </Button>
       </div>
 
+      {/* Filter input */}
       <div className="flex items-center">
         <Input
           placeholder="Filter emails..."

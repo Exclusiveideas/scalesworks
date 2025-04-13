@@ -64,14 +64,12 @@ export default function useEmailListDialog() {
         cancelTokenRef.current
       );
 
-      updateWLIsLoading(false);
 
       if (apiResponse?.error) {
         toast.error("Error whitelisting email(s).", {
           description: apiResponse?.error,
           style: { border: "none", color: "red" },
         });
-        return;
       } else {
         toast.success("Successfully whitelisted email(s).", {
           description: apiResponse?.message,
@@ -82,7 +80,6 @@ export default function useEmailListDialog() {
         closeELDialog()
       }
 
-      updateWLIsLoading(false);
     } catch (error) {
       if (axios.isCancel(error)) {
         console.log("Operation cancelled");
@@ -91,6 +88,7 @@ export default function useEmailListDialog() {
         toast.error("Error whitelisting email(s).");
       }
     }
+      updateWLIsLoading(false);
   };
 
   
@@ -119,14 +117,12 @@ export default function useEmailListDialog() {
         cancelTokenRef.current
       );
 
-      updateBLIsLoading(false);
 
       if (apiResponse?.error) {
         toast.error("Error blacklisting email(s).", {
           description: apiResponse?.error,
           style: { border: "none", color: "red" },
         });
-        return;
       } else {
         toast.success("Successfully blacklisted email(s).", {
           description: apiResponse?.message,
@@ -137,7 +133,6 @@ export default function useEmailListDialog() {
         closeELDialog()
       }
 
-      updateBLIsLoading(false);
     } catch (error) {
       if (axios.isCancel(error)) {
         console.log("Operation cancelled");
@@ -146,6 +141,7 @@ export default function useEmailListDialog() {
         toast.error("Error blacklisting email(s).");
       }
     }
+      updateBLIsLoading(false);
   }
 
   // Close email list dialog
