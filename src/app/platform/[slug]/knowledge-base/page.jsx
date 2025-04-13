@@ -11,7 +11,7 @@ import useKnowledgeBase from "@/hooks/useKnowledgeBase";
 import useAuthStore from "@/store/authStore";
 import useDialogStore from "@/store/useDialogStore";
 import "@/styles/knowledge-base.css";
-import { PanelRightOpen } from "lucide-react";
+import { Info, PanelRightOpen } from "lucide-react";
 import { useEffect } from "react";
 
 const KnowledgeBase = () => {
@@ -23,7 +23,7 @@ const KnowledgeBase = () => {
   const { updateUser } = useAuthStore();
 
   useEffect(() => {
-    fetchUser(updateUser)
+    fetchUser(updateUser);
   }, []); // Runs only on mount (hard reload)
 
   return (
@@ -36,13 +36,21 @@ const KnowledgeBase = () => {
           </div>
         </div>
         <div className="kb_pageBody">
-          <div className="modelTitle_container_knowledgeBase">
-            Knowledge Base
+          <div className="pageTitleBox">
+            <div className="modelTitle_container_knowledgeBase">
+              Knowledge Base
+            </div>
+            <div className="pageTitle_subInfo">
+              <Info size={16} />
+              <p className="pageTitle_subInfo_text">Max file size: 50MB</p>
+            </div>
           </div>
 
           <div className="tableHeader">
             <h3>Your Uploaded Files</h3>
-            <div onClick={openDialog} className="addNewKnowledge">Add Knowledge</div>
+            <div onClick={openDialog} className="addNewKnowledge">
+              Add Knowledge
+            </div>
           </div>
           <KnowledgeBaseTable columns={columns} data={tableData} />
         </div>

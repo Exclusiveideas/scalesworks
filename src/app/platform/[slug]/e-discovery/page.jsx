@@ -6,7 +6,7 @@ import { useSidebar } from "@/components/ui/sidebar";
 import ChatMessagesWindow from "@/components/eDiscovery/chatMessagesWindow";
 import useEDiscovery from "@/hooks/useEDiscovery";
 import ChatInput from "@/components/eDiscovery/chatInput";
-import { PanelRightOpen } from "lucide-react";
+import { Info, PanelRightOpen } from "lucide-react";
 import ChatBubble from "@/components/chatBubble";
 import useAuthStore from "@/store/authStore";
 import { fetchUser } from "@/apiCalls/authAPI";
@@ -53,7 +53,13 @@ const EDiscovery = () => {
           </div>
         </div>
         <div className="pageBody">
-          <div className="modelTitle_container_e-discovery">E-Discovery</div>
+          <div className="pageTitleBox">
+            <div className="modelTitle_container_e-discovery">E-Discovery</div>
+            <div className="pageTitle_subInfo">
+              <Info size={16} />
+              <p className="pageTitle_subInfo_text">Max file size: 50MB</p>
+            </div>
+          </div>
           <div className="selectedFileBox">
             <span>
               {selectedFiles.length > 0

@@ -3,7 +3,7 @@
 import { AppSidebar } from "@/components/appSideBar";
 import "@/styles/documentAutomation.css";
 import { useSidebar } from "@/components/ui/sidebar";
-import { PanelRightOpen } from "lucide-react";
+import { Info, PanelRightOpen } from "lucide-react";
 import useDocumentAutomation from "@/hooks/useDocumentAutomation";
 import ChatMessagesWindow from "@/components/documentAutomation/chatMessagesWindow";
 import ChatInput from "@/components/documentAutomation/chatInput";
@@ -17,7 +17,7 @@ const DocumentAutomation = () => {
   const { updateUser } = useAuthStore();
 
   useEffect(() => {
-    fetchUser(updateUser)
+    fetchUser(updateUser);
   }, []); // Runs only on mount (hard reload)
 
   const {
@@ -35,7 +35,6 @@ const DocumentAutomation = () => {
     clearDAChats,
   } = useDocumentAutomation();
 
-
   return (
     <div className="documentAutomation_wrapper">
       <AppSidebar />
@@ -49,8 +48,14 @@ const DocumentAutomation = () => {
           </div>
         </div>
         <div className="pageBody">
-          <div className="modelTitle_container_e-discovery">
-            Document Automation
+          <div className="pageTitleBox">
+            <div className="modelTitle_container_e-discovery">
+              Document Automation
+            </div>
+            <div className="pageTitle_subInfo">
+              <Info size={16} />
+              <p className="pageTitle_subInfo_text">Max file size: 50MB</p>
+            </div>
           </div>
           <div className="selectedFileBox">
             <span>

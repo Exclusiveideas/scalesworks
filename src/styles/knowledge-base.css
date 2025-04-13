@@ -45,6 +45,14 @@
     gap: 1rem;
 }
 
+.pageTitleBox {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+}
 
 .modelTitle_container_knowledgeBase {
     height: fit-content;
@@ -64,6 +72,15 @@
     border: 1px solid rgba(255, 255, 255, .3);
 }
 
+
+.pageTitle_subInfo {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: gray;
+    padding: .3rem 0;
+}
 
 .tableHeader {
     display: flex;

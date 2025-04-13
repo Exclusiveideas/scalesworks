@@ -107,7 +107,7 @@ export function AppSidebar() {
                       href={`/platform/${organization}/admin/`}
                       className="sideBarItem"
                     >
-                      <SlidersHorizontal />
+                      <SlidersHorizontal className="admin-icon" />
                       <span>Admin</span>
                     </a>
                   </SidebarMenuButton>

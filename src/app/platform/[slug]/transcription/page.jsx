@@ -3,7 +3,7 @@
 import { AppSidebar } from "@/components/appSideBar";
 import "@/styles/transcription.css";
 import { useSidebar } from "@/components/ui/sidebar";
-import { PanelRightOpen } from "lucide-react";
+import { Info, PanelRightOpen } from "lucide-react";
 import useTranscription from "@/hooks/useTranscription";
 import ChatMessagesWindow from "@/components/transcription/chatMessagesWindow";
 import ChatInput from "@/components/transcription/chatInput";
@@ -51,7 +51,13 @@ const Transcription = () => {
           </div>
         </div>
         <div className="pageBody">
+          <div className="pageTitleBox">
           <div className="modelTitle_container_e-discovery">Transcription</div>
+            <div className="pageTitle_subInfo">
+              <Info size={16} />
+              <p className="pageTitle_subInfo_text">Max file size: 50MB</p>
+            </div>
+          </div>
           <div className="selectedFileBox">
             <span>
               {selectedAudio
