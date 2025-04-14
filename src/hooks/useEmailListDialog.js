@@ -13,7 +13,7 @@ export default function useEmailListDialog() {
   const { isEmailListOpen, closeEmailListDialog, blIsLoading, wlIsLoading, updateWLIsLoading, updateBLIsLoading } =
     useAdminDashboardStore();
 
-  const cancelTokenRef = useRef(null); // Store Axios cancel token
+    const controllerRef = useRef(null); // Store Axios cancel signal
 
   useEffect(() => {
     getData();
@@ -39,7 +39,7 @@ export default function useEmailListDialog() {
     }
   }
 
-  // whitelist new emails
+  // whitelist new emails 
   const whiteListNewEmails = async (emails) => {
     if (!emails) return;
 
@@ -55,13 +55,13 @@ export default function useEmailListDialog() {
 
     updateWLIsLoading(true);
 
-    // Create an Axios cancel token
-    cancelTokenRef.current = axios.CancelToken.source();
+    // Create an Axios cancel signal
+    controllerRef.current = new AbortController(); 
 
     try {
       const apiResponse = await callWhitelistEmails(
         response?.emails,
-        cancelTokenRef.current
+        controllerRef.current
       );
 
 
@@ -107,14 +107,14 @@ export default function useEmailListDialog() {
 
     updateBLIsLoading(true);
     
-    // Create an Axios cancel token
-    cancelTokenRef.current = axios.CancelToken.source();
+    // Create an Axios cancel signal
+    controllerRef.current = new AbortController(); 
 
 
     try {
       const apiResponse = await callBlacklistEmails(
         response?.emails,
-        cancelTokenRef.current
+        controllerRef.current
       );
 
 
@@ -147,9 +147,7 @@ export default function useEmailListDialog() {
   // Close email list dialog
   const closeELDialog = () => {
     // Cancel any ongoing request
-    if (cancelTokenRef.current) {
-      cancelTokenRef.current.cancel("File(s) upload request canceled.");
-    }
+    controllerRef?.current?.abort();
 
     updateWLIsLoading(false);
     updateBLIsLoading(false);

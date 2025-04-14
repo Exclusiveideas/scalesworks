@@ -19,7 +19,7 @@ API.interceptors.request.use(
   }
 );
 
-export const callWhitelistEmails = async (emails, cancelToken) => {
+export const callWhitelistEmails = async (emails, controller) => {
   try {
     const response = await API.post(
       `/admin/whitelist-email`,
@@ -27,7 +27,7 @@ export const callWhitelistEmails = async (emails, cancelToken) => {
         emails,
       },
       {
-        cancelToken: cancelToken?.token, // Pass cancel token
+        signal: controller.signal,
       }
     );
 
@@ -51,8 +51,7 @@ export const callWhitelistEmails = async (emails, cancelToken) => {
   }
 };
 
-
-export const callBlacklistEmails = async (emails, cancelToken) => {
+export const callBlacklistEmails = async (emails, controller) => {
   try {
     const response = await API.post(
       `/admin/blacklist-email`,
@@ -60,7 +59,7 @@ export const callBlacklistEmails = async (emails, cancelToken) => {
         emails,
       },
       {
-        cancelToken: cancelToken?.token, // Pass cancel token
+        signal: controller.signal,
       }
     );
 
@@ -82,7 +81,7 @@ export const callBlacklistEmails = async (emails, cancelToken) => {
           : "Problem blacklisting emails - Try again.",
     };
   }
-}
+};
 
 export const getEmailLists = async () => {
   try {
@@ -103,12 +102,11 @@ export const getEmailLists = async () => {
   }
 };
 
-
 export const getUsersList = async () => {
   try {
     const { data } = await API.get(`/admin/fetch-all-users`);
 
-    console.log('data: ', data)
+    console.log("data: ", data);
 
     return { usersList: data };
   } catch (err) {
@@ -123,7 +121,6 @@ export const getUsersList = async () => {
   }
 };
 
-
 export async function uploadCompanyLogos(selectedFiles, controller) {
   const formData = new FormData();
 
@@ -132,16 +129,16 @@ export async function uploadCompanyLogos(selectedFiles, controller) {
   }
 
   try {
-    const res = await API.post('/admin/update-users-logo', formData, {
+    const res = await API.post("/admin/update-users-logo", formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
-      signal: controller.signal
+      signal: controller.signal,
     });
 
-    console.log('Upload response:', res.data);
+    console.log("Upload response:", res.data);
 
-    return { message: res.data.message}
+    return { message: res.data.message };
   } catch (err) {
     if (axios.isCancel(err)) {
       console.warn("Blacklist cancelled by user");

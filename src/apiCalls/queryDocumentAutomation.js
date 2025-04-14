@@ -18,7 +18,7 @@ API.interceptors.request.use((config) => {
 });
 
 
-export const queryDocumentAutomation = async (file, cancelToken) => {
+export const queryDocumentAutomation = async (file, controller) => {
   if (!file) {
     return {
       status: "failed",
@@ -31,7 +31,7 @@ export const queryDocumentAutomation = async (file, cancelToken) => {
     formData.append("file", file);
 
     const response = await API.post(`/document-automation`, formData, {
-      cancelToken, // Pass the cancel token
+      signal: controller.signal,
     });
 
     return { status: "success", excelURL: response.data.excelURL };

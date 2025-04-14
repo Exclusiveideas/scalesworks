@@ -56,7 +56,7 @@ export default function useCompanyLogoDialog() {
     updateIsCLLoading(true);
 
     // Create an Axios cancel signal
-    controllerRef.current = new AbortController();
+    controllerRef.current = new AbortController(); 
 
     try {
       const apiResponse = await uploadCompanyLogos(
@@ -84,7 +84,7 @@ export default function useCompanyLogoDialog() {
         console.log("err: ", error);
         toast.error("Error uploading logo(s).");
       }
-    }
+    } 
     updateIsCLLoading(false);
   }
 

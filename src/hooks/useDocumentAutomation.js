@@ -5,13 +5,11 @@ import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import "@/styles/eDiscovery.css";
 import useDocumentAutomationStore from "@/store/useDocumentAutomationStore";
 import { queryDocumentAutomation } from "@/apiCalls/queryDocumentAutomation";
-import axios from "axios";
 
 const allowedFileTypes = ["application/pdf"];
 
 const useDocumentAutomation = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [cancelTokenSource, setCancelTokenSource] = useState(null);
   const [error, setError] = useState(null);
   const [sendBtnActive, setSendBtnActive] = useState(false);
   const [streaming, setStreaming] = useState(false);
@@ -30,6 +28,7 @@ const useDocumentAutomation = () => {
   const isHydrated = useHydrationZustand(useAuthStore);
 
   const messagesEndRef = useRef(null);
+  const controllerRef = useRef(null); // Store Axios cancel signal
 
   useEffect(() => {
     if (isHydrated && !user) {
@@ -72,13 +71,12 @@ const useDocumentAutomation = () => {
 
     setStreaming(true);
 
-    // Create a cancel token source
-    const source = axios.CancelToken.source();
-    setCancelTokenSource(source);
+    // Create an Axios cancel signal
+    controllerRef.current = new AbortController(); 
 
     const queryResponse = await queryDocumentAutomation(
       selectedFile,
-      source.token
+      controllerRef.current
     );
 
     if (queryResponse.status == "failed") {
@@ -104,12 +102,9 @@ const useDocumentAutomation = () => {
   };
 
   const closeStreaming = () => {
-    console.log('close clicked')
-    if (cancelTokenSource) {
-      cancelTokenSource.cancel("User cancelled the upload");
-      setCancelTokenSource(null);
-      setStreaming(false);
-    }
+    // Cancel any ongoing request
+    controllerRef?.current?.abort();
+    setStreaming(false);
   };
 
   return {

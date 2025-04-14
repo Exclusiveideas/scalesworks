@@ -32,7 +32,7 @@ export default function useKnowledgeBase() {
   const fileInputRef = useRef(null); // Ref for hidden input
 
   const router = useRouter();
-  const cancelTokenRef = useRef(null); // Store Axios cancel token
+  const controllerRef = useRef(null); // Store Axios cancel signal
 
   useEffect(() => {
     if (isHydrated && !user) {
@@ -118,11 +118,12 @@ export default function useKnowledgeBase() {
       return
     }
 
-    // Create an Axios cancel token
-    cancelTokenRef.current = axios.CancelToken.source();
+    // Create an Axios cancel signal
+    controllerRef.current = new AbortController(); 
 
     try {
-      const newKnowledge = await uploadToKnowledgeBaseAPI(selectedFiles, cancelTokenRef.current);
+      const newKnowledge = await uploadToKnowledgeBaseAPI(selectedFiles, 
+        controllerRef.current);
 
       updateIsLoading(false);
 
@@ -154,9 +155,7 @@ export default function useKnowledgeBase() {
 
   const closeKBDialog = () => {
     // Cancel any ongoing request
-    if (cancelTokenRef.current) {
-      cancelTokenRef.current.cancel("File(s) upload request canceled.");
-    }
+    controllerRef?.current?.abort();
     
     updateIsLoading(false);
     setSelectedFiles([]);

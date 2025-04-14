@@ -17,7 +17,7 @@ API.interceptors.request.use((config) => {
 });
 
 
-export const uploadToKnowledgeBaseAPI = async (files, cancelToken) => {
+export const uploadToKnowledgeBaseAPI = async (files, controller) => {
     try {
       const formData = new FormData();
   
@@ -27,7 +27,7 @@ export const uploadToKnowledgeBaseAPI = async (files, cancelToken) => {
       });
   
       const response = await API.post(`/chatbot/upload-knowledge`, formData, {
-        cancelToken: cancelToken?.token, // Pass cancel token
+        signal: controller.signal, // cancel signal
         headers: {
           "Content-Type": "multipart/form-data", // Required for file uploads
         },
