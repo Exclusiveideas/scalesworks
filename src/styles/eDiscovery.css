@@ -242,35 +242,28 @@
 
 @media (max-width: 575px) {
 
-.modelTitle_container_e-discovery {
-    padding: .7rem 2rem;
-    font-size: 14px
-};
+    .modelTitle_container_e-discovery {
+        padding: .7rem 2rem;
+        font-size: 14px
+    }
 
     .selectedFileBox {
         padding: .5rem .5rem;
         font-size: 12px;
     }
 
-.cleartBtn_wrapper {
-    width: 20%;
-}
-
-
-.ed_clearChatBtn {
-    padding: 0.4rem .8rem;
-    font-size: 10px;
-}
+    .cleartBtn_wrapper {
+        width: 20%;
+    }
 
     .ed_clearChatBtn {
+        padding: 0.4rem .8rem;
+        font-size: 10px;
     }
-    
 
     .eDiscovery_chats_area {
         padding: 0;
     }
-
-    
 
 
 }

@@ -14,7 +14,7 @@ import "@/styles/knowledge-base.css";
 import { Info, PanelRightOpen } from "lucide-react";
 import { useEffect } from "react";
 
-const KnowledgeBase = () => {
+const KnowledgeBase = () => { 
   const { toggleSidebar } = useSidebar();
 
   const { tableData } = useKnowledgeBase();
@@ -34,8 +34,6 @@ const KnowledgeBase = () => {
           <div onClick={toggleSidebar} className="kb_sideBar_trigger">
             <PanelRightOpen />
           </div>
-        </div>
-        <div className="kb_pageBody">
           <div className="pageTitleBox">
             <div className="modelTitle_container_knowledgeBase">
               Knowledge Base
@@ -45,7 +43,8 @@ const KnowledgeBase = () => {
               <p className="pageTitle_subInfo_text">Max file size: 50MB</p>
             </div>
           </div>
-
+        </div>
+        <div className="kb_pageBody">
           <div className="tableHeader">
             <h3>Your Uploaded Files</h3>
             <div onClick={openDialog} className="addNewKnowledge">

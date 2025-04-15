@@ -27,7 +27,8 @@
     gap: .5rem;
     width: 100%;
     padding: .8rem 1rem;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.847);
+    margin-bottom: .3rem;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.311);
 }
 
 .tr_sideBar_trigger {
