@@ -8,7 +8,7 @@ const ChatInput = ({
   audioInputRef,
   handleFileChange,
   addFile,
-  sendMessage,
+  requestTranscription,
   closeStreaming,
   streaming,
   sendBtnActive,
@@ -28,7 +28,7 @@ const ChatInput = ({
       </div>
       {!streaming ? (
         <div
-          onClick={sendMessage}
+          onClick={requestTranscription}
           className={`transcript_sendBtn ${sendBtnActive && "active"}`}
         >
           <Send />

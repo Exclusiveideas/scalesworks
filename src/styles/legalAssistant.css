@@ -81,7 +81,8 @@
     justify-content: space-between;
     gap: 1rem;
     overflow: hidden;
-    
+    flex: 1;
+    /* border: 1px solid rgb(0, 0, 0); */
 }
 
 .chats_area {
@@ -122,7 +123,7 @@
     padding: .7rem 1.5rem;
     color: white;
     border-radius: 32px;
-    width: 80%;
+    width: 400px;
 }
 
 
@@ -176,4 +177,7 @@
         padding: 0;
     }
 
+    .inputbox {
+        width: 80%;
+    }
 }

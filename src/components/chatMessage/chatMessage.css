@@ -10,7 +10,12 @@
     flex-direction: column;
     gap: .5rem;
     color: white;
-    /* overflow-x: auto; */
+    position: relative;
+}
+
+.chatMessage_message.error {
+  background-color: #cd1b18e6;
+  font-size: 14px;
 }
 
 .chatMessage_message.loading {
@@ -29,6 +34,24 @@
 .aitextMessageBlock{
   overflow-x: auto;
   padding-bottom: .3rem;
+}
+
+.transcriptionAITxt-container {
+  position: absolute;
+  top: calc(100% + .3rem);
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  color: rgb(108, 108, 108);
+  width: max-content;
+}
+
+.transcriptionAITxt-container.user {
+  align-self: flex-end;
+}
+
+.transcriptionAITxt {
+  font-size: 12px;
 }
 
 

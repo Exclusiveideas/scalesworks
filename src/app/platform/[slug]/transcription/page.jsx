@@ -7,6 +7,7 @@ import { Info, PanelRightOpen } from "lucide-react";
 import useTranscription from "@/hooks/useTranscription";
 import ChatMessagesWindow from "@/components/transcription/chatMessagesWindow";
 import ChatInput from "@/components/transcription/chatInput";
+import ChatInputLegal from "@/components/chatInputBox";
 import ChatBubble from "@/components/chatBubble";
 import { fetchUser } from "@/apiCalls/authAPI";
 import { useEffect } from "react";
@@ -14,18 +15,18 @@ import useAuthStore from "@/store/authStore";
 
 const Transcription = () => {
   const { toggleSidebar } = useSidebar();
-    
+
   const { updateUser } = useAuthStore();
 
   useEffect(() => {
-    fetchUser(updateUser)
+    fetchUser(updateUser);
   }, []); // Runs only on mount (hard reload)
 
   const {
     selectedAudio,
     sendBtnActive,
     error,
-    sendMessage,
+    requestTranscription,
     closeStreaming,
     streaming,
     streamingData,
@@ -34,37 +35,52 @@ const Transcription = () => {
     handleFileChange,
     addFile,
     messagesEndRef,
-    clearTChats
+    clearTChats,
+
+    sendTranscriptQuery,
+    inputValue,
+    setInputValue,
+    queryBtnActive,
+    lastTranscription,
   } = useTranscription();
-  
 
   return (
     <div className="transcription_wrapper">
       <AppSidebar />
-      <div className="page_content">
-        <div className="pageTop">
+      <div className="page_content_transcription">
+        <div className="pageTitleBox_transcription">
           <div onClick={toggleSidebar} className="tr_sideBar_trigger">
             <PanelRightOpen />
           </div>
-          <div onClick={clearTChats} className="ed_clearChatBtn">
-            Clear Chat
-          </div>
-        </div>
-        <div className="pageBody">
-          <div className="pageTitleBox">
-          <div className="modelTitle_container_e-discovery">Transcription</div>
-            <div className="pageTitle_subInfo">
+          <div className="pageTitle_container">
+            <div className="modelTitle_container_e-discovery">
+              Transcription
+            </div>
+            <div className="pageTitle_subInfo_tr">
               <Info size={16} />
               <p className="pageTitle_subInfo_text">Max file size: 50MB</p>
             </div>
           </div>
-          <div className="selectedFileBox">
+          <div className="cleartBtn_wrapper">
+            <div onClick={clearTChats} className="ed_clearChatBtn">
+              Clear Chat
+            </div>
+          </div>
+        </div>
+        <div className="page-FileBox">
+          <div className="selectedFileBox_transcription">
             <span>
               {selectedAudio
-                ? `Selected Audio: ${selectedAudio.name}`
+                ? `Selected Audio: ${
+                    selectedAudio.name.length > 35
+                      ? `${selectedAudio.name.slice(0, 35)}...`
+                      : selectedAudio.name
+                  }`
                 : "No audio file selected"}
             </span>
           </div>
+        </div>
+        <div className="pageBody_transcription">
           <div className="interaction_area">
             <ChatMessagesWindow
               tChats={tChats}
@@ -72,16 +88,44 @@ const Transcription = () => {
               streamingData={streamingData}
               messagesEndRef={messagesEndRef}
             />
-            <ChatInput
-              audioInputRef={audioInputRef}
-              handleFileChange={handleFileChange}
-              addFile={addFile}
-              sendMessage={sendMessage}
-              closeStreaming={closeStreaming}
-              streaming={streaming}
-              sendBtnActive={sendBtnActive}
-              error={error}
-            />
+            <div className="chatInput_transcription_wrapper">
+              <div
+                className={`chatInputOriginal_wrapper ${
+                  lastTranscription && "slide"
+                }`}
+              >
+                <ChatInput
+                  audioInputRef={audioInputRef}
+                  handleFileChange={handleFileChange}
+                  addFile={addFile}
+                  requestTranscription={requestTranscription}
+                  closeStreaming={closeStreaming}
+                  streaming={streaming}
+                  sendBtnActive={sendBtnActive}
+                  error={error}
+                />
+              </div>
+              <div
+                className={`chatInputLegal_wrapper ${
+                  lastTranscription && "visible"
+                }`}
+              >
+                <ChatInputLegal
+                  inputValue={inputValue}
+                  setInputValue={setInputValue}
+                  sendMessage={sendTranscriptQuery}
+                  closeStreaming={closeStreaming}
+                  streamingData={streaming}
+                  sendBtnActive={queryBtnActive}
+                />
+              </div>
+            </div>
+            {lastTranscription && (
+              <div className="transcriptionQuery-info">
+                <Info size={16} />
+                <p>The last requested transcription is used in your query.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
