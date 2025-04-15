@@ -48,15 +48,23 @@ export default function useLegalAssistant() {
         });
       },
       (error) => {
-        closeStreaming()
+        closeStreaming();
         updateChats({
-          message: error?.includes("Unauthorized") ? "Unauthorized - Please login" : "Server Error - Please try again.",
+          message: error?.includes("Unauthorized")
+            ? "Unauthorized - Please login"
+            : "Server Error - Please try again.",
           sender: "bot",
+          status: "error",
           time: Date.now(),
         });
       },
       () => {
-        updateChats({ message: streamingDataRef.current, sender: "bot", time: Date.now() });
+        updateChats({
+          message: streamingDataRef.current,
+          sender: "bot",
+          status: "la_request",
+          time: Date.now(),
+        });
         setStreaming(false);
         setStreamingData("");
       },
@@ -69,7 +77,14 @@ export default function useLegalAssistant() {
   const closeStreaming = () => {
     if (eventSourceRef.current instanceof AbortController) {
       eventSourceRef.current.abort();
-      updateChats({ message: streamingDataRef.current, sender: "bot", time: Date.now() });
+      if (streamingDataRef.current) {
+        updateChats({
+          message: streamingDataRef.current,
+          sender: "bot",
+          status: "la_request",
+          time: Date.now(),
+        });
+      }
       setStreaming(false);
       setStreamingData("");
       streamingDataRef.current = "";

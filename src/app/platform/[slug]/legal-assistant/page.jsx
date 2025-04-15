@@ -11,6 +11,8 @@ import useLegalAssistant from "@/hooks/useLegalAssistant";
 import { useEffect } from "react";
 import ChatBubble from "@/components/chatBubble";
 import { fetchUser } from "@/apiCalls/authAPI";
+import ChatInput from "@/components/chatInputBox";
+import ChatWindow from "@/components/chatWindow";
 
 const LegalAssistant = () => {
   const { toggleSidebar } = useSidebar();
@@ -60,7 +62,7 @@ const LegalAssistant = () => {
             </div>
           </div>
         </div>
-        {/* <div className="pageBody_la">
+        <div className="pageBody_la">
           <div className="interaction_area">
             <ChatWindow
               chats={chats}
@@ -77,7 +79,7 @@ const LegalAssistant = () => {
               sendBtnActive={sendBtnActive}
             />
           </div>
-        </div> */}
+        </div>
       </div>
       <ChatBubble />
     </div>

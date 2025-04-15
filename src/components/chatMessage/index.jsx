@@ -8,7 +8,7 @@ const ChatMessage = ({ chat }) => {
     <div
       className={`chatMessage_message ${
         chat?.sender === "user" ? "user" : "markdown"
-      }`}
+      } ${chat?.status == 'error' && 'error'}`}
     >
       <div className="aitextMessageBlock">
         {chat?.sender !== "user" ? (

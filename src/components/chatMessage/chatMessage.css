@@ -90,12 +90,19 @@
   
 
 @media (max-width: 575px) {
-  .chatMessage {
+  .chatMessage_message {
     max-width: 80%;
-    padding: .5rem;
-    font-size: 13px;
+    padding: .4rem .8rem;
+    font-size: 4vw;
   }
 
 
+  .chatMessage_message.error {
+    font-size: 3vw;
+  }
+
+  .loader {
+    height: 6px;
+  }
 
 }
