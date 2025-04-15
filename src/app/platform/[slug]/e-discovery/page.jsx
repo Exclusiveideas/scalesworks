@@ -48,18 +48,20 @@ const EDiscovery = () => {
           <div onClick={toggleSidebar} className="ed_sideBar_trigger">
             <PanelRightOpen />
           </div>
-          <div onClick={clearEDChats} className="ed_clearChatBtn">
-            Clear Chat
-          </div>
-        </div>
-        <div className="pageBody">
-          <div className="pageTitleBox">
+          <div className="ed_pageTitle_container">
             <div className="modelTitle_container_e-discovery">E-Discovery</div>
             <div className="pageTitle_subInfo">
               <Info size={16} />
               <p className="pageTitle_subInfo_text">Max file size: 50MB</p>
             </div>
           </div>
+          <div className="cleartBtn_wrapper">
+            <div onClick={clearEDChats} className="ed_clearChatBtn">
+              Clear Chat
+            </div>
+          </div>
+        </div>
+        <div className="ed-page-FileBox">
           <div className="selectedFileBox">
             <span>
               {selectedFiles.length > 0
@@ -69,6 +71,8 @@ const EDiscovery = () => {
                 : "No file selected"}
             </span>
           </div>
+        </div>
+        <div className="pageBody">
           <div className="interaction_area">
             <ChatMessagesWindow
               edChats={edChats}
