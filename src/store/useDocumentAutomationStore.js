@@ -9,7 +9,7 @@ const useDocumentAutomationStore = create(
       clearDAChats: () => set({ dAChats: [] }),
     }),
     {
-      name: "document-automation-chats",
+      name: "scaleworks-document-automation-chats",
     }
   )
 );

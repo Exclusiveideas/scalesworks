@@ -9,7 +9,7 @@ const useChatBotAsstStore = create(
       clearChats: () => set({ chats: [] }),
     }),
     {
-      name: "chatBot-assistant-chats",
+      name: "scaleworks-chatBot-assistant-chats",
     }
   )
 );

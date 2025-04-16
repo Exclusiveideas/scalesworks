@@ -9,7 +9,7 @@ const useTranscriptionStore = create(
       clearTChats: () => set({ tChats: [] }),
     }),
     {
-      name: "transcription-chats",
+      name: "scaleworks-transcription-chats",
     }
   )
 );

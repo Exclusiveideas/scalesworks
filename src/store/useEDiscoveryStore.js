@@ -9,7 +9,7 @@ const useEDiscoveryStore = create(
       clearEDChats: () => set({ edChats: [] }),
     }),
     {
-      name: "e-discovery-chats",
+      name: "scaleworks-e-discovery-chats",
     }
   )
 );

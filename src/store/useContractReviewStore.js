@@ -9,7 +9,7 @@ const useContractReviewStore = create(
       clearCRChats: () => set({ cRChats: [] }),
     }),
     {
-      name: "contract-review-chats",
+      name: "scaleworks-contract-review-chats",
     }
   )
 );

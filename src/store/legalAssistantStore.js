@@ -9,7 +9,7 @@ const useLegalAssistStore = create(
       clearChats: () => set({ chats: [] }),
     }),
     {
-      name: "legal-assistant-chats",
+      name: "scaleworks-legal-assistant-chats",
     }
   )
 );
