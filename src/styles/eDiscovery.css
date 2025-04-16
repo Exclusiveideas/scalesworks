@@ -110,13 +110,13 @@
     border: 1px solid rgba(255, 255, 255, .3);
 }
 
-.pageTitle_subInfo {
+.pageTitle_subInfo_ed {
     font-size: 12px;
     display: flex;
     align-items: center;
     gap: .5rem;
     color: gray;
-    padding: .3rem 0;
+    padding: 0;
 }
 
 
