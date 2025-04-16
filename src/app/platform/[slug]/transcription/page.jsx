@@ -25,7 +25,6 @@ const Transcription = () => {
   const {
     selectedAudio,
     sendBtnActive,
-    error,
     requestTranscription,
     closeStreaming,
     streaming,
@@ -36,6 +35,7 @@ const Transcription = () => {
     addFile,
     messagesEndRef,
     clearTChats,
+    selectFileBtnActive,
 
     sendTranscriptQuery,
     inputValue,
@@ -102,7 +102,7 @@ const Transcription = () => {
                   closeStreaming={closeStreaming}
                   streaming={streaming}
                   sendBtnActive={sendBtnActive}
-                  error={error}
+                  selectFileBtnActive={selectFileBtnActive}
                 />
               </div>
               <div

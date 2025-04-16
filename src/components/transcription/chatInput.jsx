@@ -12,7 +12,7 @@ const ChatInput = ({
   closeStreaming,
   streaming,
   sendBtnActive,
-  error,
+  selectFileBtnActive
 }) => {
   return (
     <div className="transcript_inputbox">
@@ -23,22 +23,21 @@ const ChatInput = ({
         accept=".mp3,.wav"
         style={{ display: "none" }}
       />
-      <div onClick={addFile} className="transcript_addFileBtn">
-        <Plus />
+      <div style={{ pointerEvents: !selectFileBtnActive ? "none" : "auto" }} onClick={addFile} className="transcript_addFileBtn">
+        <Plus className="plusIcon_tr" />
       </div>
       {!streaming ? (
         <div
           onClick={requestTranscription}
           className={`transcript_sendBtn ${sendBtnActive && "active"}`}
         >
-          <Send />
+          <Send className="sendIcon_tr" />
         </div>
       ) : (
         <div onClick={closeStreaming} className="transcript_stopBtn">
-          <StopCircleOutlinedIcon sx={{ fontSize: 30 }} />
+          <StopCircleOutlinedIcon />
         </div>
       )}
-      {error && <p className="transcript_error_message">{error}</p>}
     </div>
   );
 };

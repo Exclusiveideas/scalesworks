@@ -1,8 +1,9 @@
+
 .chatMessage_message {
     width: max-content;
     max-width: 65%;
     height: max-content;
-    padding: .6rem 1rem;
+    padding: .5rem 1rem;
     background-color: var(--color-text-dark);
     border-radius: 14px;
     align-self: flex-start;
@@ -10,8 +11,9 @@
     flex-direction: column;
     gap: .5rem;
     color: white;
-    position: relative;
+    position: relative; 
 }
+
 
 .chatMessage_message.error {
   background-color: #cd1b18e6;
@@ -37,13 +39,12 @@
 }
 
 .transcriptionAITxt-container {
-  position: absolute;
-  top: calc(100% + .3rem);
   display: flex;
   align-items: center;
   gap: .3rem;
   color: rgb(108, 108, 108);
   width: max-content;
+  max-width: 90%;
 }
 
 .transcriptionAITxt-container.user {
@@ -92,8 +93,8 @@
 @media (max-width: 575px) {
   .chatMessage_message {
     max-width: 80%;
-    padding: .4rem .8rem;
-    font-size: 4vw;
+    padding: .4rem 1rem;
+    font-size: 3.2vw;
   }
 
 

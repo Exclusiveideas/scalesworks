@@ -1,6 +1,6 @@
 "use client";
 
-import { AppSidebar } from "@/components/appSideBar";
+import { AppSidebar, ORGANIZATIONAL_ROLES } from "@/components/appSideBar";
 import "./admin.css";
 import { Feather, MailCheck, PanelRightOpen } from "lucide-react";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -14,6 +14,7 @@ import { AdminAction } from "@/components/modelOverview";
 import EmailListDialog from "@/components/adminDashboardComp/emailListDialog";
 import useAdminDashboardStore from "@/store/adminDashboardStore";
 import CompanyLogoDialog from "@/components/adminDashboardComp/companyLogoDialog";
+import { generateSignString } from "@/lib/utils";
 
 const Admin = () => {
   const { toggleSidebar } = useSidebar();
@@ -26,8 +27,13 @@ const Admin = () => {
     useAdminDashboardStore();
 
   useEffect(() => {
-    if (isHydrated && !user) {
-      // router.push("/");
+    if (isHydrated) {
+      if(!user) {
+      router.push("/");
+      } else if(!ORGANIZATIONAL_ROLES.includes(user?.user_name)) {
+          const signString = generateSignString(user?.organization_name);
+        router.push(`/platform/${signString}/`);
+      }
     }
   }, [user, isHydrated]);
 
@@ -57,7 +63,7 @@ const Admin = () => {
         </div>
         <div className="pageBody">
           <div className="aboveTheFold">
-            <h2 className="dashboardTitle">Welcome, Edvard</h2>
+            <h2 className="dashboardTitle">Welcome, {user?.user_name}</h2>
           </div>
           <Separator className="seperatorCss" />
           <div className="modelsOverview">

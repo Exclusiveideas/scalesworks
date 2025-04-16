@@ -17,15 +17,14 @@ const EDiscovery = () => {
   const { updateUser } = useAuthStore();
 
   useEffect(() => {
-    fetchUser(updateUser)
+    fetchUser(updateUser);
   }, []); // Runs only on mount (hard reload)
-  
+
   const {
     inputValue,
     setInputValue,
     selectedFiles,
     sendBtnActive,
-    error,
     sendMessage,
     closeStreaming,
     streaming,
@@ -35,10 +34,9 @@ const EDiscovery = () => {
     handleFileChange,
     addFile,
     messagesEndRef,
-    clearEDChats
+    clearEDChats,
+    selectFileBtnActive
   } = useEDiscovery();
-
-  
 
   return (
     <div className="eDiscovery_wrapper">
@@ -66,13 +64,17 @@ const EDiscovery = () => {
             <span>
               {selectedFiles.length > 0
                 ? `Selected File(s): ${selectedFiles
-                    .map((file) => file.name)
+                    .map((file) =>
+                      file.name.length > 20
+                        ? `${file.name.slice(0, 20)}...`
+                        : file.name
+                    )
                     .join(", ")}`
                 : "No file selected"}
             </span>
           </div>
         </div>
-        <div className="pageBody">
+        <div className="ed_pageBody">
           <div className="interaction_area">
             <ChatMessagesWindow
               edChats={edChats}
@@ -91,7 +93,7 @@ const EDiscovery = () => {
               closeStreaming={closeStreaming}
               streaming={streaming}
               sendBtnActive={sendBtnActive}
-              error={error}
+              selectFileBtnActive={selectFileBtnActive}
             />
           </div>
         </div>
@@ -102,4 +104,3 @@ const EDiscovery = () => {
 };
 
 export default EDiscovery;
- 

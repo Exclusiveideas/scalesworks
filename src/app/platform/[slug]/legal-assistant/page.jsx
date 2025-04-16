@@ -21,7 +21,7 @@ const LegalAssistant = () => {
   const isHydrated = useHydrationZustand(useAuthStore);
 
   useEffect(() => {
-    fetchUser(updateUser)
+    fetchUser(updateUser);
   }, []); // Runs only on mount (hard reload)
 
   useEffect(() => {
@@ -40,10 +40,8 @@ const LegalAssistant = () => {
     sendBtnActive,
     chats,
     messagesEndRef,
-    clearChats
+    clearChats,
   } = useLegalAssistant();
-
-  
 
   return (
     <div className="legalAssistant_wrapper">

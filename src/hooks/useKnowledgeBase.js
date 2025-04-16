@@ -3,7 +3,11 @@ import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/authStore";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import useDialogStore from "@/store/useDialogStore";
-import { uploadToKnowledgeBaseAPI } from "@/apiCalls/uploadToKnowledgeBaseAPI";
+import {
+  deleteKnowledgeBaseData,
+  fetchKnowledgeBaseData,
+  uploadToKnowledgeBaseAPI,
+} from "@/apiCalls/uploadToKnowledgeBaseAPI";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -17,7 +21,7 @@ const allowedFileTypes = [
   "application/vnd.ms-excel",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "text/csv",
-  "text/markdown"
+  "text/markdown",
 ];
 
 export default function useKnowledgeBase() {
@@ -26,6 +30,7 @@ export default function useKnowledgeBase() {
   const [tableData, setTableData] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [error, setError] = useState(null);
+  const [deletingKnowledge, setDeletingKnowledge] = useState(false);
 
   const { closeDialog, isLoading, updateIsLoading } = useDialogStore();
   const updateUser = useAuthStore((state) => state.updateUser);
@@ -36,94 +41,60 @@ export default function useKnowledgeBase() {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      // router.push("/");
+      router.push("/");
     }
 
     getData();
   }, [user, isHydrated]);
 
   async function getData() {
-    if(!user?.knowledgeBase) return
+    if (!user?.knowledgeBase) return;
 
-    setTableData(user?.knowledgeBase?.map(file => ({ file_name: file })));
+    try {
+      const knowledgeBaseData = await fetchKnowledgeBaseData(
+        user?.knowledgeBase
+      );
+      if (knowledgeBaseData?.error) {
+        toast.error("Error fetching knowledge base.", {
+          description: knowledgeBaseData?.error,
+          style: { border: "none", color: "red" },
+        });
+        return;
+      }
 
-    // setTableData([
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    //   {
-    //     id: "728ed52f",
-    //     file_name: "Amendments to SJC Rule 3 12 - Effective March 1 2018.pdf",
-    //   },
-    // ]);
+      setTableData(
+        knowledgeBaseData?.map((data) => ({
+          file_name: data?.file_name,
+          id: data?.id,
+        }))
+      );
+    } catch (error) {
+      toast.error("Error fetching knowledge base.", {
+        description: error,
+        style: { border: "none", color: "red" },
+      });
+    }
   }
 
   const uploadKnowledge = async () => {
     updateIsLoading(true);
 
-    if(selectedFiles.length === 0) {
+    if (selectedFiles.length === 0) {
       toast.error("A file is required.", {
         style: { border: "none", color: "red" },
       });
       updateIsLoading(false);
-      return
+      return;
     }
 
     // Create an Axios cancel signal
-    controllerRef.current = new AbortController(); 
+    controllerRef.current = new AbortController();
 
     try {
-      const newKnowledge = await uploadToKnowledgeBaseAPI(selectedFiles, 
-        controllerRef.current);
+      const newKnowledge = await uploadToKnowledgeBaseAPI(
+        selectedFiles,
+        controllerRef.current
+      );
 
       updateIsLoading(false);
 
@@ -132,31 +103,44 @@ export default function useKnowledgeBase() {
           description: newKnowledge?.error,
           style: { border: "none", color: "red" },
         });
-        return
+        return;
       } else {
-        toast.success("File(s) successfully uploaded", {
-          description: newKnowledge?.message,
-          style: { border: "none", color: "green" },
-        });
+        const updatedUser = newKnowledge?.data?.updatedUser;
+        const errors = newKnowledge?.data?.errors;
+        console.log("updatedUser: ", updatedUser);
+
+        if (errors?.length > 0) {
+          for (const error of errors) {
+            toast.error("File(s) successfully uploaded with errors.", {
+              description: error,
+              style: { border: "none", color: "red" },
+            });
+          }
+        } else {
+          toast.success("File(s) successfully uploaded", {
+            description: newKnowledge?.message,
+            style: { border: "none", color: "green" },
+          });
+        }
 
         closeKBDialog();
-        updateUser(newKnowledge?.user[0]);
+        console.log("updatedUser: ", updatedUser);
+        updateUser(updatedUser[0]);
       }
     } catch (error) {
       if (axios.isCancel(error)) {
         console.log("File(s) upload request canceled.");
       } else {
-        console.log('err: ', error)
+        console.log("err: ", error);
         toast.error("Failed to upload File(s) project.");
       }
     }
-
   };
 
   const closeKBDialog = () => {
     // Cancel any ongoing request
     controllerRef?.current?.abort();
-    
+
     updateIsLoading(false);
     setSelectedFiles([]);
     setError(null);
@@ -165,7 +149,9 @@ export default function useKnowledgeBase() {
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    const validFiles = files.filter((file) => allowedFileTypes.includes(file.type));
+    const validFiles = files.filter((file) =>
+      allowedFileTypes.includes(file.type)
+    );
 
     if (validFiles.length) {
       setSelectedFiles(validFiles);
@@ -176,6 +162,43 @@ export default function useKnowledgeBase() {
     }
   };
 
+  const handleDelete = async (docID) => {
+    if (!docID) return;
+
+    setDeletingKnowledge(true);
+
+    try {
+      const response = await deleteKnowledgeBaseData(docID);
+      if (response?.error) {
+        toast.error("Error deleting knowledge.", {
+          description: response?.error,
+          style: { border: "none", color: "red" },
+        });
+      } else {
+        toast.success("Successfully deleted knowledge.", {
+          description: "reloading page",
+          style: {
+            border: "none",
+            color: "green",
+          },
+        });
+
+        setTimeout(() => {
+          if (typeof window !== "undefined") {
+            window.location.reload();
+          }
+        }, 2000);
+      }
+    } catch (error) {
+      toast.error("Error deleting knowledge.", {
+        description: error,
+        style: { border: "none", color: "red" },
+      });
+    }
+
+    setDeletingKnowledge(false);
+  };
+
   return {
     tableData,
     isLoading,
@@ -184,6 +207,8 @@ export default function useKnowledgeBase() {
     handleFileChange,
     selectedFiles,
     fileInputRef,
-    error
+    error,
+    handleDelete,
+    deletingKnowledge
   };
 }

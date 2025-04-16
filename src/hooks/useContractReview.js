@@ -4,7 +4,9 @@ import { useRouter } from "next/navigation";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import "@/styles/eDiscovery.css";
 import useContractReviewStore from "@/store/useContractReviewStore";
-import { queryContractReview } from "@/apiCalls/queryContractReview";
+import { queryContractReview, queryContractReviewTask } from "@/apiCalls/queryContractReview";
+import { toast } from "sonner";
+import { updateLastFilteredMessage } from "@/lib/utils";
 
 const allowedFileTypes = [
   "application/pdf",
@@ -19,10 +21,10 @@ const allowedFileTypes = [
 
 const useContractReview = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [error, setError] = useState(null);
   const [streamingData, setStreamingData] = useState("");
   const [streaming, setStreaming] = useState(false);
   const [sendBtnActive, setSendBtnActive] = useState(false);
+  const [selectFileBtnActive, setSelectFileBtnActive] = useState(true);
 
   const fileInputRef = useRef(null);
   const streamingDataRef = useRef("");
@@ -30,6 +32,13 @@ const useContractReview = () => {
   const updateCRChats = useContractReviewStore((state) => state.updateCRChats);
   const clearCRChats = useContractReviewStore((state) => state.clearCRChats);
   const cRChats = useContractReviewStore((state) => state.cRChats);
+
+  // 
+  const [inputValue, setInputValue] = useState("");
+  const [queryBtnActive, setQueryBtnActive] = useState(false);
+
+  const [lastReview, setLastReview] = useState(null);
+  const [recentRequest, setRecentRequest] = useState(null);
 
   const router = useRouter();
   const { user } = useAuthStore();
@@ -39,7 +48,7 @@ const useContractReview = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      // router.push("/");
+      router.push("/");
     }
   }, [user, isHydrated]);
 
@@ -58,10 +67,12 @@ const useContractReview = () => {
 
     if (validFiles.length) {
       setSelectedFiles(validFiles);
-      setError(null);
     } else {
       setSelectedFiles([]);
-      setError("Invalid file type(s). Please select valid documents.");
+      toast.error("Invalid file type.", {
+        description: 'valid types: .pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .md',
+        style: { border: "none", color: "red" },
+      });
     }
   };
 
@@ -69,12 +80,16 @@ const useContractReview = () => {
     fileInputRef.current.click();
   };
 
-  const sendMessage = () => {
+  const requestContractReview = () => {
     if (selectedFiles.length === 0 || streaming) return;
 
+    setRecentRequest("review_request");
+
     updateCRChats({
+      message: 'Contract(s) review',
       fileNames: selectedFiles.map((file) => file.name),
       sender: "user",
+      status: "review_user_request",
       time: Date.now(),
     });
 
@@ -96,15 +111,24 @@ const useContractReview = () => {
         });
       },
       (error) => {
-        closeStreaming()
+        closeStreaming();
         updateCRChats({
-          message: error?.includes("Unauthorized") ? "Unauthorized - Please login" : "Server Error - Please try again.",
+          message: error?.includes("Unauthorized")
+            ? "Unauthorized - Please login"
+            : "Server Error - Please try again.",
           sender: "bot",
+          status: "error",
           time: Date.now(),
         });
       },
       () => {
-        updateCRChats({ message: streamingDataRef.current, sender: "bot", time: Date.now() });
+        updateCRChats({
+          message: streamingDataRef.current,
+          sender: "bot",
+          status: "review_request",
+          fileNames: selectedFiles.map((file) => file.name),
+          time: Date.now(),
+        });
         setStreaming(false);
         setStreamingData("");
       },
@@ -116,11 +140,18 @@ const useContractReview = () => {
   const closeStreaming = () => {
     if (eventSourceRef.current instanceof AbortController) {
       eventSourceRef.current.abort();
-      updateCRChats({
-        message: streamingDataRef.current,
-        sender: "bot",
-        time: Date.now(),
-      });
+      if (streamingDataRef.current) {
+        updateCRChats({
+          message: streamingDataRef.current,
+          sender: "bot",
+          status: recentRequest,
+          fileNames: 
+          recentRequest === "review_request"
+            ? selectedFiles.map((file) => file.name)
+            : lastReview?.fileNames,
+          time: Date.now(),
+        });
+      }
       setStreaming(false);
       setStreamingData("");
       streamingDataRef.current = "";
@@ -128,11 +159,89 @@ const useContractReview = () => {
     }
   };
 
+  // review query functions
+
+  const sendReviewQuery = () => {
+    if (!lastReview?.fileNames || !inputValue || streaming) return;
+
+    setRecentRequest("review_task");
+
+    updateCRChats({
+      fileNames: lastReview?.fileNames,
+      sender: "user",
+      status: "review_task",
+      message: inputValue,
+      time: Date.now(),
+    });
+
+    setStreaming(true);
+    setStreamingData("");
+    streamingDataRef.current = "";
+
+    const abortController = new AbortController();
+    eventSourceRef.current = abortController;
+
+    queryContractReviewTask(
+      inputValue,
+      lastReview?.message,
+      (streamedData) => {
+        setStreamingData((prev) => {
+          if (prev.endsWith(streamedData)) return prev;
+          const updatedData = prev + streamedData;
+          streamingDataRef.current = updatedData;
+          return updatedData;
+        });
+      },
+      (error) => {
+        closeStreaming("task");
+        updateCRChats({
+          message: error?.includes("Unauthorized")
+            ? "Unauthorized - Please login"
+            : "Server Error - Please try again.",
+          sender: "bot",
+          status: "error",
+          time: Date.now(),
+        });
+      },
+      () => {
+        updateCRChats({
+          message: streamingDataRef.current,
+          sender: "bot",
+          status: "review_task",
+          fileNames: lastReview?.fileNames,
+          time: Date.now(),
+        });
+        setStreaming(false);
+        setStreamingData("");
+        setInputValue("");
+      },
+      abortController
+    );
+  };
+
+  useEffect(() => {
+    const hasTranscription = cRChats.some(
+      (msg) => msg.status === "review_request"
+    );
+    setQueryBtnActive(hasTranscription && !!inputValue);
+  }, [cRChats, inputValue]);
+
+  useEffect(() => {
+    updateLastFilteredMessage(cRChats, setLastReview, "review_request");
+  }, [cRChats]);
+
+  useEffect(() => {
+    if(streaming) {
+      setSelectFileBtnActive(false)
+    } else {
+      setSelectFileBtnActive(true)
+    }
+  }, [streaming])
+
   return {
     selectedFiles,
     sendBtnActive,
-    error,
-    sendMessage,
+    requestContractReview,
     closeStreaming,
     streaming,
     streamingData,
@@ -141,7 +250,14 @@ const useContractReview = () => {
     handleFileChange,
     addFile,
     messagesEndRef,
-    clearCRChats
+    clearCRChats,
+    selectFileBtnActive,
+
+    sendReviewQuery,
+    inputValue,
+    setInputValue,
+    queryBtnActive,
+    lastReview,
   };
 };
 

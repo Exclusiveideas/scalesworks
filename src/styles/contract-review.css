@@ -12,31 +12,108 @@
     color: white;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
-}
+    overflow-x: hidden; 
+    padding-bottom: .5rem;
+    overflow-y: hidden;
+    box-sizing: border-box;
+} 
 
 .cr_pageTop {
-    height: max-content;
-    width: 100%;
-    padding: .5rem 1rem;
+    align-self: center;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: .5rem;
+    width: 100%;
+    padding: .8rem 1rem;
+    margin-bottom: .3rem;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.311);
 }
 
 .cr_sideBar_trigger {
     cursor: pointer;
     width: fit-content;
     color: black;
+    flex: 1;
+    /* border: 1px solid black; */
+}
+
+.pageTitleBox {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    /* border: 1px solid black; */
+    align-self: center;
+}
+
+.pageTitle_subInfo_cr {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: gray;
+    padding: .3rem 0;
+}
+
+.cr_pageTop,
+.page-FileBox {
+    /* These will take up only as much space as needed */
+    flex: 0 0 auto;
 }
 
 .cr_pageBody {
+    /* This will stretch to fill the remaining height */
+    flex: 1 1 auto;
+    overflow: auto;
+    /* Optional: make it scroll if content is long */
+}
+
+
+.cr_pageBody {
     width: 100%;
-    height: 90%;
-    /* border: 1px solid black; */
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    padding: 1rem 3rem;
-    padding-bottom: 0;
+    padding: 0;
+    align-self: center;
+    gap: 1rem;
+}
+
+
+
+
+
+@media (max-width: 575px) {
+
+
+    .cr_pageTop {
+        padding: .5rem;
+        margin-bottom: .5rem;
+    }
+    
+.cr_sideBar_trigger {
+    width: 20%;
+}
+
+
+.pageTitleBox {
+    width: 60%;
+}
+
+
+.pageTitle_subInfo_cr {
+    font-size: 10px;
+}
+
+
+.cr_pageBody {
+    padding: .2rem .5rem;
+}
+
+    .cr_page_content {
+        padding-bottom: 0;
+    }
 }

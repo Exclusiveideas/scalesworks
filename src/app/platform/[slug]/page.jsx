@@ -78,7 +78,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      // router.push("/");
+      router.push("/");
     }
   }, [user, isHydrated]);
 

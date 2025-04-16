@@ -14,7 +14,7 @@
     border-radius: 50%;
     background-color: var(--color-text-dark);
     position: fixed;
-    right: 4rem;
+    right: 3rem;
     bottom: 4rem;
 
     display: flex;
@@ -26,9 +26,9 @@
     transition: all 0.3s ease-in;
 
 
-    -webkit-box-shadow: 3px -7px 34px 10px rgba(255, 255, 255, 0.59);
-    -moz-box-shadow: 3px -7px 34px 10px rgba(255, 255, 255, 0.59);
-    box-shadow: 3px -7px 34px 10px rgba(255, 255, 255, 0.59);
+    -webkit-box-shadow: 3px -7px 34px 10px rgba(132, 132, 132, 0.59);
+    -moz-box-shadow: 3px -7px 34px 10px rgba(132, 132, 132, 0.59);
+    box-shadow: 3px -7px 34px 10px rgba(132, 132, 132, 0.59);
     cursor: pointer;
 
 }
@@ -73,12 +73,12 @@
 
     .chatBubble_component {
         right: 1rem;
-        bottom: 6.5rem;
     }
 
 
     .chatBubble_wrapper {
-        bottom: 6.5rem;
+        width: 60px;
+        height: 60px;
     }
 
     

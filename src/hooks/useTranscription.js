@@ -8,7 +8,8 @@ import {
   queryTranscription,
   queryTranscriptionTask,
 } from "@/apiCalls/transcription";
-import { updateLastTranscription } from "@/lib/utils";
+import { updateLastFilteredMessage } from "@/lib/utils";
+import { toast } from "sonner";
 
 const allowedAudioTypes = [
   "audio/mpeg", // MP3
@@ -17,10 +18,10 @@ const allowedAudioTypes = [
 
 const useTranscription = () => {
   const [selectedAudio, setSelectedAudio] = useState(null);
-  const [error, setError] = useState(null);
   const [streamingData, setStreamingData] = useState("");
   const [streaming, setStreaming] = useState(false);
   const [sendBtnActive, setSendBtnActive] = useState(false);
+  const [selectFileBtnActive, setSelectFileBtnActive] = useState(true);
 
   // chat window
   const [inputValue, setInputValue] = useState("");
@@ -44,7 +45,7 @@ const useTranscription = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      // router.push("/");
+      router.push("/");
     }
   }, [user, isHydrated]);
 
@@ -61,12 +62,12 @@ const useTranscription = () => {
 
     if (file && allowedAudioTypes.includes(file.type)) {
       setSelectedAudio(file); // Store only one file
-      setError(null);
     } else {
       setSelectedAudio(null);
-      setError(
-        "Invalid file type. Please select a valid audio file (MP3 or WAV)."
-      );
+      toast.error("Invalid file type.", {
+        description: "valid type: MP3 or WAV",
+        style: { border: "none", color: "red" },
+      });
     }
   };
 
@@ -77,12 +78,12 @@ const useTranscription = () => {
   const requestTranscription = () => {
     if (!selectedAudio || streaming) return;
 
-    setRecentRequest('transcription_request')
+    setRecentRequest("transcription_request");
 
     updateTChats({
       audioName: selectedAudio.name,
       sender: "user",
-      status: "transcript_request",
+      status: "transcription_user_request",
       transcript_name: selectedAudio.name,
       time: Date.now(),
     });
@@ -139,7 +140,7 @@ const useTranscription = () => {
           sender: "bot",
           status: recentRequest,
           transcript_name:
-          recentRequest === "transcription_request"
+            recentRequest === "transcription_request"
               ? selectedAudio.name
               : lastTranscription?.transcript_name,
           time: Date.now(),
@@ -151,13 +152,12 @@ const useTranscription = () => {
       streamingDataRef.current = "";
       eventSourceRef.current = null;
     }
-  };
+  }; 
 
   const sendTranscriptQuery = () => {
     if (!lastTranscription?.transcript_name || !inputValue || streaming) return;
-    
-    
-    setRecentRequest('transcript_task')
+
+    setRecentRequest("transcript_task");
 
     updateTChats({
       transcript_name: lastTranscription?.transcript_name,
@@ -219,15 +219,22 @@ const useTranscription = () => {
     setQueryBtnActive(hasTranscription && !!inputValue);
   }, [tChats, inputValue]);
 
+  useEffect(() => {
+    updateLastFilteredMessage(tChats, setLastTranscription, "transcription_request");
+  }, [tChats]);
 
   useEffect(() => {
-    updateLastTranscription(tChats, setLastTranscription);
-  }, [tChats]);
+    if(streaming) {
+      setSelectFileBtnActive(false)
+    } else {
+      setSelectFileBtnActive(true)
+    }
+  }, [streaming])
+   
 
   return {
     selectedAudio,
     sendBtnActive,
-    error,
     requestTranscription,
     closeStreaming,
     streaming,
@@ -238,6 +245,7 @@ const useTranscription = () => {
     addFile,
     messagesEndRef,
     clearTChats,
+    selectFileBtnActive,
 
     sendTranscriptQuery,
     inputValue,

@@ -3,7 +3,7 @@
 import { fetchUser } from "@/apiCalls/authAPI";
 import { AppSidebar } from "@/components/appSideBar";
 import ChatBubble from "@/components/chatBubble";
-import { columns } from "@/components/knowledgeBaseTableComp/columns";
+import { getColumns } from "@/components/knowledgeBaseTableComp/columns";
 import { KnowledgeBaseTable } from "@/components/knowledgeBaseTableComp/knowledgeBaseTable";
 import UploadKnowledgeDialog from "@/components/knowledgeBaseTableComp/UploadKnowledgeDialog";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -17,10 +17,14 @@ import { useEffect } from "react";
 const KnowledgeBase = () => { 
   const { toggleSidebar } = useSidebar();
 
-  const { tableData } = useKnowledgeBase();
+  const { tableData, handleDelete, deletingKnowledge } = useKnowledgeBase();
 
   const { openDialog } = useDialogStore();
   const { updateUser } = useAuthStore();
+
+  
+
+  const columns = getColumns(handleDelete, deletingKnowledge)
 
   useEffect(() => {
     fetchUser(updateUser);

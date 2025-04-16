@@ -11,7 +11,7 @@ export const queryChatBotAssistant = async (query, onMessage, onError, onComplet
 
         // 🔹 Open SSE Connection with AbortController
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URI}/legal-research?query=${encodeURIComponent(query)}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URI}/chatbot?query=${encodeURIComponent(query)}`,
             {
                 method: "GET",
                 credentials: "include",

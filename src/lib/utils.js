@@ -69,12 +69,12 @@ export function validateEmails(inputString) {
   }
 }
 
-export function updateLastTranscription(messages, setLastTranscription) {
+export function updateLastFilteredMessage(messages, setFunction, filter) {
   // Find the last transcription message
-  const lastTranscription = [...messages]
+  const lastFilteredMessage = [...messages]
     .reverse()
-    .find(msg => msg.status === 'transcription_request');
+    .find(msg => msg.status === filter);
 
   // Update the state
-  setLastTranscription(lastTranscription || null);
+  setFunction(lastFilteredMessage || null);
 }

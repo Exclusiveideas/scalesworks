@@ -67,6 +67,12 @@ const items = [
   },
 ];
 
+export const ORGANIZATIONAL_ROLES = [
+  "admin", 
+  "developer"
+]
+
+
 export function AppSidebar() {
   const updateUser = useAuthStore((state) => state.updateUser);
   const [organization, setOrganization] = useState("");
@@ -91,28 +97,15 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="h-max">
             <div className="userInfo_box">
-              <div className="userLetter">{user?.user_name?.[0] || ""}</div>
+              <div className="userLetter"><p>{user?.user_name?.[0] || "-"}</p></div>
               <div className="userInfo_subContainer">
-                <p className="user_name">{user?.user_name || ""}</p>
-                <p className="user_email">{user?.email || ""}</p>
+                <p className="user_name">{user?.user_name || "username"}</p>
+                <p className="user_email">{user?.email || "email"}</p>
               </div>
             </div>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="sidebar_menu">
-              {user?.user_name == "admin" && (
-                <SidebarMenuItem key={"admin"} className="sidebarMenuItem">
-                  <SidebarMenuButton asChild>
-                    <a
-                      href={`/platform/${organization}/admin/`}
-                      className="sideBarItem"
-                    >
-                      <SlidersHorizontal className="admin-icon" />
-                      <span>Admin</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
               {items.map((item) => (
                 <SidebarMenuItem key={item.title} className="sidebarMenuItem">
                   <SidebarMenuButton asChild>
@@ -126,6 +119,19 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              {ORGANIZATIONAL_ROLES.includes(user?.user_name) && (
+                <SidebarMenuItem key={"admin"} className="sidebarMenuItem admin">
+                  <SidebarMenuButton asChild>
+                    <a
+                      href={`/platform/${organization}/admin/`}
+                      className="sideBarItem"
+                    >
+                      <SlidersHorizontal className="admin-icon" />
+                      <span>Admin</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

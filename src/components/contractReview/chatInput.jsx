@@ -8,11 +8,11 @@ const ChatInput = ({
   fileInputRef,
   handleFileChange,
   addFile,
-  sendMessage,
+  requestContractReview,
   closeStreaming,
   streaming,
   sendBtnActive,
-  error,
+  selectFileBtnActive
 }) => {
   return (
     <div className="transcript_inputbox">
@@ -24,12 +24,12 @@ const ChatInput = ({
         multiple
         style={{ display: "none" }}
       />
-      <div onClick={addFile} className="transcript_addFileBtn">
+      <div style={{ pointerEvents: !selectFileBtnActive ? "none" : "auto" }} onClick={addFile} className="transcript_addFileBtn">
         <Plus />
       </div>
       {!streaming ? (
         <div
-          onClick={sendMessage}
+          onClick={requestContractReview}
           className={`transcript_sendBtn ${sendBtnActive && "active"}`}
         >
           <Send />
@@ -39,7 +39,6 @@ const ChatInput = ({
           <StopCircleOutlinedIcon sx={{ fontSize: 30 }} />
         </div>
       )}
-      {error && <p className="transcript_error_message">{error}</p>}
     </div>
   );
 };

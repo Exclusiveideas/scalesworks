@@ -23,7 +23,6 @@ const DocumentAutomation = () => {
   const {
     selectedFile,
     sendBtnActive,
-    error,
     sendMessage,
     streaming,
     closeStreaming,
@@ -33,53 +32,64 @@ const DocumentAutomation = () => {
     addFile,
     messagesEndRef,
     clearDAChats,
+    selectFileBtnActive
   } = useDocumentAutomation();
 
   return (
     <div className="documentAutomation_wrapper">
       <AppSidebar />
-      <div className="page_content">
-        <div className="pageTop">
+      <div className="da_page_content">
+        <div className="da_pageTop">
           <div onClick={toggleSidebar} className="da_sideBar_trigger">
             <PanelRightOpen />
           </div>
-          <div onClick={clearDAChats} className="ed_clearChatBtn">
-            Clear Chat
-          </div>
-        </div>
-        <div className="pageBody">
-          <div className="pageTitleBox">
+          <div className="da_pageTitleBox">
             <div className="modelTitle_container_e-discovery">
               Document Automation
             </div>
-            <div className="pageTitle_subInfo">
+            <div className="pageTitle_subInfo_tr">
               <Info size={16} />
               <p className="pageTitle_subInfo_text">Max file size: 50MB</p>
             </div>
           </div>
+          <div className="cleartBtn_wrapper">
+            <div onClick={clearDAChats} className="ed_clearChatBtn">
+              Clear Chat
+            </div>
+          </div>
+        </div>
+        <div className="page-FileBox">
           <div className="selectedFileBox">
             <span>
               {selectedFile
-                ? `Selected File: ${selectedFile?.name}`
-                : "No file selected"}
+                ? `Selected File: ${
+                    selectedFile.name.length > 35
+                      ? `${selectedFile.name.slice(0, 35)}...`
+                      : selectedFile.name
+                  }`
+                : "No audio file selected"}
             </span>
           </div>
+        </div>
+        <div className="da_pageBody">
           <div className="interaction_area">
             <ChatMessagesWindow
               dAChats={dAChats}
               streaming={streaming}
               messagesEndRef={messagesEndRef}
             />
-            <ChatInput
-              fileInputRef={fileInputRef}
-              handleFileChange={handleFileChange}
-              addFile={addFile}
-              sendMessage={sendMessage}
-              closeStreaming={closeStreaming}
-              streaming={streaming}
-              sendBtnActive={sendBtnActive}
-              error={error}
-            />
+            <div className="chatInput_da_wrapper">
+              <ChatInput
+                fileInputRef={fileInputRef}
+                handleFileChange={handleFileChange}
+                addFile={addFile}
+                sendMessage={sendMessage}
+                closeStreaming={closeStreaming}
+                streaming={streaming}
+                sendBtnActive={sendBtnActive}
+                selectFileBtnActive={selectFileBtnActive}
+              />
+            </div>
           </div>
         </div>
       </div>

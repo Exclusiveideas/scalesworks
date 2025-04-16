@@ -5,6 +5,7 @@ import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import "@/styles/eDiscovery.css";
+import { toast } from "sonner";
 
 const allowedFileTypes = [
   "application/pdf",
@@ -20,10 +21,10 @@ const allowedFileTypes = [
 const useEDiscovery = () => {
   const [inputValue, setInputValue] = useState("");
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [error, setError] = useState(null);
   const [streamingData, setStreamingData] = useState("");
   const [streaming, setStreaming] = useState(false);
   const [sendBtnActive, setSendBtnActive] = useState(false);
+  const [selectFileBtnActive, setSelectFileBtnActive] = useState(true);
 
   const fileInputRef = useRef(null);
   const streamingDataRef = useRef("");
@@ -40,7 +41,7 @@ const useEDiscovery = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      // router.push("/");
+      router.push("/");
     }
   }, [user, isHydrated]);
 
@@ -59,10 +60,12 @@ const useEDiscovery = () => {
 
     if (validFiles.length) {
       setSelectedFiles(validFiles);
-      setError(null);
     } else {
       setSelectedFiles([]);
-      setError("Invalid file type(s). Please select valid documents.");
+      toast.error("Invalid file type.", {
+        description: 'valid types: .pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .md',
+        style: { border: "none", color: "red" },
+      });
     }
   };
 
@@ -77,6 +80,7 @@ const useEDiscovery = () => {
       message: inputValue,
       fileNames: selectedFiles.map((file) => file.name),
       sender: "user",
+      status: "e_discovery",
       time: Date.now(),
     });
 
@@ -99,15 +103,24 @@ const useEDiscovery = () => {
         });
       },
       (error) => {
-        closeStreaming()
+        closeStreaming();
         updateEDChats({
-          message: error?.includes("Unauthorized") ? "Unauthorized - Please login" : "Server Error - Please try again.",
+          message: error?.includes("Unauthorized")
+            ? "Unauthorized - Please login"
+            : "Server Error - Please try again.",
           sender: "bot",
+          status: "error",
           time: Date.now(),
         });
       },
       () => {
-        updateEDChats({ message: streamingDataRef.current, sender: "bot", time: Date.now() });
+        updateEDChats({
+          message: streamingDataRef.current,
+          sender: "bot",
+          fileNames: selectedFiles.map((file) => file.name),
+          status: "e_discovery",
+          time: Date.now(),
+        });
         setStreaming(false);
         setStreamingData("");
       },
@@ -120,11 +133,14 @@ const useEDiscovery = () => {
   const closeStreaming = () => {
     if (eventSourceRef.current instanceof AbortController) {
       eventSourceRef.current.abort();
-      updateEDChats({
-        message: streamingDataRef.current,
-        sender: "bot",
-        time: Date.now(),
-      });
+      if (streamingDataRef.current) {
+        updateEDChats({
+          message: streamingDataRef.current,
+          sender: "bot",
+          status: "e_discovery",
+          time: Date.now(),
+        });
+      }
       setStreaming(false);
       setStreamingData("");
       streamingDataRef.current = "";
@@ -132,12 +148,20 @@ const useEDiscovery = () => {
     }
   };
 
+  
+  useEffect(() => {
+    if(streaming) {
+      setSelectFileBtnActive(false)
+    } else {
+      setSelectFileBtnActive(true)
+    }
+  }, [streaming])
+
   return {
     inputValue,
     setInputValue,
     selectedFiles,
     sendBtnActive,
-    error,
     sendMessage,
     closeStreaming,
     streaming,
@@ -147,7 +171,8 @@ const useEDiscovery = () => {
     handleFileChange,
     addFile,
     messagesEndRef,
-    clearEDChats
+    clearEDChats,
+    selectFileBtnActive
   };
 };
 

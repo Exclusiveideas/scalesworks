@@ -15,19 +15,19 @@ const ChatInput = ({
   closeStreaming,
   streaming,
   sendBtnActive,
-  error
+  selectFileBtnActive
 }) => {
   return (
     <div className="eDiscovery_inputbox">
       <Input
-        type="text"
+        type="text" 
         placeholder={`Ask anything (${
           selectedFiles.length === 0 ? "must attach at least one file" : "files selected"
         })`}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendMessage())}
-        className="legalAsst_input"
+        className="eDiscovery_input"
       />
       <input
         type="file"
@@ -37,19 +37,18 @@ const ChatInput = ({
         multiple
         style={{ display: "none" }}
       />
-      <div onClick={addFile} className="eDiscovery_addFileBtn">
-        <Plus />
+      <div style={{ pointerEvents: !selectFileBtnActive ? "none" : "auto" }} onClick={addFile} className="eDiscovery_addFileBtn">
+        <Plus className="plusIcon_ed" />
       </div>
       {!streaming ? (
         <div onClick={sendMessage} className={`eDiscovery_sendBtn ${sendBtnActive && "active"}`}>
-          <Send />
+          <Send className="sendIcon_ed" />
         </div>
       ) : (
         <div onClick={closeStreaming} className="eDiscovery_stopBtn">
-          <StopCircleOutlinedIcon sx={{ fontSize: 30 }} />
+          <StopCircleOutlinedIcon />
         </div>
       )}
-      {error && <p className="eDiscovery_error_message">{error}</p>}
     </div>
   );
 };

@@ -33,7 +33,7 @@ export const uploadToKnowledgeBaseAPI = async (files, controller) => {
         },
       });
   
-      return { status: response.status, user: response.data.updatedUser };
+      return { status: response.status, data: response.data };
     } catch (err) {
       if (axios.isCancel(err)) {
         console.warn("Upload cancelled by user");
@@ -50,4 +50,40 @@ export const uploadToKnowledgeBaseAPI = async (files, controller) => {
       };
     }
   };
+export const fetchKnowledgeBaseData = async (knowledgeBaseIds) => {
+  try {
+    const response = await API.post("/chatbot/fetch-knowledgebases", {
+      knowledgeBaseIds,
+    });
+
+    return response.data.knowledgeBases;
+  } catch (err) {      
+    return {
+      error:
+        typeof err?.response?.data?.error === "string"
+          ? err.response.data.error
+          : typeof err?.message === "string"
+          ? err.message
+          : "Problem fetching data - Try again.",
+    };
+  }
+}
   
+export const deleteKnowledgeBaseData = async (knowledgeBaseId) => {
+  try {
+    const response = await API.post("/chatbot/delete-knowledge", {
+      knowledgeBaseId,
+    });
+
+    return response.data.message;
+  } catch (err) {      
+    return {
+      error:
+        typeof err?.response?.data?.error === "string"
+          ? err.response.data.error
+          : typeof err?.message === "string"
+          ? err.message
+          : "Problem deleting data - Try again.",
+    };
+  }
+}

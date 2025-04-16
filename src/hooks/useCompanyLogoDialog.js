@@ -42,7 +42,7 @@ export default function useCompanyLogoDialog() {
   
        setCompanyTableData(tableData);
       } catch (error) {
-        console.log("err: ", error);
+        // console.log("err: ", error);
         toast.error("Failed to fetch users list.");
       }
   }

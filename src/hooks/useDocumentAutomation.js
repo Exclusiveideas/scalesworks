@@ -5,14 +5,15 @@ import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import "@/styles/eDiscovery.css";
 import useDocumentAutomationStore from "@/store/useDocumentAutomationStore";
 import { queryDocumentAutomation } from "@/apiCalls/queryDocumentAutomation";
+import { toast } from "sonner";
 
 const allowedFileTypes = ["application/pdf"];
 
 const useDocumentAutomation = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [error, setError] = useState(null);
   const [sendBtnActive, setSendBtnActive] = useState(false);
   const [streaming, setStreaming] = useState(false);
+  const [selectFileBtnActive, setSelectFileBtnActive] = useState(true);
 
   const fileInputRef = useRef(null);
   const updateDAChats = useDocumentAutomationStore(
@@ -32,7 +33,7 @@ const useDocumentAutomation = () => {
 
   useEffect(() => {
     if (isHydrated && !user) {
-      // router.push("/");
+      router.push("/");
     }
   }, [user, isHydrated]);
 
@@ -49,10 +50,12 @@ const useDocumentAutomation = () => {
 
     if (file && allowedFileTypes.includes(file.type)) {
       setSelectedFile(file);
-      setError(null);
     } else {
       setSelectedFile(null);
-      setError("Invalid file type. Please upload your pdf form.");
+      toast.error("Invalid file type.", {
+        description: "Upload your pdf form",
+        style: { border: "none", color: "red" },
+      });
     }
   };
 
@@ -66,6 +69,7 @@ const useDocumentAutomation = () => {
     updateDAChats({
       fileName: selectedFile.name,
       sender: "user",
+      status: "automation_request",
       time: Date.now(),
     });
 
@@ -87,14 +91,14 @@ const useDocumentAutomation = () => {
           ? "Unauthorized - Please login"
           : (queryResponse?.errorMessage?.includes('Upload cancelled.') ? 'Upload cancelled.' : "Server Error - Please try again."),
         sender: "bot",
-        status: 'failed',
+        status: 'error',
         time: Date.now(),
       });
     } else {
       updateDAChats({
         message: queryResponse?.excelURL,
         sender: "bot",
-        status: 'success',
+        status: "success",
         time: Date.now(),
       });
     }
@@ -107,10 +111,18 @@ const useDocumentAutomation = () => {
     setStreaming(false);
   };
 
+  
+  useEffect(() => {
+    if(streaming) {
+      setSelectFileBtnActive(false)
+    } else {
+      setSelectFileBtnActive(true)
+    }
+  }, [streaming])
+
   return {
     selectedFile,
     sendBtnActive,
-    error,
     sendMessage,
     streaming,
     closeStreaming,
@@ -120,6 +132,7 @@ const useDocumentAutomation = () => {
     addFile,
     messagesEndRef,
     clearDAChats,
+    selectFileBtnActive
   };
 };
 

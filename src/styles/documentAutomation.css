@@ -1,36 +1,123 @@
 .documentAutomation_wrapper {
     width: 100vw;
-    min-height: 100vh;
+    height: 100vh;
     box-sizing: border-box;
-    overflow-y: auto;
     display: flex;
 }
 
-.page_content {
+.da_page_content {
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
     background-color: var(--page-bg);
     color: white;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    padding-bottom: .5rem;
+    overflow-y: hidden;
+    box-sizing: border-box;
 }
 
-.pageTop {
-    height: max-content;
+.da_pageTop {
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
     width: 100%;
-    padding: .5rem;
+    padding: .8rem 1rem;
+    margin-bottom: .3rem;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.311);
 }
 
 .da_sideBar_trigger {
     cursor: pointer;
     width: fit-content;
     color: black;
+    flex: 1;
 }
 
-.pageBody {
-    width: 100%;
-    height: 90%;
+.da_pageTitleBox {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
     /* border: 1px solid black; */
+    align-self: center;
+}
+
+
+.da_pageTitleBox,
+.page-FileBox {
+    /* These will take up only as much space as needed */
+    flex: 0 0 auto;
+}
+
+.da_pageBody {
+    /* This will stretch to fill the remaining height */
+    flex: 1 1 auto;
+    overflow: auto;
+    /* Optional: make it scroll if content is long */
+}
+
+.da_pageBody {
+    width: 100%;
+    height: 82vh;
+    flex: 1;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    padding: 1rem 3rem;
+    padding: 0;
+    align-self: center;
+    gap: 1rem;
+    /* border: 1px solid black; */
+}
+
+.chatInput_da_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid rgb(0, 0, 0); */
+    width: 100%;
+    gap: 1.5rem;
+    position: relative;
+    height: max-content;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+
+@media (max-width: 575px) {
+
+    .da_page_content {
+        padding-bottom: 0;
+    }
+
+    .da_pageTop {
+        padding: .5rem;
+        margin-bottom: .5rem;
+    }
+
+    .da_sideBar_trigger {
+        width: 20%;
+    }
+
+
+    .da_pageTitleBox {
+        width: 60%;
+    }
+
+    .da_pageBody {
+        height: 78vh;
+        padding: 0 .5rem;
+        padding-bottom: .5rem;
+    }
+
+    .chatInput_da_wrapper {
+        flex-direction: column;
+        gap: .5rem;
+    }
+
 }

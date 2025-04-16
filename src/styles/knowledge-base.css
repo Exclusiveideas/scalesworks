@@ -118,6 +118,15 @@
     cursor: pointer;
 }
 
+.addNewKnowledge.delete {
+    background-color: #cd1b18ca;
+    transition: all 0.3s ease-in;
+}
+
+.addNewKnowledge.delete:hover {
+    background-color: #ae1816ca;
+}
+
 
 
 @media (max-width: 575px) {

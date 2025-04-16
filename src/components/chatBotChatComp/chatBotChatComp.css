@@ -14,33 +14,45 @@
 .chatComponent_top {
     border-bottom: 1px dashed rgb(70, 70, 70);
     width: 100%;
-    height: 10%;
+    height: max-content;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: .5rem;
+    justify-content: space-between;
+    padding: .5rem 1rem;
     padding-top: 1rem;
-    position: relative;
+    box-sizing: border-box;
 }
 
 .chatComp_title {
-    font-size: 17px;
+    font-size: 14px;
     color: black;
     font-weight: 700;
+    align-self: center;
+    display: flex;
 }
 
 .clearChats {
     font-size: 11px;
     cursor: pointer;
-    position: absolute;
-    right: .5rem;
-    top: 60%;
-    transform: translateY(-50%);
 }
 
 .clearChats:hover {
     text-decoration: underline;
 }
+
+
+.chatComponent_top {
+    /* These will take up only as much space as needed */
+    flex: 0 0 auto;
+}
+
+.innteraction_container {
+    /* This will stretch to fill the remaining height */
+    flex: 1 1 auto;
+    overflow: auto;
+    /* Optional: make it scroll if content is long */
+}
+
 
 .innteraction_container {
     flex: 1;
@@ -157,4 +169,14 @@
 
 .stopBtn:hover {
     transform: scale(1.08);
+}
+
+
+
+@media (max-width: 575px) {
+
+
+    .chatComponent_top {
+        flex-direction: column;
+    }
 }

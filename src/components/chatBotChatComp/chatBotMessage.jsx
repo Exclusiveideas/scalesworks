@@ -3,7 +3,7 @@ import "./chatBotMessage.css";
 
 const ChatBotMessage = ({ chat }) => {
   return (
-    <div className={`chatMessage ${chat?.sender == "user" && "user"}`}>
+    <div className={`chatMessage ${chat?.sender == "user" && "user"} ${chat?.status == "error" && "error"}`}>
       {chat?.sender !== "user" ? (
         <Markdown>{chat?.message}</Markdown>
       ) : (

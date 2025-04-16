@@ -12,7 +12,7 @@
     color: white;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
+    overflow-x: hidden; 
     padding-bottom: .5rem;
     overflow-y: hidden;
     box-sizing: border-box;
@@ -50,12 +50,21 @@
     align-self: center;
 }
 
-
+.pageTitleBox_transcription,
+.page-FileBox {
+    /* These will take up only as much space as needed */
+    flex: 0 0 auto;
+}
 
 .pageBody_transcription {
-    width: 95%;
-    height: 82vh;
-    flex: 1;
+    /* This will stretch to fill the remaining height */
+    flex: 1 1 auto;
+    overflow: auto;
+    /* Optional: make it scroll if content is long */
+}
+
+.pageBody_transcription {
+    width: 100%;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -75,7 +84,7 @@
 }
 
 
-.page-FileBox{
+.page-FileBox {
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -136,7 +145,8 @@
 
 .chatInputLegal_wrapper {
     opacity: 0;
-    pointer-events: none;  /* Avoid accidental hovers/clicks */
+    pointer-events: none;
+    /* Avoid accidental hovers/clicks */
     transform: translateY(100%);
     width: max-content;
     flex-direction: row;
@@ -211,10 +221,6 @@
     cursor: pointer;
 }
 
-.addFileBtn.inActive {
-    background-color: #d3d3d386;
-    transition: all 0.3s ease-in;
-}
 
 .transcript_sendBtn {
     padding: .6rem;
@@ -234,24 +240,15 @@
     transform: scale(1.08);
 }
 
+
+
 .transcript_stopBtn {
-    padding: .4rem;
+    padding: .6rem;
     background-color: #d3d3d386;
     color: white;
     border-radius: 50%;
-    font-size: 12px;
+    font-size: 8px;
     cursor: pointer;
-    transition: all 0.3s ease-in;
-}
-
-.transcript_stopBtn:hover {
-    transform: scale(1.08);
-}
-
-
-
-.transcript_error_message {
-    font-size: 10px;
 }
 
 
@@ -285,36 +282,62 @@
         width: 60%;
     }
 
-    .pageTitle-x-FileBox {
-        flex-direction: row;
-        align-items: center;
+    .pageTitle_subInfo_text {
+        font-size: 10px;
+    }
+
+    .page-FileBox {
+        padding: 0 .5rem;
     }
 
     .selectedFileBox_transcription {
-        max-width: 60%;
+        max-width: 95%;
+        font-size: 10px;
     }
 
     .pageBody_transcription {
-        height: 78vh;
-        padding: 1rem 1rem;
+        padding: .2rem .4rem;
     }
-    
+
 
     .page_content_transcription {
         padding-bottom: 0;
     }
 
-    
+    .transcript_inputbox {
+        padding: .4rem .8rem;
+    }
+
+    .plusIcon_tr {
+        width: 15px;
+        height: 15px;
+    }
+
+
+    .sendIcon_tr {
+        width: 15px;
+        height: 15px;
+    }
+
+
+    .transcript_stopBtn {
+        font-size: 8px;
+    }
 
     .chatInput_transcription_wrapper {
         flex-direction: column;
         gap: .5rem;
     }
-    
+
 
     .chatInputOriginal_wrapper {
         transform: translateX(0px);
         transform: translateY(50%);
+    }
+
+
+    .chatInputLegal_wrapper {
+        width: 90%;
     }
 
     .chatInputOriginal_wrapper.slide {

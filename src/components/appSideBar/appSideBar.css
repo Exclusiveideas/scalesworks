@@ -25,6 +25,7 @@
   color: black;
   font-size: 18px;
   padding: .7rem;
+  box-sizing: border-box;
   border-radius: 50%;
   background-color: #fff;
   text-transform: uppercase;
@@ -57,9 +58,9 @@
   gap: .7rem;
 }
 
-.sidebarMenuItem {
-  /* border: 1px solid red; */
-  /* background-color: #fff; */
+.sidebarMenuItem.admin {
+  border-top: 1px solid rgb(140, 140, 140);
+  margin-top: 1rem;
 }
 
 .logOutBar {

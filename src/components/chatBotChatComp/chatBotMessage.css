@@ -10,6 +10,12 @@
     flex-direction: column;
     gap: .5rem;
     color: white;
+    font-size: 12px;
+}
+
+.chatMessage.error {
+  background-color: #cd1b18e6;
+  font-size: 10px;
 }
 
 .chatMessage.loading {
@@ -49,3 +55,20 @@
       50%      {transform:scale(var(--_s,1)) translate(-25%) rotate(1turn)}
       75%,100% {transform:scale(var(--_s,1)) translate(0)    rotate(1turn)}
   }
+
+
+  
+
+@media (max-width: 575px) {
+  .chatMessage_message {
+    max-width: 80%;
+    padding: .4rem 1rem;
+    font-size: 3.2vw;
+  }
+
+
+  .chatMessage_message.error {
+    /* font-size: 3vw; */
+  }
+
+}

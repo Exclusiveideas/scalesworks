@@ -2,10 +2,10 @@ import "./chatMessage.css";
 
 const DAChatMessage = ({ chat }) => {
   return (
-    <div className={`chatMessage_message ${chat?.sender == "user" && "user"}`}>
+    <div className={`chatMessage_message ${chat?.sender == "user" && "user"} ${chat?.status == 'error' && 'error'}`}>
       {chat?.sender == "user" ? (
         <>
-          <p>Form name: {chat?.fileName}</p>
+          <p>Form: {chat?.fileName}</p>
         </>
       ) : (
         <>
