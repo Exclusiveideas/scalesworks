@@ -14,7 +14,7 @@ import ChatBubble from "@/components/chatBubble";
 import { generateSignString } from "@/lib/utils";
 import { fetchUser } from "@/apiCalls/authAPI";
 import Image from "next/image";
-import { Search, BookOpen, FileText, FileCode, Mic, Anchor, ArrowUpNarrowWide, ShieldCheck } from "lucide-react";
+import { Search, BookOpen, FileText, FileCode, Mic } from "lucide-react";
 
 const modelsOverview = [
   {
@@ -47,24 +47,24 @@ const modelsOverview = [
     Icon: Mic,
     link: 'transcription'
   },
-  {
-    title: 'soon',
-    description: 'AI-powered transcription and deposition summary.',
-    Icon: Anchor,
-    link: 'transcription'
-  },
-  {
-    title: 'soon',
-    description: 'AI-powered transcription and deposition summary.',
-    Icon: ArrowUpNarrowWide,
-    link: 'transcription'
-  },
-  {
-    title: 'soon',
-    description: 'AI-powered transcription and deposition summary.',
-    Icon: ShieldCheck,
-    link: 'transcription'
-  },
+  // {
+  //   title: 'soon',
+  //   description: 'AI-powered transcription and deposition summary.',
+  //   Icon: Anchor,
+  //   link: 'transcription'
+  // },
+  // {
+  //   title: 'soon',
+  //   description: 'AI-powered transcription and deposition summary.',
+  //   Icon: ArrowUpNarrowWide,
+  //   link: 'transcription'
+  // },
+  // {
+  //   title: 'soon',
+  //   description: 'AI-powered transcription and deposition summary.',
+  //   Icon: ShieldCheck,
+  //   link: 'transcription'
+  // },
 ]
 
 const Dashboard = () => {
