@@ -11,7 +11,7 @@
     gap: 1rem;
 }
 
-.dialogDescription > .subHeading {
+.cld_subHeading {
     font-size: 12px;
 }
 
@@ -108,9 +108,26 @@
     cursor: pointer;
 }
 
+.pageTitle_subInfo_cld {
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    color: gray;
+    padding: .3rem 0;
+    /* border: 1px solid black; */
+}
+
+.pageTitle_subInfo_text_cld {
+    padding-top: .05rem;
+}
 
 @media (max-width: 575px) {
     .dialogBody {
         max-width: 90vw;
     }
+    .pageTitle_subInfo_text_cld {
+        font-size: 10px;
+    }
+
 }
