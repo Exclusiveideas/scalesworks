@@ -55,34 +55,39 @@ const useEDiscovery = () => {
     setSendBtnActive(inputValue && selectedFiles.length !== 0);
   }, [inputValue, streaming, selectedFiles]);
 
-  const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
 
-    // Check if the number of selected files exceeds the max limit (5)
-    if (files.length > 5) {
-      toast.error("You can only select up to 5 files.", {
-        description: "Please remove some files to proceed.",
-        style: { border: "none", color: "red" },
-      });
-      return;
-    }
+const handleFileChange = (event) => {
+  const newFiles = Array.from(event.target.files);
 
-    // Filter valid files based on allowed types
-    const validFiles = files.filter((file) =>
-      allowedFileTypes.includes(file.type)
-    );
+  // Filter only valid file types
+  const validNewFiles = newFiles.filter((file) =>
+    allowedFileTypes.includes(file.type)
+  );
 
-    if (validFiles.length === files.length) {
-      setSelectedFiles(validFiles);
-    } else {
-      setSelectedFiles([]);
-      toast.error("Invalid file type.", {
-        description:
-          "Valid types: .pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .md",
-        style: { border: "none", color: "red" },
-      });
-    }
-  };
+  if (validNewFiles.length !== newFiles.length) {
+    toast.error("Invalid file type.", {
+      description:
+        "Valid types: .pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .md",
+      style: { border: "none", color: "red" },
+    });
+    return;
+  }
+
+  const totalFiles = [...selectedFiles, ...validNewFiles];
+
+  if (totalFiles.length > 5) {
+    toast.error("You can only select up to 5 files.", {
+      description: "Please remove some files to proceed.",
+      style: { border: "none", color: "red" },
+    });
+    return;
+  }
+
+  setSelectedFiles(totalFiles);
+
+  // Reset the input so the same file can be selected again if needed
+  event.target.value = null;
+};
 
   const addFile = () => {
     fileInputRef.current.click();

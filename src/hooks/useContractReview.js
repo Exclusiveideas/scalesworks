@@ -67,33 +67,40 @@ const useContractReview = () => {
     setSendBtnActive(selectedFiles.length !== 0);
   }, [streaming, selectedFiles]);
 
+  
   const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
-
-    // Check if the number of selected files exceeds the max limit (5)
-    if (files.length > 3) {
+    const newFiles = Array.from(event.target.files);
+  
+    // Filter only valid file types
+    const validNewFiles = newFiles.filter((file) =>
+      allowedFileTypes.includes(file.type)
+    );
+  
+    if (validNewFiles.length !== newFiles.length) {
+      toast.error("Invalid file type.", {
+        description:
+          "Valid types: .pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .md",
+        style: { border: "none", color: "red" },
+      });
+      return;
+    }
+  
+    const totalFiles = [...selectedFiles, ...validNewFiles];
+  
+    if (totalFiles.length > 3) {
       toast.error("You can only select up to 3 files.", {
         description: "Please remove some files to proceed.",
         style: { border: "none", color: "red" },
       });
       return;
     }
-
-    const validFiles = files.filter((file) =>
-      allowedFileTypes.includes(file.type)
-    );
-
-    if (validFiles.length) {
-      setSelectedFiles(validFiles);
-    } else {
-      setSelectedFiles([]);
-      toast.error("Invalid file type.", {
-        description:
-          "valid types: .pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .md",
-        style: { border: "none", color: "red" },
-      });
-    }
+  
+    setSelectedFiles(totalFiles);
+  
+    // Reset the input so the same file can be selected again if needed
+    event.target.value = null;
   };
+  
 
   const addFile = () => {
     fileInputRef.current.click();
