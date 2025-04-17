@@ -68,9 +68,10 @@ const useDocumentAutomation = () => {
     if (!selectedFile || streaming) return;
 
     const userChat = {
-      fileName: selectedFile.name,
       sender: "user",
       status: "automation_request",
+      message: null,
+      fileName: selectedFile.name,
       time: new Date(),
     };
 
@@ -91,25 +92,27 @@ const useDocumentAutomation = () => {
 
     if (queryResponse.status == "failed") {
       const errorChat = {
+        sender: "bot",
+        status: "error",
         message: (queryResponse?.errorMessage || "")
           .toLowerCase()
           .includes("unauthorized")
           ? "Unauthorized - Please login"
-          : (queryResponse?.errorMessage?.includes('Upload cancelled.') ? 'Upload cancelled.' : "Server Error - Please try again."),
-        sender: "bot",
-        status: 'error',
+          : queryResponse?.errorMessage?.includes("Upload cancelled.")
+          ? "Upload cancelled."
+          : "Server Error - Please try again.",
         time: new Date(),
       };
-    // Update local state + storage
-    updateDAChats(errorChat);
-    // Queue for batched DB write
-    queueDAChatForDB(errorChat);
-
+      // Update local state + storage
+      updateDAChats(errorChat);
+      // Queue for batched DB write
+      queueDAChatForDB(errorChat);
     } else {
       const botChat = {
-        message: queryResponse?.excelURL,
         sender: "bot",
         status: "success",
+        message: queryResponse?.excelURL,
+        fileName: selectedFile.name,
         time: new Date(),
       };
       // Update local state + storage

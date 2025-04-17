@@ -92,10 +92,10 @@ const useContractReview = () => {
     setRecentRequest("review_request");
 
     const userChat = {
-      message: "Contract(s) review",
-      fileNames: selectedFiles.map((file) => file.name),
       sender: "user",
       status: "review_user_request",
+      message: "Contract(s) review",
+      fileNames: selectedFiles.map((file) => file.name),
       time: new Date(),
     };
 
@@ -124,11 +124,12 @@ const useContractReview = () => {
       (error) => {
         closeStreaming();
         const errorChat = {
+          sender: "bot",
+          status: "error",
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
-          sender: "bot",
-          status: "error",
+          fileNames: selectedFiles.map((file) => file.name),
           time: new Date(),
         };
 
@@ -139,9 +140,9 @@ const useContractReview = () => {
       },
       () => {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
           status: "review_request",
+          message: streamingDataRef.current,
           fileNames: selectedFiles.map((file) => file.name),
           time: new Date(),
         };
@@ -162,9 +163,9 @@ const useContractReview = () => {
       eventSourceRef.current.abort();
       if (streamingDataRef.current) {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
           status: recentRequest,
+          message: streamingDataRef.current,
           fileNames:
             recentRequest === "review_request"
               ? selectedFiles.map((file) => file.name)
@@ -191,10 +192,10 @@ const useContractReview = () => {
     setRecentRequest("review_task");
 
     const userChat = {
-      fileNames: lastReview?.fileNames,
       sender: "user",
       status: "review_task",
       message: inputValue,
+      fileNames: lastReview?.fileNames,
       time: new Date(),
     };
 
@@ -224,11 +225,12 @@ const useContractReview = () => {
       (error) => {
         closeStreaming("task");
         const errorChat = {
+          sender: "bot",
+          status: "error",
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
-          sender: "bot",
-          status: "error",
+          fileNames: lastReview?.fileNames,
           time: new Date(),
         };
         // Update local state + storage
@@ -238,9 +240,9 @@ const useContractReview = () => {
       },
       () => {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
           status: "review_task",
+          message: streamingDataRef.current,
           fileNames: lastReview?.fileNames,
           time: new Date(),
         };

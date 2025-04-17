@@ -33,9 +33,9 @@ export default function useLegalAssistant() {
     if (!inputValue || streaming) return;
 
     const userChat = {
-      message: inputValue,
       sender: "user",
       status: "la_request",
+      message: inputValue,
       time: new Date(),
     };
 
@@ -64,11 +64,11 @@ export default function useLegalAssistant() {
       (error) => {
         closeStreaming();
         const errorChat = {
+          sender: "bot",
+          status: "error",
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
-          sender: "bot",
-          status: "error",
           time: new Date(),
         };
         updateChats(errorChat);
@@ -76,9 +76,9 @@ export default function useLegalAssistant() {
       },
       () => {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
           status: "la_request",
+          message: streamingDataRef.current,
           time: new Date(),
         };
         updateChats(botChat);
@@ -97,9 +97,9 @@ export default function useLegalAssistant() {
       eventSourceRef.current.abort();
       if (streamingDataRef.current) {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
           status: "la_request",
+          message: streamingDataRef.current,
           time: new Date(),
         };
 

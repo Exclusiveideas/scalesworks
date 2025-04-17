@@ -91,10 +91,10 @@ const useEDiscovery = () => {
     if (!inputValue || selectedFiles.length === 0 || streaming) return;
 
     const userChat = {
-      message: inputValue,
-      fileNames: selectedFiles.map((file) => file.name),
       sender: "user",
       status: "e_discovery",
+      message: inputValue,
+      fileNames: selectedFiles?.map((file) => file.name),
       time: new Date(),
     };
 
@@ -124,11 +124,12 @@ const useEDiscovery = () => {
       (error) => {
         closeStreaming();
         const errorChat = {
+          sender: "bot",
+          status: "error",
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
-          sender: "bot",
-          status: "error",
+          fileNames: selectedFiles?.map((file) => file.name),
           time: new Date(),
         };
         // Update local state + storage
@@ -138,10 +139,10 @@ const useEDiscovery = () => {
       },
       () => {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
-          fileNames: selectedFiles.map((file) => file.name),
           status: "e_discovery",
+          message: streamingDataRef.current,
+          fileNames: selectedFiles?.map((file) => file.name),
           time: new Date(),
         };
         // Update local state + storage
@@ -162,9 +163,10 @@ const useEDiscovery = () => {
       eventSourceRef.current.abort();
       if (streamingDataRef.current) {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
           status: "e_discovery",
+          message: streamingDataRef.current,
+          fileNames: selectedFiles?.map((file) => file.name),
           time: new Date(),
         };
 

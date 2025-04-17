@@ -31,9 +31,9 @@ export default function useChatBotAsst() {
     if (!inputValue || streaming) return;
 
     const userChat = {
-      message: inputValue,
       sender: "user",
       status: "cb_request",
+      message: inputValue,
       time: new Date(),
     };
 
@@ -62,11 +62,11 @@ export default function useChatBotAsst() {
       (error) => {
         closeStreaming();
         const errorChat = {
+          sender: "bot",
+          status: "error",
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
-          sender: "bot",
-          status: "error",
           time: new Date(),
         };
         // Update local state + storage
@@ -76,9 +76,9 @@ export default function useChatBotAsst() {
       },
       () => {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
           status: "cb_request",
+          message: streamingDataRef.current,
           time: new Date(),
         };
         // Update local state + storage
@@ -100,9 +100,9 @@ export default function useChatBotAsst() {
       eventSourceRef.current.abort();
       if (streamingDataRef.current) {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
           status: "cb_request",
+          message: streamingDataRef.current,
           time: new Date(),
         };
         // Update local state + storage

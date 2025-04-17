@@ -85,6 +85,7 @@ const useTranscription = () => {
     const userChat = {
       sender: "user",
       status: "transcription_user_request",
+      message: null,
       transcript_name: selectedAudio.name,
       time: new Date(),
     };
@@ -114,11 +115,15 @@ const useTranscription = () => {
       (error) => {
         closeStreaming();
         const errorChat = {
+          sender: "bot",
+          status: "error",
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
-          sender: "bot",
-          status: "error",
+          transcript_name:
+            recentRequest === "transcription_request"
+              ? selectedAudio?.name
+              : lastTranscription?.transcript_name,
           time: new Date(),
         };
         // Update local state + storage
@@ -128,9 +133,9 @@ const useTranscription = () => {
       },
       () => {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
           status: "transcription_request",
+          message: streamingDataRef.current,
           transcript_name: selectedAudio.name,
           time: new Date(),
         };
@@ -150,9 +155,9 @@ const useTranscription = () => {
       eventSourceRef.current.abort();
       if (streamingDataRef.current) {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
           status: recentRequest,
+          message: streamingDataRef.current,
           transcript_name:
             recentRequest === "transcription_request"
               ? selectedAudio.name
@@ -179,10 +184,10 @@ const useTranscription = () => {
     setRecentRequest("transcript_task");
 
     const userChat = {
-      transcript_name: lastTranscription?.transcript_name,
       sender: "user",
       status: "transcript_task",
       message: inputValue,
+      transcript_name: lastTranscription?.transcript_name,
       time: new Date(),
     };
 
@@ -212,11 +217,15 @@ const useTranscription = () => {
       (error) => {
         closeStreaming("task");
         const errorChat = {
+          sender: "bot",
+          status: "error",
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
-          sender: "bot",
-          status: "error",
+          transcript_name:
+            recentRequest === "transcription_request"
+              ? selectedAudio?.name
+              : lastTranscription?.transcript_name,
           time: new Date(),
         };
         // Update local state + storage
@@ -226,9 +235,9 @@ const useTranscription = () => {
       },
       () => {
         const botChat = {
-          message: streamingDataRef.current,
           sender: "bot",
           status: "transcription_task",
+          message: streamingDataRef.current,
           transcript_name: lastTranscription?.transcript_name,
           time: new Date(),
         };
