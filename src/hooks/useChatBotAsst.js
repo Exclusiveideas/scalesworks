@@ -5,6 +5,7 @@ import {
   queryChatBotAssistant,
 } from "@/apiCalls/queryChatBotAssistant";
 import { queueCBAChatForDB } from "@/lib/chatBatcher/cba-assistantBatcher";
+import useAuthStore from "@/store/authStore";
 
 export default function useChatBotAsst() {
   const [inputValue, setInputValue] = useState("");
@@ -14,7 +15,10 @@ export default function useChatBotAsst() {
   const streamingDataRef = useRef("");
   const eventSourceRef = useRef(null);
 
+  const { user } = useAuthStore();
+
   const updateChats = useChatBotAsstStore((state) => state.updateChats);
+  const overrideChats = useChatBotAsstStore((state) => state.overrideChats);
   const clearChats = useChatBotAsstStore((state) => state.clearChats);
   const chats = useChatBotAsstStore((state) => state.chats);
   const messagesEndRef = useRef(null);
@@ -118,8 +122,8 @@ export default function useChatBotAsst() {
   };
 
   useEffect(() => {
-    fetchCBARecentChats(user, chats, updateChats);
-  }, [user, chats.length]);
+    fetchCBARecentChats(user, chats, overrideChats);
+  }, [user]);
 
   return {
     inputValue,

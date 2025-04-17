@@ -20,6 +20,9 @@ const useDocumentAutomation = () => {
   const updateDAChats = useDocumentAutomationStore(
     (state) => state.updateDAChats
   );
+  const overrideDAChats = useDocumentAutomationStore(
+    (state) => state.overrideDAChats
+  );
   const clearDAChats = useDocumentAutomationStore(
     (state) => state.clearDAChats
   );
@@ -139,8 +142,8 @@ const useDocumentAutomation = () => {
   }, [streaming])
 
   useEffect(() => {  
-    fetchDARecentChats(user, dAChats, updateDAChats);
-  }, [user, dAChats.length]);
+    fetchDARecentChats(user, dAChats, overrideDAChats);
+  }, [user]);
 
   return {
     selectedFile,

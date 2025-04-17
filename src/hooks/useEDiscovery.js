@@ -31,6 +31,7 @@ const useEDiscovery = () => {
   const streamingDataRef = useRef("");
   const eventSourceRef = useRef(null);
   const updateEDChats = useEDiscoveryStore((state) => state.updateEDChats);
+  const overrideEDChats = useEDiscoveryStore((state) => state.overrideEDChats);
   const clearEDChats = useEDiscoveryStore((state) => state.clearEDChats);
   const edChats = useEDiscoveryStore((state) => state.edChats);
 
@@ -191,8 +192,8 @@ const useEDiscovery = () => {
   }, [streaming]);
 
   useEffect(() => {
-    fetchEDRecentChats(user, edChats, updateEDChats);
-  }, [user, edChats.length]);
+    fetchEDRecentChats(user, edChats, overrideEDChats);
+  }, [user]);
 
   return {
     inputValue,

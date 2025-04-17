@@ -3,7 +3,7 @@
 import { AppSidebar } from "@/components/appSideBar";
 import "@/styles/contract-review.css";
 import { useSidebar } from "@/components/ui/sidebar";
-import { Info, PanelRightOpen } from "lucide-react";
+import { Files, Info, PanelRightOpen } from "lucide-react";
 import useContractReview from "@/hooks/useContractReview";
 import ChatMessagesWindow from "@/components/contractReview/chatMessagesWindow";
 import ChatInput from "@/components/contractReview/chatInput";
@@ -58,6 +58,10 @@ const ContractReview = () => {
             <div className="pageTitle_subInfo_cr">
               <Info size={16} />
               <p className="pageTitle_subInfo_text">Max file size: 50MB</p>
+            </div>
+            <div className="pageTitle_subInfo_cr">
+              <Files size={16} />
+              <p className="pageTitle_subInfo_text">Max file upload: 3</p>
             </div>
           </div>
           <div className="cleartBtn_wrapper">

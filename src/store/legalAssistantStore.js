@@ -14,6 +14,7 @@ const useLegalAssistStore = create(
           const limitedChats = updatedChats.slice(-MAX_CHAT_HISTORY);
           return { chats: limitedChats };
         }),
+      overrideChats: (dbChats) => set(() => ({ chats: [...dbChats] })),
       clearChats: () => set({ chats: [] }),
     }),
     {

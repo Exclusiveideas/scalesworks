@@ -5,12 +5,13 @@ import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import "@/styles/eDiscovery.css";
 import useContractReviewStore from "@/store/useContractReviewStore";
 import {
+  fetchCRRecentChats,
   queryContractReview,
   queryContractReviewTask,
 } from "@/apiCalls/queryContractReview";
 import { toast } from "sonner";
 import { updateLastFilteredMessage } from "@/lib/utils";
-import { fetchLARecentChats } from "@/apiCalls/legalAssist";
+import { queueCRChatForDB } from "@/lib/chatBatcher/cr-assistantBatcher";
 
 const allowedFileTypes = [
   "application/pdf",
@@ -33,7 +34,9 @@ const useContractReview = () => {
   const fileInputRef = useRef(null);
   const streamingDataRef = useRef("");
   const eventSourceRef = useRef(null);
+
   const updateCRChats = useContractReviewStore((state) => state.updateCRChats);
+  const overrideCRChats = useContractReviewStore((state) => state.overrideCRChats);
   const clearCRChats = useContractReviewStore((state) => state.clearCRChats);
   const cRChats = useContractReviewStore((state) => state.cRChats);
 
@@ -66,6 +69,16 @@ const useContractReview = () => {
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
+
+    // Check if the number of selected files exceeds the max limit (5)
+    if (files.length > 3) {
+      toast.error("You can only select up to 3 files.", {
+        description: "Please remove some files to proceed.",
+        style: { border: "none", color: "red" },
+      });
+      return;
+    }
+
     const validFiles = files.filter((file) =>
       allowedFileTypes.includes(file.type)
     );
@@ -278,8 +291,8 @@ const useContractReview = () => {
   }, [streaming]);
 
   useEffect(() => {
-    fetchLARecentChats(user, cRChats, updateCRChats);
-  }, [user, cRChats.length]);
+    fetchCRRecentChats(user, cRChats, overrideCRChats);
+  }, [user]);
 
   return {
     selectedFiles,

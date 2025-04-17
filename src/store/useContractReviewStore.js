@@ -14,6 +14,7 @@ const useContractReviewStore = create(
           const limitedChats = updatedChats.slice(-MAX_CHAT_HISTORY);
           return { cRChats: limitedChats };
         }),
+      overrideCRChats: (dbChats) => set(() => ({ cRChats: [...dbChats] })),
       clearCRChats: () => set({ cRChats: [] }),
     }),
     {

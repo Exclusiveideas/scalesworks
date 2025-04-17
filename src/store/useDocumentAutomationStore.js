@@ -14,6 +14,7 @@ const useDocumentAutomationStore = create(
           const limitedChats = updatedChats.slice(-MAX_CHAT_HISTORY);
           return { dAChats: limitedChats };
         }),
+      overrideDAChats: (dbChats) => set(() => ({ dAChats: [...dbChats] })),
       clearDAChats: () => set({ dAChats: [] }),
     }),
     {

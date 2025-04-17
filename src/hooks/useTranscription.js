@@ -35,7 +35,9 @@ const useTranscription = () => {
   const audioInputRef = useRef(null);
   const streamingDataRef = useRef("");
   const eventSourceRef = useRef(null);
+
   const updateTChats = useTranscriptionStore((state) => state.updateTChats);
+  const overrideTChats = useTranscriptionStore((state) => state.overrideTChats);
   const clearTChats = useTranscriptionStore((state) => state.clearTChats);
   const tChats = useTranscriptionStore((state) => state.tChats);
 
@@ -278,8 +280,8 @@ const useTranscription = () => {
   }, [streaming]);
 
   useEffect(() => {
-    fetchTRecentChats(user, tChats, updateTChats);
-  }, [user, tChats.length]);
+    fetchTRecentChats(user, tChats, overrideTChats);
+  }, [user]);
 
   return {
     selectedAudio,

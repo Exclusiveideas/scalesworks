@@ -16,6 +16,7 @@ export default function useLegalAssistant() {
   const eventSourceRef = useRef(null);
 
   const updateChats = useLegalAssistStore((state) => state.updateChats);
+  const overrideChats = useLegalAssistStore((state) => state.overrideChats);
   const clearChats = useLegalAssistStore((state) => state.clearChats);
   const chats = useLegalAssistStore((state) => state.chats);
   const messagesEndRef = useRef(null);
@@ -114,8 +115,8 @@ export default function useLegalAssistant() {
   };
 
   useEffect(() => {
-    fetchLARecentChats(user, chats, updateChats);
-  }, [user, chats.length]);
+    fetchLARecentChats(user, chats, overrideChats);
+  }, [user]);
 
   return {
     inputValue,

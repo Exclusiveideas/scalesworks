@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "sonner";
 
 const API = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URI,
@@ -50,7 +51,7 @@ export const queryDocumentAutomation = async (file, controller) => {
 };
 
 
-export const fetchDARecentChats = async (user, dAChats, updateDAChats) => {
+export const fetchDARecentChats = async (user, dAChats, overrideDAChats) => {
   if (dAChats.length === 0 && user) {
     try {
       const response = await API.get(`/document-automation/fetch-recent-chats`,
@@ -59,11 +60,22 @@ export const fetchDARecentChats = async (user, dAChats, updateDAChats) => {
         }
       );
 
+      if (response.status !== 200) {
+        throw new Error(`Server failed with status ${response.status}`);
+      }
+
       const { chats } = response.data;
       const recentChats = chats.slice(-50); // keep last 50
-      recentChats.forEach((chat) => updateDAChats(chat));
+
+      overrideDAChats(recentChats);
     } catch (err) {
-      console.error("Failed to fetch chats:", err);
+      toast.error("Failed to fetch chats", {
+        description: err.message || err,
+        style: {
+          border: "none",
+          color: "red",
+        },
+      });
     }
   }
 };

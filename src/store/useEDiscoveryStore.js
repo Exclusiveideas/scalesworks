@@ -14,6 +14,7 @@ const useEDiscoveryStore = create(
           const limitedChats = updatedChats.slice(-MAX_CHAT_HISTORY);
           return { edChats: limitedChats };
         }),
+      overrideEDChats: (dbChats) => set(() => ({ edChats: [...dbChats] })),
       clearEDChats: () => set({ edChats: [] }),
     }),
     {

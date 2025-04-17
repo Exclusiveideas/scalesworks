@@ -1,4 +1,5 @@
 import { addAuthHeader } from "@/lib/utils";
+import { toast } from "sonner";
 
 export const queryContractReview = async (
   files,
@@ -180,7 +181,7 @@ export const queryContractReviewTask = async (
   }
 };
 
-export const fetchCRRecentChats = async (user, cRChats, updateCRChats) => {
+export const fetchCRRecentChats = async (user, cRChats, overrideCRChats) => {
   if (cRChats.length === 0 && user) {
     // 🔹 Get auth headers
     const authHeader = addAuthHeader();
@@ -197,11 +198,22 @@ export const fetchCRRecentChats = async (user, cRChats, updateCRChats) => {
         }
       );
 
+      if (!res.ok) {
+        throw new Error(`Server failed with status ${res.status}`);
+      }
+
       const { chats } = await res.json();
       const recentChats = chats.slice(-50); // extra safety
-      recentChats.forEach((chat) => updateCRChats(chat));
+
+      overrideCRChats(recentChats);
     } catch (err) {
-      console.error("Failed to fetch chats:", err);
+      toast.error("Failed to fetch chats", {
+        description: err.message || err,
+        style: {
+          border: "none",
+          color: "red",
+        },
+      });
     }
   }
 };
