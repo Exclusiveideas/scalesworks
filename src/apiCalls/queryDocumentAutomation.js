@@ -48,3 +48,22 @@ export const queryDocumentAutomation = async (file, controller) => {
     };
   }
 };
+
+
+export const fetchDARecentChats = async (user, dAChats, updateDAChats) => {
+  if (dAChats.length === 0 && user) {
+    try {
+      const response = await API.get(`/document-automation/fetch-recent-chats`,
+        {
+          params: { userId: user.id },
+        }
+      );
+
+      const { chats } = response.data;
+      const recentChats = chats.slice(-50); // keep last 50
+      recentChats.forEach((chat) => updateDAChats(chat));
+    } catch (err) {
+      console.error("Failed to fetch chats:", err);
+    }
+  }
+};

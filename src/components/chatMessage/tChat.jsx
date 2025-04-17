@@ -15,7 +15,7 @@ const TChatMessage = ({ chat }) => {
             {chat?.status === "transcription_user_request" ? (
               <p>Transcribe this audio</p>
             ) : (
-              <p>{chat?.task}</p>
+              <p>{chat?.message}</p>
             )}
           </>
         ) : (

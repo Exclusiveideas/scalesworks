@@ -26,7 +26,13 @@ import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { logOutUser } from "@/apiCalls/authAPI";
 import { useEffect, useState } from "react";
-import { generateSignString } from "@/lib/utils";
+import { clearAllChats, generateSignString } from "@/lib/utils";
+import useEDiscoveryStore from "@/store/useEDiscoveryStore";
+import useTranscriptionStore from "@/store/useTranscriptStore";
+import useDocumentAutomationStore from "@/store/useDocumentAutomationStore";
+import useContractReviewStore from "@/store/useContractReviewStore";
+import useChatBotAsstStore from "@/store/useChatBotAsstStore";
+import useLegalAssistStore from "@/store/legalAssistantStore";
 
 // Menu items.
 const items = [
@@ -78,6 +84,13 @@ export function AppSidebar() {
   const [organization, setOrganization] = useState("");
   const router = useRouter();
   const { user } = useAuthStore();
+  
+  const clearLaChats = useLegalAssistStore((state) => state.clearChats);
+  const clearEdChats = useEDiscoveryStore((state) => state.clearEDChats);
+  const clearTChats = useTranscriptionStore((state) => state.clearTChats);
+  const clearDaChats = useDocumentAutomationStore((state) => state.clearDAChats);
+  const clearCrChats = useContractReviewStore((state) => state.clearCRChats);
+  const clearCbChats = useChatBotAsstStore((state) => state.clearChats);
 
   useEffect(() => {
     if (!user) return;
@@ -87,6 +100,7 @@ export function AppSidebar() {
 
   const logOut = () => {
     updateUser(null);
+    clearAllChats(clearLaChats, clearEdChats, clearTChats, clearDaChats, clearCrChats, clearCbChats)
     logOutUser();
     router.push("/");
   };

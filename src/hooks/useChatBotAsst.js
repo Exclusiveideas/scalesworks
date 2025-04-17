@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import useChatBotAsstStore from "@/store/useChatBotAsstStore";
-import { queryChatBotAssistant } from "@/apiCalls/queryChatBotAssistant";
+import {
+  fetchCBARecentChats,
+  queryChatBotAssistant,
+} from "@/apiCalls/queryChatBotAssistant";
+import { queueCBAChatForDB } from "@/lib/chatBatcher/cba-assistantBatcher";
 
 export default function useChatBotAsst() {
   const [inputValue, setInputValue] = useState("");
@@ -13,13 +17,11 @@ export default function useChatBotAsst() {
   const updateChats = useChatBotAsstStore((state) => state.updateChats);
   const clearChats = useChatBotAsstStore((state) => state.clearChats);
   const chats = useChatBotAsstStore((state) => state.chats);
-  const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef(null);
 
-  
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chats]);
-
 
   useEffect(() => {
     setSendBtnActive(inputValue && !streaming);
@@ -28,12 +30,17 @@ export default function useChatBotAsst() {
   const sendMessage = async () => {
     if (!inputValue || streaming) return;
 
-    updateChats({
+    const userChat = {
       message: inputValue,
       sender: "user",
       status: "cb_request",
-      time: Date.now(),
-    });
+      time: new Date(),
+    };
+
+    // Update local state + storage
+    updateChats(userChat);
+    // Queue for batched DB write
+    queueCBAChatForDB(userChat);
 
     setStreaming(true);
     setStreamingData("");
@@ -53,21 +60,32 @@ export default function useChatBotAsst() {
         });
       },
       (error) => {
-        closeStreaming()
-        updateChats({
-          message: error?.includes("Unauthorized") ? "Unauthorized - Please login" : "Server Error - Please try again.",
+        closeStreaming();
+        const errorChat = {
+          message: error?.includes("Unauthorized")
+            ? "Unauthorized - Please login"
+            : "Server Error - Please try again.",
           sender: "bot",
           status: "error",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateChats(errorChat);
+        // Queue for batched DB write
+        queueCBAChatForDB(errorChat);
       },
       () => {
-        updateChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           status: "cb_request",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateChats(botChat);
+        // Queue for batched DB write
+        queueCBAChatForDB(botChat);
+
         setStreaming(false);
         setStreamingData("");
       },
@@ -81,12 +99,16 @@ export default function useChatBotAsst() {
     if (eventSourceRef.current instanceof AbortController) {
       eventSourceRef.current.abort();
       if (streamingDataRef.current) {
-        updateChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           status: "cb_request",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateChats(botChat);
+        // Queue for batched DB write
+        queueCBAChatForDB(botChat);
       }
       setStreaming(false);
       setStreamingData("");
@@ -94,6 +116,10 @@ export default function useChatBotAsst() {
       eventSourceRef.current = null;
     }
   };
+
+  useEffect(() => {
+    fetchCBARecentChats(user, chats, updateChats);
+  }, [user, chats.length]);
 
   return {
     inputValue,
@@ -105,6 +131,6 @@ export default function useChatBotAsst() {
     sendBtnActive,
     chats,
     messagesEndRef,
-    clearChats
+    clearChats,
   };
 }

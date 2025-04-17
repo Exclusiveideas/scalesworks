@@ -119,7 +119,7 @@ export const queryTranscriptionTask = async (
           },
           signal: abortController.signal,
           body: JSON.stringify({
-            task: inputValue,
+            message: inputValue,
             transcriptText: transcriptText,
           }),
         }
@@ -180,5 +180,30 @@ export const queryTranscriptionTask = async (
       }
       console.error("Query Transcription Assistant Error:", error);
       onError(error.message || "Failed to fetch response.");
+  }
+};
+
+
+export const fetchTRecentChats = async (user, tChats, updateTChats) => {
+  if (tChats.length === 0 && user) {
+      
+      // 🔹 Get auth headers
+      const authHeader = addAuthHeader();
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/transcription/fetch-recent-chats?userId=${user.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeader   // 🔥 Spread token header dynamically
+        }
+      });
+
+      const { chats } = await res.json();
+      const recentChats = chats.slice(-50); // extra safety
+      recentChats.forEach(chat => updateTChats(chat));
+    } catch (err) {
+      console.error("Failed to fetch chats:", err);
+    }
   }
 };

@@ -83,3 +83,29 @@ export const queryEDiscovery = async (query, files, onMessage, onError, onComple
         onError(error.message || "Failed to fetch response.");
     }
 };
+
+
+export const fetchEDRecentChats = async (user, edChats, updateEDChats) => {
+    if (edChats.length === 0 && user) {
+        
+        // 🔹 Get auth headers
+        const authHeader = addAuthHeader();
+
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/ediscovery/fetch-recent-chats?userId=${user.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            ...authHeader   // 🔥 Spread token header dynamically
+          }
+        });
+  
+        const { chats } = await res.json();
+        const recentChats = chats.slice(-50); // extra safety
+        recentChats.forEach(chat => updateEDChats(chat));
+      } catch (err) {
+        console.error("Failed to fetch chats:", err);
+      }
+    }
+  };
+  

@@ -32,7 +32,7 @@ const LegalAssistant = () => {
 
   const {
     inputValue,
-    setInputValue,
+    setInputValue, 
     sendMessage,
     closeStreaming,
     streamingData,

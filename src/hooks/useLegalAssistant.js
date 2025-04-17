@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import useLegalAssistStore from "@/store/legalAssistantStore";
-import { queryLegalAssistant } from "@/apiCalls/legalAssist";
+import {
+  fetchLARecentChats,
+  queryLegalAssistant,
+} from "@/apiCalls/legalAssist";
+import { queueLAChatForDB } from "@/lib/chatBatcher/la-assistantBatcher";
+import useAuthStore from "@/store/authStore";
 
 export default function useLegalAssistant() {
   const [inputValue, setInputValue] = useState("");
@@ -13,13 +18,12 @@ export default function useLegalAssistant() {
   const updateChats = useLegalAssistStore((state) => state.updateChats);
   const clearChats = useLegalAssistStore((state) => state.clearChats);
   const chats = useLegalAssistStore((state) => state.chats);
-  const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef(null);
+  const { user } = useAuthStore();
 
-  
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chats]);
-
 
   useEffect(() => {
     setSendBtnActive(inputValue && !streaming);
@@ -28,7 +32,17 @@ export default function useLegalAssistant() {
   const sendMessage = async () => {
     if (!inputValue || streaming) return;
 
-    updateChats({ message: inputValue, sender: "user", time: Date.now() });
+    const userChat = {
+      message: inputValue,
+      sender: "user",
+      status: "la_request",
+      time: new Date(),
+    };
+
+    // Update local state + storage
+    updateChats(userChat);
+    // Queue for batched DB write
+    queueLAChatForDB(userChat);
 
     setStreaming(true);
     setStreamingData("");
@@ -49,22 +63,26 @@ export default function useLegalAssistant() {
       },
       (error) => {
         closeStreaming();
-        updateChats({
+        const errorChat = {
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
           sender: "bot",
           status: "error",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        updateChats(errorChat);
+        queueLAChatForDB(errorChat);
       },
       () => {
-        updateChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           status: "la_request",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        updateChats(botChat);
+        queueLAChatForDB(botChat);
         setStreaming(false);
         setStreamingData("");
       },
@@ -78,12 +96,15 @@ export default function useLegalAssistant() {
     if (eventSourceRef.current instanceof AbortController) {
       eventSourceRef.current.abort();
       if (streamingDataRef.current) {
-        updateChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           status: "la_request",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+
+        updateChats(botChat);
+        queueLAChatForDB(botChat); // ← Batch this too
       }
       setStreaming(false);
       setStreamingData("");
@@ -91,6 +112,10 @@ export default function useLegalAssistant() {
       eventSourceRef.current = null;
     }
   };
+
+  useEffect(() => {
+    fetchLARecentChats(user, chats, updateChats);
+  }, [user, chats.length]);
 
   return {
     inputValue,
@@ -102,6 +127,6 @@ export default function useLegalAssistant() {
     sendBtnActive,
     chats,
     messagesEndRef,
-    clearChats
+    clearChats,
   };
 }

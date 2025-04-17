@@ -78,3 +78,12 @@ export function updateLastFilteredMessage(messages, setFunction, filter) {
   // Update the state
   setFunction(lastFilteredMessage || null);
 }
+
+export const clearAllChats = (clearLaChats, clearEdChats, clearTChats, clearDaChats, clearCrChats, clearCbChats) => {
+  clearLaChats();
+  clearEdChats();
+  clearTChats();
+  clearDaChats();
+  clearCrChats();
+  clearCbChats();
+}

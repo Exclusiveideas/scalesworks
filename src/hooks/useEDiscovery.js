@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import useEDiscoveryStore from "@/store/useEDiscoveryStore";
-import { queryEDiscovery } from "@/apiCalls/eDiscovery";
+import { fetchEDRecentChats, queryEDiscovery } from "@/apiCalls/eDiscovery";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import "@/styles/eDiscovery.css";
 import { toast } from "sonner";
+import { queueEDChatForDB } from "@/lib/chatBatcher/ed-chatBatcher";
 
 const allowedFileTypes = [
   "application/pdf",
@@ -15,7 +16,7 @@ const allowedFileTypes = [
   "application/vnd.ms-excel",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "text/csv",
-  "text/markdown"
+  "text/markdown",
 ];
 
 const useEDiscovery = () => {
@@ -37,7 +38,7 @@ const useEDiscovery = () => {
   const { user } = useAuthStore();
   const isHydrated = useHydrationZustand(useAuthStore);
 
-  const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (isHydrated && !user) {
@@ -45,7 +46,6 @@ const useEDiscovery = () => {
     }
   }, [user, isHydrated]);
 
-  
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [edChats]);
@@ -54,33 +54,34 @@ const useEDiscovery = () => {
     setSendBtnActive(inputValue && selectedFiles.length !== 0);
   }, [inputValue, streaming, selectedFiles]);
 
-  
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    
+
     // Check if the number of selected files exceeds the max limit (5)
     if (files.length > 5) {
       toast.error("You can only select up to 5 files.", {
-        description: 'Please remove some files to proceed.',
+        description: "Please remove some files to proceed.",
         style: { border: "none", color: "red" },
       });
       return;
     }
-    
+
     // Filter valid files based on allowed types
-    const validFiles = files.filter((file) => allowedFileTypes.includes(file.type));
-  
+    const validFiles = files.filter((file) =>
+      allowedFileTypes.includes(file.type)
+    );
+
     if (validFiles.length === files.length) {
       setSelectedFiles(validFiles);
     } else {
       setSelectedFiles([]);
       toast.error("Invalid file type.", {
-        description: 'Valid types: .pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .md',
+        description:
+          "Valid types: .pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .md",
         style: { border: "none", color: "red" },
       });
     }
   };
-  
 
   const addFile = () => {
     fileInputRef.current.click();
@@ -89,13 +90,18 @@ const useEDiscovery = () => {
   const sendMessage = () => {
     if (!inputValue || selectedFiles.length === 0 || streaming) return;
 
-    updateEDChats({
+    const userChat = {
       message: inputValue,
       fileNames: selectedFiles.map((file) => file.name),
       sender: "user",
       status: "e_discovery",
-      time: Date.now(),
-    });
+      time: new Date(),
+    };
+
+    // Update local state + storage
+    updateEDChats(userChat);
+    // Queue for batched DB write
+    queueEDChatForDB(userChat);
 
     setStreaming(true);
     setStreamingData("");
@@ -117,23 +123,31 @@ const useEDiscovery = () => {
       },
       (error) => {
         closeStreaming();
-        updateEDChats({
+        const errorChat = {
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
           sender: "bot",
           status: "error",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateEDChats(errorChat);
+        // Queue for batched DB write
+        queueEDChatForDB(errorChat);
       },
       () => {
-        updateEDChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           fileNames: selectedFiles.map((file) => file.name),
           status: "e_discovery",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateEDChats(botChat);
+        // Queue for batched DB write
+        queueEDChatForDB(botChat);
         setStreaming(false);
         setStreamingData("");
       },
@@ -147,12 +161,17 @@ const useEDiscovery = () => {
     if (eventSourceRef.current instanceof AbortController) {
       eventSourceRef.current.abort();
       if (streamingDataRef.current) {
-        updateEDChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           status: "e_discovery",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+
+        // Update local state + storage
+        updateEDChats(botChat);
+        // Queue for batched DB write
+        queueEDChatForDB(botChat);
       }
       setStreaming(false);
       setStreamingData("");
@@ -161,14 +180,17 @@ const useEDiscovery = () => {
     }
   };
 
-  
   useEffect(() => {
-    if(streaming) {
-      setSelectFileBtnActive(false)
+    if (streaming) {
+      setSelectFileBtnActive(false);
     } else {
-      setSelectFileBtnActive(true)
+      setSelectFileBtnActive(true);
     }
-  }, [streaming])
+  }, [streaming]);
+
+  useEffect(() => {
+    fetchEDRecentChats(user, edChats, updateEDChats);
+  }, [user, edChats.length]);
 
   return {
     inputValue,
@@ -185,7 +207,7 @@ const useEDiscovery = () => {
     addFile,
     messagesEndRef,
     clearEDChats,
-    selectFileBtnActive
+    selectFileBtnActive,
   };
 };
 

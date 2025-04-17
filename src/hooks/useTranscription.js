@@ -5,11 +5,13 @@ import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import "@/styles/eDiscovery.css";
 import useTranscriptionStore from "@/store/useTranscriptStore";
 import {
+  fetchTRecentChats,
   queryTranscription,
   queryTranscriptionTask,
 } from "@/apiCalls/transcription";
 import { updateLastFilteredMessage } from "@/lib/utils";
 import { toast } from "sonner";
+import { queueTChatForDB } from "@/lib/chatBatcher/transcription-chatBatcher";
 
 const allowedAudioTypes = [
   "audio/mpeg", // MP3
@@ -80,13 +82,17 @@ const useTranscription = () => {
 
     setRecentRequest("transcription_request");
 
-    updateTChats({
-      audioName: selectedAudio.name,
+    const userChat = {
       sender: "user",
       status: "transcription_user_request",
       transcript_name: selectedAudio.name,
-      time: Date.now(),
-    });
+      time: new Date(),
+    };
+
+    // Update local state + storage
+    updateTChats(userChat);
+    // Queue for batched DB write
+    queueTChatForDB(userChat);
 
     setStreaming(true);
     setStreamingData("");
@@ -107,23 +113,31 @@ const useTranscription = () => {
       },
       (error) => {
         closeStreaming();
-        updateTChats({
+        const errorChat = {
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
           sender: "bot",
           status: "error",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateTChats(errorChat);
+        // Queue for batched DB write
+        queueTChatForDB(errorChat);
       },
       () => {
-        updateTChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           status: "transcription_request",
           transcript_name: selectedAudio.name,
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateTChats(botChat);
+        // Queue for batched DB write
+        queueTChatForDB(botChat);
         setStreaming(false);
         setStreamingData("");
       },
@@ -135,7 +149,7 @@ const useTranscription = () => {
     if (eventSourceRef.current instanceof AbortController) {
       eventSourceRef.current.abort();
       if (streamingDataRef.current) {
-        updateTChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           status: recentRequest,
@@ -143,8 +157,13 @@ const useTranscription = () => {
             recentRequest === "transcription_request"
               ? selectedAudio.name
               : lastTranscription?.transcript_name,
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+
+        // Update local state + storage
+        updateTChats(botChat);
+        // Queue for batched DB write
+        queueTChatForDB(botChat);
       }
       setStreaming(false);
       setStreamingData("");
@@ -152,20 +171,25 @@ const useTranscription = () => {
       streamingDataRef.current = "";
       eventSourceRef.current = null;
     }
-  }; 
+  };
 
   const sendTranscriptQuery = () => {
     if (!lastTranscription?.transcript_name || !inputValue || streaming) return;
 
     setRecentRequest("transcript_task");
 
-    updateTChats({
+    const userChat = {
       transcript_name: lastTranscription?.transcript_name,
       sender: "user",
       status: "transcript_task",
-      task: inputValue,
-      time: Date.now(),
-    });
+      message: inputValue,
+      time: new Date(),
+    };
+
+    // Update local state + storage
+    updateTChats(userChat);
+    // Queue for batched DB write
+    queueTChatForDB(userChat);
 
     setStreaming(true);
     setStreamingData("");
@@ -187,23 +211,32 @@ const useTranscription = () => {
       },
       (error) => {
         closeStreaming("task");
-        updateTChats({
+        const errorChat = {
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
           sender: "bot",
           status: "error",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateTChats(errorChat);
+        // Queue for batched DB write
+        queueTChatForDB(errorChat);
       },
       () => {
-        updateTChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           status: "transcription_task",
           transcript_name: lastTranscription?.transcript_name,
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateTChats(botChat);
+        // Queue for batched DB write
+        queueTChatForDB(botChat);
+
         setStreaming(false);
         setStreamingData("");
         setInputValue("");
@@ -220,17 +253,24 @@ const useTranscription = () => {
   }, [tChats, inputValue]);
 
   useEffect(() => {
-    updateLastFilteredMessage(tChats, setLastTranscription, "transcription_request");
+    updateLastFilteredMessage(
+      tChats,
+      setLastTranscription,
+      "transcription_request"
+    );
   }, [tChats]);
 
   useEffect(() => {
-    if(streaming) {
-      setSelectFileBtnActive(false)
+    if (streaming) {
+      setSelectFileBtnActive(false);
     } else {
-      setSelectFileBtnActive(true)
+      setSelectFileBtnActive(true);
     }
-  }, [streaming])
-   
+  }, [streaming]);
+
+  useEffect(() => {
+    fetchTRecentChats(user, tChats, updateTChats);
+  }, [user, tChats.length]);
 
   return {
     selectedAudio,

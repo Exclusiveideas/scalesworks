@@ -4,9 +4,13 @@ import { useRouter } from "next/navigation";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import "@/styles/eDiscovery.css";
 import useContractReviewStore from "@/store/useContractReviewStore";
-import { queryContractReview, queryContractReviewTask } from "@/apiCalls/queryContractReview";
+import {
+  queryContractReview,
+  queryContractReviewTask,
+} from "@/apiCalls/queryContractReview";
 import { toast } from "sonner";
 import { updateLastFilteredMessage } from "@/lib/utils";
+import { fetchLARecentChats } from "@/apiCalls/legalAssist";
 
 const allowedFileTypes = [
   "application/pdf",
@@ -16,7 +20,7 @@ const allowedFileTypes = [
   "application/vnd.ms-excel",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "text/csv",
-  "text/markdown"
+  "text/markdown",
 ];
 
 const useContractReview = () => {
@@ -33,7 +37,7 @@ const useContractReview = () => {
   const clearCRChats = useContractReviewStore((state) => state.clearCRChats);
   const cRChats = useContractReviewStore((state) => state.cRChats);
 
-  // 
+  //
   const [inputValue, setInputValue] = useState("");
   const [queryBtnActive, setQueryBtnActive] = useState(false);
 
@@ -44,7 +48,7 @@ const useContractReview = () => {
   const { user } = useAuthStore();
   const isHydrated = useHydrationZustand(useAuthStore);
 
-  const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (isHydrated && !user) {
@@ -52,7 +56,6 @@ const useContractReview = () => {
     }
   }, [user, isHydrated]);
 
-  
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [cRChats]);
@@ -63,14 +66,17 @@ const useContractReview = () => {
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    const validFiles = files.filter((file) => allowedFileTypes.includes(file.type));
+    const validFiles = files.filter((file) =>
+      allowedFileTypes.includes(file.type)
+    );
 
     if (validFiles.length) {
       setSelectedFiles(validFiles);
     } else {
       setSelectedFiles([]);
       toast.error("Invalid file type.", {
-        description: 'valid types: .pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .md',
+        description:
+          "valid types: .pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .md",
         style: { border: "none", color: "red" },
       });
     }
@@ -85,13 +91,18 @@ const useContractReview = () => {
 
     setRecentRequest("review_request");
 
-    updateCRChats({
-      message: 'Contract(s) review',
+    const userChat = {
+      message: "Contract(s) review",
       fileNames: selectedFiles.map((file) => file.name),
       sender: "user",
       status: "review_user_request",
-      time: Date.now(),
-    });
+      time: new Date(),
+    };
+
+    // Update local state + storage
+    updateCRChats(userChat);
+    // Queue for batched DB write
+    queueCRChatForDB(userChat);
 
     setStreaming(true);
     setStreamingData("");
@@ -112,45 +123,58 @@ const useContractReview = () => {
       },
       (error) => {
         closeStreaming();
-        updateCRChats({
+        const errorChat = {
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
           sender: "bot",
           status: "error",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+
+        // Update local state + storage
+        updateCRChats(errorChat);
+        // Queue for batched DB write
+        queueCRChatForDB(errorChat);
       },
       () => {
-        updateCRChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           status: "review_request",
           fileNames: selectedFiles.map((file) => file.name),
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateCRChats(botChat);
+        // Queue for batched DB write
+        queueCRChatForDB(botChat);
+
         setStreaming(false);
         setStreamingData("");
       },
       abortController
     );
-
   };
 
   const closeStreaming = () => {
     if (eventSourceRef.current instanceof AbortController) {
       eventSourceRef.current.abort();
       if (streamingDataRef.current) {
-        updateCRChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           status: recentRequest,
-          fileNames: 
-          recentRequest === "review_request"
-            ? selectedFiles.map((file) => file.name)
-            : lastReview?.fileNames,
-          time: Date.now(),
-        });
+          fileNames:
+            recentRequest === "review_request"
+              ? selectedFiles.map((file) => file.name)
+              : lastReview?.fileNames,
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateCRChats(botChat);
+        // Queue for batched DB write
+        queueCRChatForDB(botChat);
       }
       setStreaming(false);
       setStreamingData("");
@@ -166,13 +190,18 @@ const useContractReview = () => {
 
     setRecentRequest("review_task");
 
-    updateCRChats({
+    const userChat = {
       fileNames: lastReview?.fileNames,
       sender: "user",
       status: "review_task",
       message: inputValue,
-      time: Date.now(),
-    });
+      time: new Date(),
+    };
+
+    // Update local state + storage
+    updateCRChats(userChat);
+    // Queue for batched DB write
+    queueCRChatForDB(userChat);
 
     setStreaming(true);
     setStreamingData("");
@@ -194,23 +223,31 @@ const useContractReview = () => {
       },
       (error) => {
         closeStreaming("task");
-        updateCRChats({
+        const errorChat = {
           message: error?.includes("Unauthorized")
             ? "Unauthorized - Please login"
             : "Server Error - Please try again.",
           sender: "bot",
           status: "error",
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateCRChats(errorChat);
+        // Queue for batched DB write
+        queueCRChatForDB(errorChat);
       },
       () => {
-        updateCRChats({
+        const botChat = {
           message: streamingDataRef.current,
           sender: "bot",
           status: "review_task",
           fileNames: lastReview?.fileNames,
-          time: Date.now(),
-        });
+          time: new Date(),
+        };
+        // Update local state + storage
+        updateCRChats(botChat);
+        // Queue for batched DB write
+        queueCRChatForDB(botChat);
         setStreaming(false);
         setStreamingData("");
         setInputValue("");
@@ -231,12 +268,16 @@ const useContractReview = () => {
   }, [cRChats]);
 
   useEffect(() => {
-    if(streaming) {
-      setSelectFileBtnActive(false)
+    if (streaming) {
+      setSelectFileBtnActive(false);
     } else {
-      setSelectFileBtnActive(true)
+      setSelectFileBtnActive(true);
     }
-  }, [streaming])
+  }, [streaming]);
+
+  useEffect(() => {
+    fetchLARecentChats(user, cRChats, updateCRChats);
+  }, [user, cRChats.length]);
 
   return {
     selectedFiles,

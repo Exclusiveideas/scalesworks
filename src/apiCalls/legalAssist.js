@@ -79,3 +79,29 @@ export const queryLegalAssistant = async (query, onMessage, onError, onComplete,
         onError(error.message || "Failed to fetch response.");
     }
 };
+
+
+export const fetchLARecentChats = async (user, laChats, updateChats) => {
+    if (laChats.length === 0 && user) {
+        
+        // 🔹 Get auth headers
+        const authHeader = addAuthHeader();
+
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/legal-research/fetch-recent-chats?userId=${user.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            ...authHeader   // 🔥 Spread token header dynamically
+          }
+        });
+  
+        const { chats } = await res.json();
+        const recentChats = chats.slice(-50); // extra safety
+        recentChats.forEach(chat => updateChats(chat));
+      } catch (err) {
+        console.error("Failed to fetch chats:", err);
+      }
+    }
+  };
+  

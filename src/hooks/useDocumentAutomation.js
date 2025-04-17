@@ -4,8 +4,9 @@ import { useRouter } from "next/navigation";
 import { useHydrationZustand } from "@codebayu/use-hydration-zustand";
 import "@/styles/eDiscovery.css";
 import useDocumentAutomationStore from "@/store/useDocumentAutomationStore";
-import { queryDocumentAutomation } from "@/apiCalls/queryDocumentAutomation";
+import { fetchDARecentChats, queryDocumentAutomation } from "@/apiCalls/queryDocumentAutomation";
 import { toast } from "sonner";
+import { queueDAChatForDB } from "@/lib/chatBatcher/da-assistantBatcher";
 
 const allowedFileTypes = ["application/pdf"];
 
@@ -66,12 +67,17 @@ const useDocumentAutomation = () => {
   const sendMessage = async () => {
     if (!selectedFile || streaming) return;
 
-    updateDAChats({
+    const userChat = {
       fileName: selectedFile.name,
       sender: "user",
       status: "automation_request",
-      time: Date.now(),
-    });
+      time: new Date(),
+    };
+
+    // Update local state + storage
+    updateDAChats(userChat);
+    // Queue for batched DB write
+    queueDAChatForDB(userChat);
 
     setStreaming(true);
 
@@ -84,7 +90,7 @@ const useDocumentAutomation = () => {
     );
 
     if (queryResponse.status == "failed") {
-      updateDAChats({
+      const errorChat = {
         message: (queryResponse?.errorMessage || "")
           .toLowerCase()
           .includes("unauthorized")
@@ -92,15 +98,24 @@ const useDocumentAutomation = () => {
           : (queryResponse?.errorMessage?.includes('Upload cancelled.') ? 'Upload cancelled.' : "Server Error - Please try again."),
         sender: "bot",
         status: 'error',
-        time: Date.now(),
-      });
+        time: new Date(),
+      };
+    // Update local state + storage
+    updateDAChats(errorChat);
+    // Queue for batched DB write
+    queueDAChatForDB(errorChat);
+
     } else {
-      updateDAChats({
+      const botChat = {
         message: queryResponse?.excelURL,
         sender: "bot",
         status: "success",
-        time: Date.now(),
-      });
+        time: new Date(),
+      };
+      // Update local state + storage
+      updateDAChats(botChat);
+      // Queue for batched DB write
+      queueDAChatForDB(botChat);
     }
     setStreaming(false);
   };
@@ -119,6 +134,10 @@ const useDocumentAutomation = () => {
       setSelectFileBtnActive(true)
     }
   }, [streaming])
+
+  useEffect(() => {  
+    fetchDARecentChats(user, dAChats, updateDAChats);
+  }, [user, dAChats.length]);
 
   return {
     selectedFile,
